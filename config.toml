@@ -1,0 +1,28 @@
+base_url = "https://eduardoklosowski.github.io/blog/"
+
+title = "Eduardo Klosowski"
+description = "Blog"
+
+default_language = "pt-BR"
+
+theme = "hyde"
+
+highlight_code = true
+highlight_theme = "charcoal"
+
+generate_feed = true
+feed_filename = "atom.xml"
+
+compile_sass = false
+
+build_search_index = false
+
+[extra]
+hyde_theme = "theme-base-0d"
+hyde_reverse = true
+hyde_links = [
+    {url = "https://github.com/eduardoklosowski", name = "GitHub"},
+    {url = "https://twitter.com/eduklosowski", name = "Twitter"},
+    {url = "https://twitch.tv/eduardoklosowski", name = "Twitch"},
+    {url = "https://asciinema.org/~eduardoklosowski", name = "asciinema"},
+]
