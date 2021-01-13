@@ -1,0 +1,7 @@
+<iframe
+    width="{% if width %}{{ width }}{% else %}640{% endif %}"
+    height="{% if height %}{{ height }}{% else %}360{% endif %}"
+    src="https://www.youtube.com/embed/{{ id }}{% if start %}?start={{ start }}{% if end %}&end={{ end }}{% endif %}{% endif %}"
+    allowfullscreen
+    style="border: 0; max-width: 100%;"
+></iframe>
