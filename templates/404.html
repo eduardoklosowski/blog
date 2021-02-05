@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block title %}404 - {{ super() }}{% endblock %}
+
+{% block og %}
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="{{ config.title }}">
+    <meta property="og:title" content="404 - Página não encontrada">
+    <meta property="og:description" content="URL incorreta.">
+    <meta property="og:url" content="{{ config.base_url | safe }}">
+    <meta property="og:image" content="{{ get_url(path="logo.png") | safe }}">
+    <meta property="og:locale" content="{{ lang | replace(from="-", to="_") }}">
+{% endblock %}
+
+{% block content %}
+    <div class="post">
+        <h1 class="post-title">404: Página Não Encontrada!</h1>
+        <p class="lead">Desculpe, essa URL está incorreta ou aponta para uma página que não existe. <a href="{{ config.base_url | safe }}">Volte para a página principal</a> para tentar encontrá-la novamente.</p>
+    </div>
+{% endblock %}

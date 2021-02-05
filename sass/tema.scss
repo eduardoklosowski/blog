@@ -1,0 +1,178 @@
+@font-face {
+    font-family: "PT Sans";
+    font-style: normal;
+    font-weight: 400;
+    src: url(PTSans-Regular.ttf);
+}
+
+@font-face {
+    font-family: "PT Sans";
+    font-style: italic;
+    font-weight: 400;
+    src: url(PTSans-Italic.ttf);
+}
+
+@font-face {
+    font-family: "PT Sans";
+    font-style: normal;
+    font-weight: 700;
+    src: url(PTSans-Bold.ttf);
+}
+
+@font-face {
+    font-family: "PT Sans";
+    font-style: italic;
+    font-weight: 700;
+    src: url(PTSans-BoldItalic.ttf);
+}
+
+
+/* Global */
+
+html {
+    font-family: "PT Sans", Helvetica, Arial, sans-serif;
+
+    @media (min-width: 48em) {
+        font-size: 16px;
+    }
+
+    @media (min-width: 58em) {
+        font-size: 20px;
+    }
+}
+
+
+/* Sidebar */
+
+.sidebar {
+    background-color: #6a9fb5;
+    padding: 2rem 1rem;
+    text-align: center;
+    color: rgba(255, 255, 255, .5);
+
+    @media (min-width: 48em) {
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        width: 18rem;
+
+        .container {
+            position: absolute;
+            right: 1rem;
+            bottom: 1rem;
+            left: 1rem;
+        }
+    }
+
+    a {
+        color: #fff;
+    }
+}
+
+.sidebar-about {
+    a {
+        text-decoration: none;
+    }
+
+    .sidebar-logo {
+        width: 40%;
+        margin: 0 auto 1rem;
+        border-radius: 50%;
+
+        @media (min-width: 48em) {
+            width: 60%;
+        }
+    }
+
+    h1 {
+        margin-top: 0;
+        font-size: 2.5rem;
+        color: #fff;
+    }
+}
+
+.sidebar-nav {
+    margin-bottom: 1rem;
+    padding: 0;
+}
+
+.sidebar-nav-item {
+    display: block;
+    line-height: 1.75;
+}
+
+
+/* Container */
+
+.content {
+    padding-top: 4rem;
+    padding-bottom: 4rem;
+
+    @media (min-width: 48em) {
+        max-width: 38rem;
+        margin-left: 2rem;
+        margin-right: 20rem;
+    }
+
+    @media (min-width: 64em) {
+        margin-left: 4rem;
+        margin-right: 22rem;
+    }
+
+    a {
+        color: #6a9fb5;
+    }
+
+    p {
+        text-align: justify;
+    }
+}
+
+.session-title {
+    margin: 0 0 2rem;
+}
+
+.post {
+    margin-bottom: 2rem;
+
+    .post-tags,
+    .post-info {
+        display: block;
+        margin-top: -.5rem;
+        margin-bottom: .5rem;
+        color: #9a9a9a;
+    }
+
+    .post-continue {
+        margin-top: -1rem;
+        text-align: right;
+    }
+}
+
+.paginate {
+    > div {
+        display: block;
+    }
+
+    > .paginate-previous {
+        float: left;
+        margin-bottom: 2rem;
+    }
+
+    > .paginate-next {
+        float: right;
+        margin-bottom: 2rem;
+    }
+}
+
+.taxonomies-list {
+    margin-bottom: 2rem;
+    color: #9a9a9a;
+}
+
+.taxonomy {
+    h1 {
+        margin: 0 0 2rem;
+    }
+}

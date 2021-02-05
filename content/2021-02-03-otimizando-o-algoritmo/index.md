@@ -2,7 +2,8 @@
 title = "Otimizando o algoritmo passo a passo"
 
 [taxonomies]
-tags = ["otimização", "php"]
+tags = ["otimização"]
+linguagens = ["php"]
 +++
 
 Acompanhando as lives da [bug_elseif](https://www.twitch.tv/bug_elseif), no meia das [listas de exercícios que ela estava fazendo](https://wiki.python.org.br/ListaDeExercicios) tem um exercício pedindo para verificar se um número informado pelo usuário é primo ou não. No chat, muitos faziam sugestões para que o primeiro código feito já fosse o mais otimizado possível, e isso é interessante quando já se sabe a solução do problema. Porém quando não se sabe essa solução, seria possível chegar nela também? É possível otimizar o código pouco a pouco?

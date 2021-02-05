@@ -1,0 +1,42 @@
+{% extends "base.html" %}
+
+{% block content %}
+    <div class="posts">
+        {% for page in paginator.pages %}
+            <div class="post">
+                <h1 class="post-title"><a href="{{ page.permalink | safe }}">{{ page.title }}</a></h1>
+                <div class="post-info">
+                    Publicado em {{ page.date | date(format="%d-%m-%Y") }}
+                    &middot;
+                    {{ page.reading_time }} minutos de leitura
+                </div>
+                <div class="post-tags">
+                    {% for tag in page.taxonomies['tags'] %}
+                        <a href="{{ get_taxonomy_url(kind="tags", name=tag) | safe }}">#{{ tag }}</a>{% if not loop.last or page.taxonomies['linguagens'] %},{% endif %}
+                    {% endfor %}
+                    {% for linguagem in page.taxonomies['linguagens'] %}
+                        <a href="{{ get_taxonomy_url(kind="linguagens", name=linguagem) | safe }}">#{{ linguagem }}</a>{% if not loop.last %},{% endif %}
+                    {% endfor %}
+                </div>
+                {{ page.content | split(pat="\n") | first | safe }}
+                <div class="post-continue">
+                    <a href="{{ page.permalink | safe }}">Continue lendo...</a>
+                </div>
+            </div>
+        {% endfor %}
+
+        <div class="paginate">
+            {% if paginator.previous %}
+                <div class="paginate-previous">
+                    <a href="{{ paginator.previous | safe }}">&lt; Postagens mais novas</a>
+                </div>
+            {% endif %}
+            {% if paginator.next %}
+                <div class="paginate-next">
+                    <a href="{{ paginator.next | safe }}">Portagens mais antigas &gt;</a>
+                </div>
+            {% endif %}
+            <div style="clear: both;"></div>
+        </div>
+    </div>
+{% endblock %}

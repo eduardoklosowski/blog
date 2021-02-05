@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+        <title>{% block title %}{{ config.title }}{% endblock %}</title>
+        <meta name="application-name" content="{{ config.title }}">
+        <meta name="apple-mobile-web-app-title" content="{{ config.title }}">
+
+        <link rel="shortcut icon" href="{{ get_url(path="favicon.webp") | safe }}">
+        <link rel="icon" sizes="188x188" href="{{ get_url(path="logo.png") | safe }}">
+        <link rel="apple-touch-icon" href="{{ get_url(path="logo.png") | safe }}">
+
+        {% if config.generate_feed %}
+            <link rel="alternate" type={% if config.feed_filename == "atom.xml" %}"application/atom+xml"{% else %}"application/rss+xml"{% endif %} title="{{ config.title }}" href="{{ get_url(path=config.feed_filename) | safe }}">
+        {% endif %}
+
+        {% block og %}{% endblock %}
+
+        <link rel="stylesheet" media="all" href="{{ get_url(path="poole.css", trailing_slash=false) | safe }}">
+        <link rel="stylesheet" media="all" href="{{ get_url(path="tema.css", trailing_slash=false) | safe }}">
+        <link rel="stylesheet" media="print" href="{{ get_url(path="print.css", trailing_slash=false) | safe }}">
+    </head>
+
+    <body>
+        <div class="sidebar">
+            <div class="container">
+                <div class="sidebar-about">
+                    <a href="{{ config.base_url | safe }}">
+                        <img class="sidebar-logo" src="{{ get_url(path="logo.png") | safe }}">
+                        <h1>{{ config.title }}</h1>
+                    </a>
+                </div>
+
+                <ul class="sidebar-nav">
+                    {% for link in config.extra.sidebar_links %}
+                        <li class="sidebar-nav-item">
+                            <a {% if link.external %}rel="noopener" target="_blank"{% endif %} href="{{ link.url | safe }}">{{ link.name }}</a>
+                        </li>
+                    {% endfor %}
+                </ul>
+            </div>
+        </div>
+
+        <div class="content container">
+            {% block content %}{% endblock %}
+        </div>
+    </body>
+</html>

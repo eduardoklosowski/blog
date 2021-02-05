@@ -2,7 +2,8 @@
 title = "Diferentes formas de expressar em código"
 
 [taxonomies]
-tags = ["codestyle", "rust"]
+tags = ["codestyle"]
+linguagens = ["rust"]
 +++
 
 Existem diferentes formas de se programar algo, mesmo quando usa-se a mesma linguagem de programação. Embora esses códigos possam ser considerados equivalentes, uma vez que apresentam o mesmo resultado, eles tem suas particularidades, podendo facilitar ou dificultar sua leitura e manutenção. Usando como exemplo a impressão dos valores de uma lista (ou array) no terminal utilizando a linguagem [Rust](https://www.rust-lang.org/pt-BR/), pretendo mostrar essas diferenças na prática, de forma que também possa ser abstraído para outras lógicas e linguagens.

@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}{{ page.title }} - {{ super() }}{% endblock %}
+
+{% block og %}
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="{{ config.title }}">
+    <meta property="og:title" content="{{ page.title }}">
+    <meta property="og:description" content="{{ page.content | split(pat="\n") | first | striptags | safe }}">
+    <meta property="og:url" content="{{ page.permalink | safe }}">
+    <meta property="og:image" content="{{ get_url(path="logo.png") | safe }}">
+    <meta property="og:locale" content="{{ page.lang | replace(from="-", to="_") }}">
+    <meta property="og:article:published_time" content="{{ page.date | date(format="%Y-%m-%d") }}">
+    <meta property="og:article:author" content="{{ config.extra.author }}">
+    {% for tag in page.taxonomies['tags'] %}
+        <meta property="og:article:tag" content="{{ tag }}">
+    {% endfor %}
+    {% for linguagem in page.taxonomies['linguagens'] %}
+        <meta property="og:article:tag" content="{{ linguagem }}">
+    {% endfor %}
+{% endblock %}
+
+{% block content %}
+    <div class="post">
+        <h1 class="post-title">{{ page.title }}</h1>
+        <div class="post-info">
+            Publicado em {{ page.date | date(format="%d-%m-%Y") }}
+            &middot;
+            {{ page.reading_time }} minutos de leitura
+        </div>
+        <div class="post-tags">
+            {% for tag in page.taxonomies['tags'] %}
+                <a href="{{ get_taxonomy_url(kind="tags", name=tag) | safe }}">#{{ tag }}</a>{% if not loop.last or page.taxonomies['linguagens'] %},{% endif %}
+            {% endfor %}
+            {% for linguagem in page.taxonomies['linguagens'] %}
+                <a href="{{ get_taxonomy_url(kind="linguagens", name=linguagem) | safe }}">#{{ linguagem }}</a>{% if not loop.last %},{% endif %}
+            {% endfor %}
+        </div>
+        {{ page.content | safe }}
+    </div>
+{% endblock %}

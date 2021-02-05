@@ -1,0 +1,22 @@
+{% extends "list.html" %}
+
+{% block og %}
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="{{ config.title }}">
+    <meta property="og:title" content="{{ config.title }}">
+    <meta property="og:description" content="Artigos diversos sobre TI.">
+    <meta property="og:url" content="{{ config.base_url | safe }}">
+    <meta property="og:image" content="{{ get_url(path="logo.png") | safe }}">
+    <meta property="og:locale" content="{{ lang | replace(from="-", to="_") }}">
+{% endblock %}
+
+{% block content %}
+    {{ super() }}
+
+    <div class="taxonomies-list">
+        Listar artigos por:
+        {% for taxonomy in config.taxonomies %}
+            <a href="{{ config.base_url | safe }}{{ taxonomy.name }}/">{{ taxonomy.name | title }}</a>{% if not loop.last %}, {% endif %}
+        {% endfor %}
+    </div>
+{% endblock %}

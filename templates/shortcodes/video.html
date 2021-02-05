@@ -1,5 +1,5 @@
 <video
-    src="{{ url }}"
+    src="{{ url | safe }}"
     controls
     style="max-width: 100%; height: {% if height %}{{ height }}{% else %}360px{% endif %}"
 ></video>
