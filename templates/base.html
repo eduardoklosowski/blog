@@ -21,6 +21,16 @@
         <link rel="stylesheet" media="all" href="{{ get_url(path="poole.css", trailing_slash=false) | safe }}">
         <link rel="stylesheet" media="all" href="{{ get_url(path="tema.css", trailing_slash=false) | safe }}">
         <link rel="stylesheet" media="print" href="{{ get_url(path="print.css", trailing_slash=false) | safe }}">
+
+        {% if config.extra.analytics_gtag %}
+            <script async src="https://www.googletagmanager.com/gtag/js?id={{ config.extra.analytics_gtag }}"></script>
+            <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', '{{ config.extra.analytics_gtag }}');
+            </script>
+        {% endif %}
     </head>
 
     <body>
