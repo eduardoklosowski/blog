@@ -46,7 +46,13 @@
                 <ul class="sidebar-nav">
                     {% for link in config.extra.sidebar_links %}
                         <li class="sidebar-nav-item">
-                            <a {% if link.external %}rel="noopener" target="_blank"{% endif %} href="{{ link.url | safe }}">{{ link.name }}</a>
+                            <a {% if link.external %}rel="noopener" target="_blank"{% endif %} href="{{ link.url | safe }}">
+                                {% if link.icon is defined %}
+                                    <img src="{{ get_url(path=link.icon) | safe }}" alt="{{ link.name }}">
+                                {% else %}
+                                    <span>{{ link.name }}</span>
+                                {% endif %}
+                            </a>
                         </li>
                     {% endfor %}
                 </ul>

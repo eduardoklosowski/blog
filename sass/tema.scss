@@ -93,13 +93,29 @@ html {
 }
 
 .sidebar-nav {
-    margin-bottom: 1rem;
+    margin: .5rem 0;
     padding: 0;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    align-items: center;
 }
 
 .sidebar-nav-item {
-    display: block;
+    list-style: none;
+    flex: 0 0 1.6rem;
+    margin: .5rem 0;
     line-height: 1.75;
+
+    img {
+        max-width: 1.6rem;
+        max-height: 1.6rem;
+        margin-bottom: 0;
+    }
+
+    span {
+        margin: 0 .5rem;
+    }
 }
 
 
