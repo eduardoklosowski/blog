@@ -33,6 +33,7 @@ sidebar_links = [
     {name = "Twitter", url = "https://twitter.com/eduklosowski", external = true},
     {name = "Twitch", url = "https://twitch.tv/eduardoklosowski", external = true},
     {name = "asciinema", url = "https://asciinema.org/~eduardoklosowski", external = true},
+    {name = "DEV", url = "https://dev.to/eduardoklosowski", external = true},
 ]
 
 analytics_gtag = "G-15ZW1NJTDE"
