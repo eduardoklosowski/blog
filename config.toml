@@ -36,4 +36,5 @@ sidebar_links = [
     {name = "DEV", icon = "icons/dev.svg", url = "https://dev.to/eduardoklosowski", external = true},
 ]
 
+analytics_cloudflare = "73939fe3b7984f859c0427bc6c693927"
 analytics_gtag = "G-15ZW1NJTDE"

@@ -22,6 +22,9 @@
         <link rel="stylesheet" media="all" href="{{ get_url(path="tema.css", trailing_slash=false) | safe }}">
         <link rel="stylesheet" media="print" href="{{ get_url(path="print.css", trailing_slash=false) | safe }}">
 
+        {% if config.extra.analytics_cloudflare %}
+            <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "{{ config.extra.analytics_cloudflare }}"}'></script>
+        {% endif %}
         {% if config.extra.analytics_gtag %}
             <script async src="https://www.googletagmanager.com/gtag/js?id={{ config.extra.analytics_gtag }}"></script>
             <script>
