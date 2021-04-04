@@ -1,6 +1,6 @@
 {% extends "taxonomy_single.html" %}
 
 {% block content %}
-    {% set pages = paginator.pages %}
+    {% set pages = term.pages | reverse %}
     {{ super() }}
 {% endblock %}

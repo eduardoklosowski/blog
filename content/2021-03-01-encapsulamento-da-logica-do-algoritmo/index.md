@@ -2,6 +2,7 @@
 title = "Encapsulamento da lógica do algoritmo"
 
 [taxonomies]
+series = []
 tags = ["Code Style", "Orientação a Objetos"]
 linguagens = ["Python"]
 +++

@@ -2,6 +2,7 @@
 title = "Diferentes formas de expressar em código"
 
 [taxonomies]
+series = []
 tags = ["Code Style"]
 linguagens = ["Rust"]
 +++

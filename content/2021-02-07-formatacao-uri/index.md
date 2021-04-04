@@ -2,6 +2,7 @@
 title = "Formatação para o URI"
 
 [taxonomies]
+series = []
 tags = ["Processos"]
 linguagens = ["C", "JavaScript"]
 +++

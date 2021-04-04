@@ -2,6 +2,7 @@
 title = "Otimizando o algoritmo passo a passo"
 
 [taxonomies]
+series = []
 tags = ["Otimização"]
 linguagens = ["PHP"]
 +++

@@ -5,6 +5,7 @@ title = "Blog Eduardo Klosowski"
 default_language = "pt-BR"
 
 taxonomies = [
+    {name = "series"},
     {name = "tags", paginate_by = 10},
     {name = "linguagens", paginate_by = 10},
 ]
@@ -36,7 +37,7 @@ sidebar_links = [
     {name = "DEV", icon = "icons/dev.svg", url = "https://dev.to/eduardoklosowski", external = true},
 ]
 
-taxonomies_names = {tags = "Tags", linguagens = "Linguagens de Programação"}
+taxonomies_names = {series = "Séries", tags = "Tags", linguagens = "Linguagens de Programação"}
 
 analytics_cloudflare = "73939fe3b7984f859c0427bc6c693927"
 analytics_gtag = "G-15ZW1NJTDE"

@@ -2,6 +2,7 @@
 title = "Como roubar no random?"
 
 [taxonomies]
+series = []
 tags = ["Metaprogramação", "Segurança"]
 linguagens = ["Python"]
 +++

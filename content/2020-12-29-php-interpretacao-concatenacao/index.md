@@ -2,6 +2,7 @@
 title = "PHP: Interpretação de variáveis em string ou concatenação?"
 
 [taxonomies]
+series = []
 tags = ["Desempenho"]
 linguagens = ["PHP"]
 +++

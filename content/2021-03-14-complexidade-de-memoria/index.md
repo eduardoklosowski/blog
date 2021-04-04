@@ -2,6 +2,7 @@
 title = "Complexidade do algoritmo em relação à memória"
 
 [taxonomies]
+series = []
 tags = ["Desempenho", "Otimização", "Code Style"]
 linguagens = ["Java"]
 +++

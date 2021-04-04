@@ -2,7 +2,7 @@
 
 {% block content %}
     <div class="posts">
-        {% for page in paginator.pages %}
+        {% for page in pages %}
             <div class="post">
                 <h1 class="post-title"><a href="{{ page.permalink | safe }}">{{ page.title }}</a></h1>
                 <div class="post-info">
@@ -10,6 +10,14 @@
                     &middot;
                     {{ page.reading_time }} minutos de leitura
                 </div>
+                {% if page.taxonomies['series'] %}
+                    <div class="post-serie">
+                        Série
+                        {% for serie in page.taxonomies['series'] %}
+                            <a href="{{ get_taxonomy_url(kind="series", name=serie) | safe }}">{{ serie }}</a>{% if not loop.last %},{% endif %}
+                        {% endfor %}
+                    </div>
+                {% endif %}
                 <div class="post-tags">
                     {% for tag in page.taxonomies['tags'] %}
                         <a href="{{ get_taxonomy_url(kind="tags", name=tag) | safe }}">#{{ tag }}</a>{% if not loop.last or page.taxonomies['linguagens'] %},{% endif %}
@@ -25,18 +33,20 @@
             </div>
         {% endfor %}
 
-        <div class="paginate">
-            {% if paginator.previous %}
-                <div class="paginate-previous">
-                    <a href="{{ paginator.previous | safe }}">&lt; Postagens mais novas</a>
-                </div>
-            {% endif %}
-            {% if paginator.next %}
-                <div class="paginate-next">
-                    <a href="{{ paginator.next | safe }}">Portagens mais antigas &gt;</a>
-                </div>
-            {% endif %}
-            <div style="clear: both;"></div>
-        </div>
+        {% if paginator is defined %}
+            <div class="paginate">
+                {% if paginator.previous %}
+                    <div class="paginate-previous">
+                        <a href="{{ paginator.previous | safe }}">&lt; Postagens mais novas</a>
+                    </div>
+                {% endif %}
+                {% if paginator.next %}
+                    <div class="paginate-next">
+                        <a href="{{ paginator.next | safe }}">Portagens mais antigas &gt;</a>
+                    </div>
+                {% endif %}
+                <div style="clear: both;"></div>
+            </div>
+        {% endif %}
     </div>
 {% endblock %}

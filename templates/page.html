@@ -12,6 +12,9 @@
     <meta property="og:locale" content="{{ page.lang | replace(from="-", to="_") }}">
     <meta property="og:article:published_time" content="{{ page.date | date(format="%Y-%m-%d") }}">
     <meta property="og:article:author" content="{{ config.extra.author }}">
+    {% for serie in page.taxonomies['series'] %}
+        <meta property="og:article:tag" content="{{ serie }}">
+    {% endfor %}
     {% for tag in page.taxonomies['tags'] %}
         <meta property="og:article:tag" content="{{ tag }}">
     {% endfor %}
@@ -28,6 +31,14 @@
             &middot;
             {{ page.reading_time }} minutos de leitura
         </div>
+        {% if page.taxonomies['series'] %}
+            <div class="post-serie">
+                Série
+                {% for serie in page.taxonomies['series'] %}
+                    <a href="{{ get_taxonomy_url(kind="series", name=serie) | safe }}">{{ serie }}</a>{% if not loop.last %},{% endif %}
+                {% endfor %}
+            </div>
+        {% endif %}
         <div class="post-tags">
             {% for tag in page.taxonomies['tags'] %}
                 <a href="{{ get_taxonomy_url(kind="tags", name=tag) | safe }}">#{{ tag }}</a>{% if not loop.last or page.taxonomies['linguagens'] %},{% endif %}

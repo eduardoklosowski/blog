@@ -11,6 +11,7 @@
 {% endblock %}
 
 {% block content %}
+    {% set pages = paginator.pages %}
     {{ super() }}
 
     <div class="taxonomies-list">

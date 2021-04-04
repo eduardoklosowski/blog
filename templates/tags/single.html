@@ -1,1 +1,6 @@
 {% extends "taxonomy_single.html" %}
+
+{% block content %}
+    {% set pages = paginator.pages %}
+    {{ super() }}
+{% endblock %}

@@ -2,6 +2,7 @@
 title = "Funções in place ou cópia de valor"
 
 [taxonomies]
+series = []
 tags = ["Code Style"]
 linguagens = ["Python"]
 +++
