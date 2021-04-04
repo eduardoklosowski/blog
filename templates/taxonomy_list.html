@@ -1,12 +1,12 @@
 {% extends "base.html" %}
 
-{% block title %}{{ taxonomy.name | title }} - {{ super() }}{% endblock %}
+{% block title %}{{ config.extra.taxonomies_names | get(key=taxonomy.name) }} - {{ super() }}{% endblock %}
 
 {% block og %}
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="{{ config.title }}">
-    <meta property="og:title" content="{{ taxonomy.name | title }}">
-    <meta property="og:description" content="Procure artigos por {{ taxonomy.name }}.">
+    <meta property="og:title" content="{{ config.extra.taxonomies_names | get(key=taxonomy.name) }}">
+    <meta property="og:description" content="Procure artigos por {{ config.extra.taxonomies_names | get(key=taxonomy.name) | lower }}.">
     <meta property="og:url" content="{{ current_url | safe }}">
     <meta property="og:image" content="{{ get_url(path="logo.png") | safe }}">
     <meta property="og:locale" content="{{ lang | replace(from="-", to="_") }}">
@@ -14,7 +14,7 @@
 
 {% block content %}
     <div class="taxonomy">
-        <h1>{{ taxonomy.name | title }}</h1>
+        <h1>{{ config.extra.taxonomies_names | get(key=taxonomy.name) }}</h1>
         <ul>
             {% for term in terms %}
                 <li>

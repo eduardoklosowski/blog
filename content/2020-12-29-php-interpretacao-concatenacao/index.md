@@ -2,8 +2,8 @@
 title = "PHP: Interpretação de variáveis em string ou concatenação?"
 
 [taxonomies]
-tags = ["desempenho"]
-linguagens = ["php"]
+tags = ["Desempenho"]
+linguagens = ["PHP"]
 +++
 
 Na live do [pokemaobr](https://www.twitch.tv/pokemaobr), durante o desenvolvimento de uma funcionalidade do bot, ocorreu uma discussão a respeito de usar [interpretação de variáveis dentro da string](https://www.php.net/manual/pt_BR/language.types.string.php#language.types.string.parsing) ou concatenar, tanto em relação a desempenho, quanto legibilidade. Eu fiquei curioso em relação ao desempenho, então resolvi fazer alguns testes estatísticos para verificar isso.

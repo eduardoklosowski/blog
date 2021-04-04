@@ -2,8 +2,8 @@
 title = "Funções in place ou cópia de valor"
 
 [taxonomies]
-tags = ["codestyle"]
-linguagens = ["python"]
+tags = ["Code Style"]
+linguagens = ["Python"]
 +++
 
 Eventualmente observo dificuldades de algumas pessoas em usar corretamente alguma função, seja porque a função deveria ser executada isoladamente, e utilizado a própria variável que foi passada como argumento posteriormente, seja porque deveria se atribuir o retorno da função a alguma variável, e utilizar essa nova variável. No Python, essa diferença pode ser observada nos métodos das listas `sort` e `reverse` para as funções `sorted` e `reversed`, que são implementadas com padrões diferentes, *in place* e cópia de valor respectivamente. Assim pretendo discutir esses dois padrões de funções, comentando qual a diferença e o melhor caso de aplicação de cada padrão.

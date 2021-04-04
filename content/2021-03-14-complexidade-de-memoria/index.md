@@ -2,8 +2,8 @@
 title = "Complexidade do algoritmo em relação à memória"
 
 [taxonomies]
-tags = ["desempenho", "otimização", "codestyle"]
-linguagens = ["java"]
+tags = ["Desempenho", "Otimização", "Code Style"]
+linguagens = ["Java"]
 +++
 
 Recentemente o [ProfBrunoLopes](https://www.twitch.tv/profbrunolopes) fez uma live com a [morgiovanelli](https://www.twitch.tv/morgiovanelli) falando sobre a complexidade dos algoritmos, onde era discutido, de forma matemática, como identificar qual algoritmo era mais eficiente dado o crescimento de seu tempo de execução em relação ao tamanho da entrada. Nesse texto, quero expandir essa análise para outros aspectos, como o uso de memória.

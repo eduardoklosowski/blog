@@ -16,7 +16,7 @@
     <div class="taxonomies-list">
         Listar artigos por:
         {% for taxonomy in config.taxonomies %}
-            <a href="{{ config.base_url | safe }}{{ taxonomy.name }}/">{{ taxonomy.name | title }}</a>{% if not loop.last %}, {% endif %}
+            <a href="{{ config.base_url | safe }}{{ taxonomy.name }}/">{{ config.extra.taxonomies_names | get(key=taxonomy.name) }}</a>{% if not loop.last %}, {% endif %}
         {% endfor %}
     </div>
 {% endblock %}

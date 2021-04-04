@@ -1,12 +1,12 @@
 {% extends "list.html" %}
 
-{% block title %}{{ taxonomy.name | title }} - {{ term.name }} - {{ super() }}{% endblock %}
+{% block title %}{{ config.extra.taxonomies_names | get(key=taxonomy.name) }} - {{ term.name }} - {{ super() }}{% endblock %}
 
 {% block og %}
     <meta property="og:type" content="website">
     <meta property="og:site_name" content="{{ config.title }}">
-    <meta property="og:title" content="{{ taxonomy.name | title }} - {{ term.name }}">
-    <meta property="og:description" content="Artigos sobre {{ term.name }}.">
+    <meta property="og:title" content="{{ config.extra.taxonomies_names | get(key=taxonomy.name) }} - {{ term.name }}">
+    <meta property="og:description" content="Artigos sobre {{ term.name | lower }}.">
     <meta property="og:url" content="{{ current_url | safe }}">
     <meta property="og:image" content="{{ get_url(path="logo.png") | safe }}">
     <meta property="og:locale" content="{{ lang | replace(from="-", to="_") }}">
@@ -14,7 +14,7 @@
 
 {% block content %}
     <h1 class="session-title">
-        <a href="{{ config.base_url | safe }}{{ taxonomy.name }}/">{{ taxonomy.name | title }}</a>
+        <a href="{{ config.base_url | safe }}{{ taxonomy.name }}/">{{ config.extra.taxonomies_names | get(key=taxonomy.name) }}</a>
         ::
         {{ term.name }}
     </h1>

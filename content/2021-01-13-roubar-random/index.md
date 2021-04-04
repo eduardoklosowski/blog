@@ -2,8 +2,8 @@
 title = "Como roubar no random?"
 
 [taxonomies]
-tags = ["metaprogramação", "segurança"]
-linguagens = ["python"]
+tags = ["Metaprogramação", "Segurança"]
+linguagens = ["Python"]
 +++
 
 Recentemente o [vitthin](https://www.twitch.tv/vitthin) implementou o comando `!amizade <username>` em seu bot, que recebe o nome de outro usuário como parâmetro, respondendo no chat uma porcentagem randômica para qual seria sua amizade com aquela pessoa, apenas por diversão (e algumas brigas também, quem sabe?). Porém os resultados estavam questionáveis, principalmente se não existiria algum `if` no código para favorecer ou desfavorecer determinados usuários.

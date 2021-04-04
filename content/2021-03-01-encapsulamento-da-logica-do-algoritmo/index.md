@@ -2,8 +2,8 @@
 title = "Encapsulamento da lógica do algoritmo"
 
 [taxonomies]
-tags = ["codestyle", "orientação a objetos"]
-linguagens = ["python"]
+tags = ["Code Style", "Orientação a Objetos"]
+linguagens = ["Python"]
 +++
 
 Muitas listas de exercícios de lógica de programação pedem em algum momento que um valor seja lido do teclado, e caso esse valor seja inválido, deve-se avisar, e repetir a leitura até que um valor válido seja informado. Utilizando a ideia de [otimização do algoritmo passo a passo](@/2021-02-03-otimizando-o-algoritmo/index.md), começando com uma solução simples, pretendo estudar como reduzir a duplicação de código alterando o algoritmo, encapsulando a lógica em funções, e encapsulando em classes.

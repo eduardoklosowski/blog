@@ -2,7 +2,7 @@
 title = "Configuração básica do Git e GitHub"
 
 [taxonomies]
-tags = ["git", "github"]
+tags = ["Git", "GitHub"]
 linguagens = []
 +++
 

@@ -2,8 +2,8 @@
 title = "Formatação para o URI"
 
 [taxonomies]
-tags = ["processos"]
-linguagens = ["c", "javascript"]
+tags = ["Processos"]
+linguagens = ["C", "JavaScript"]
 +++
 
 A [levxyca](https://www.twitch.tv/levxyca) estava resolvendo exercícios do [URI](https://www.urionlinejudge.com.br/) em live, e teve alguma dificuldade, não com o exercício, mas com a leitura da entrada e a formatação da saída. Então resolvi descrever um pouco esse processo, que pode ajudar tanto quem for resolver os desafios do URI, como também quem deseja entender mais sobre o funcionamento dos processos em si.
