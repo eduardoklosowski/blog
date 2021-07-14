@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+        <title>Funções in place ou cópia de valor - Blog Eduardo Klosowski</title>
+        <meta name="application-name" content="Blog Eduardo Klosowski">
+        <meta name="apple-mobile-web-app-title" content="Blog Eduardo Klosowski">
+
+        <link rel="shortcut icon" href="https://eduardoklosowski.github.io/blog/favicon.webp">
+        <link rel="icon" sizes="188x188" href="https://eduardoklosowski.github.io/blog/logo.png">
+        <link rel="apple-touch-icon" href="https://eduardoklosowski.github.io/blog/logo.png">
+
+        
+            <link rel="alternate" type="application/atom+xml" title="Blog Eduardo Klosowski" href="https://eduardoklosowski.github.io/blog/atom.xml">
+        
+
+        
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Blog Eduardo Klosowski">
+    <meta property="og:title" content="Funções in place ou cópia de valor">
+    <meta property="og:description" content="Eventualmente observo dificuldades de algumas pessoas em usar corretamente alguma função, seja porque a função deveria ser executada isoladamente, e utilizado a própria variável que foi passada como argumento posteriormente, seja porque deveria se atribuir o retorno da função a alguma variável, e utilizar essa nova variável. No Python, essa diferença pode ser observada nos métodos das listas sort e reverse para as funções sorted e reversed, que são implementadas com padrões diferentes, in place e cópia de valor respectivamente. Assim pretendo discutir esses dois padrões de funções, comentando qual a diferença e o melhor caso de aplicação de cada padrão.">
+    <meta property="og:url" content="https://eduardoklosowski.github.io/blog/funcao-inplace-ou-copia-de-valor/">
+    <meta property="og:image" content="https://eduardoklosowski.github.io/blog/logo.png">
+    <meta property="og:locale" content="pt_BR">
+    <meta property="og:article:published_time" content="2021-03-27">
+    <meta property="og:article:author" content="Eduardo Klosowski">
+    
+    
+        <meta property="og:article:tag" content="Code Style">
+    
+    
+        <meta property="og:article:tag" content="Python">
+    
+
+
+        <link rel="stylesheet" media="all" href="https://eduardoklosowski.github.io/blog/poole.css">
+        <link rel="stylesheet" media="all" href="https://eduardoklosowski.github.io/blog/tema.css">
+        <link rel="stylesheet" media="print" href="https://eduardoklosowski.github.io/blog/print.css">
+
+        
+            <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "73939fe3b7984f859c0427bc6c693927"}'></script>
+        
+        
+            <script async src="https://www.googletagmanager.com/gtag/js?id=G-15ZW1NJTDE"></script>
+            <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', 'G-15ZW1NJTDE');
+            </script>
+        
+    </head>
+
+    <body>
+        <div class="sidebar">
+            <div class="container">
+                <div class="sidebar-about">
+                    <a href="https://eduardoklosowski.github.io/blog/">
+                        <img class="sidebar-logo" src="https://eduardoklosowski.github.io/blog/logo.png">
+                        <h1>Blog Eduardo Klosowski</h1>
+                    </a>
+                </div>
+
+                <ul class="sidebar-nav">
+                    
+                        <li class="sidebar-nav-item">
+                            <a rel="noopener" target="_blank" href="https://github.com/eduardoklosowski">
+                                
+                                    <img src="https://eduardoklosowski.github.io/blog/icons/github.svg" alt="GitHub">
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="sidebar-nav-item">
+                            <a rel="noopener" target="_blank" href="https://twitter.com/eduklosowski">
+                                
+                                    <img src="https://eduardoklosowski.github.io/blog/icons/twitter.svg" alt="Twitter">
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="sidebar-nav-item">
+                            <a rel="noopener" target="_blank" href="https://twitch.tv/eduardoklosowski">
+                                
+                                    <img src="https://eduardoklosowski.github.io/blog/icons/twitch.svg" alt="Twitch">
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="sidebar-nav-item">
+                            <a rel="noopener" target="_blank" href="https://asciinema.org/~eduardoklosowski">
+                                
+                                    <img src="https://eduardoklosowski.github.io/blog/icons/asciinema.svg" alt="asciinema">
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="sidebar-nav-item">
+                            <a rel="noopener" target="_blank" href="https://dev.to/eduardoklosowski">
+                                
+                                    <img src="https://eduardoklosowski.github.io/blog/icons/dev.svg" alt="DEV">
+                                
+                            </a>
+                        </li>
+                    
+                </ul>
+            </div>
+        </div>
+
+        <div class="content container">
+            
+    <div class="post">
+        <h1 class="post-title">Funções in place ou cópia de valor</h1>
+        <div class="post-info">
+            Publicado em 27-03-2021
+            &middot;
+            6 minutos de leitura
+        </div>
+        
+        <div class="post-tags">
+            
+                <a href="https://eduardoklosowski.github.io/blog/tags/code-style/">#Code Style</a>,
+            
+            
+                <a href="https://eduardoklosowski.github.io/blog/linguagens/python/">#Python</a>
+            
+        </div>
+        <p>Eventualmente observo dificuldades de algumas pessoas em usar corretamente alguma função, seja porque a função deveria ser executada isoladamente, e utilizado a própria variável que foi passada como argumento posteriormente, seja porque deveria se atribuir o retorno da função a alguma variável, e utilizar essa nova variável. No Python, essa diferença pode ser observada nos métodos das listas <code>sort</code> e <code>reverse</code> para as funções <code>sorted</code> e <code>reversed</code>, que são implementadas com padrões diferentes, <em>in place</em> e cópia de valor respectivamente. Assim pretendo discutir esses dois padrões de funções, comentando qual a diferença e o melhor caso de aplicação de cada padrão.</p>
+<h2 id="funcao-de-exemplo">Função de exemplo</h2>
+<p>Para demonstrar como esses padrões funcionam, será implementado uma função que recebe uma lista e calcula o dobro dos valores dessa lista. Exemplo:</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-python" data-lang="python"><span style="color:#cccece;">entrada </span><span style="color:#5fb3b3;">= [</span><span style="color:#f99157;">5</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">2</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">8</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">6</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">4</span><span style="color:#5fb3b3;">]
+
+</span><span style="color:#5f6364;"># Execução da função
+
+</span><span style="color:#cccece;">resultado </span><span style="color:#5fb3b3;">= [</span><span style="color:#f99157;">10</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">4</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">16</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">12</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">8</span><span style="color:#5fb3b3;">]
+</span></code></pre><h3 id="funcao-com-in-place">Função com in place</h3>
+<p>A ideia do padrão <em>in place</em> é alterar a própria variável recebida pela função (ou o próprio objeto, caso esteja lidando com orientação a objetos). Neste caso, bastaria calcular o dobro do valor de cada posição da lista, e sobrescrever a posição com seu resultado. Exemplo:</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-python" data-lang="python"><span style="color:#c594c5;">from </span><span style="color:#cccece;">typing </span><span style="color:#c594c5;">import </span><span style="color:#cccece;">List
+
+
+</span><span style="color:#c594c5;">def </span><span style="color:#6699cc;">dobro_inplace</span><span style="color:#5fb3b3;">(</span><span style="color:#f99157;">lista</span><span style="color:#5fb3b3;">: </span><span style="color:#cccece;">List</span><span style="color:#5fb3b3;">[</span><span style="color:#fac863;">int</span><span style="color:#5fb3b3;">]) -&gt; </span><span style="color:#f99157;">None</span><span style="color:#5fb3b3;">:
+    </span><span style="color:#c594c5;">for </span><span style="color:#cccece;">i </span><span style="color:#c594c5;">in </span><span style="color:#6699cc;">range</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">len</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">lista</span><span style="color:#5fb3b3;">)):
+        </span><span style="color:#cccece;">lista</span><span style="color:#5fb3b3;">[</span><span style="color:#cccece;">i</span><span style="color:#5fb3b3;">] = </span><span style="color:#f99157;">2 </span><span style="color:#5fb3b3;">* </span><span style="color:#cccece;">lista</span><span style="color:#5fb3b3;">[</span><span style="color:#cccece;">i</span><span style="color:#5fb3b3;">]
+
+
+</span><span style="color:#cccece;">valores </span><span style="color:#5fb3b3;">= [</span><span style="color:#f99157;">5</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">2</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">8</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">6</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">4</span><span style="color:#5fb3b3;">]
+</span><span style="color:#cccece;">retorno </span><span style="color:#5fb3b3;">= </span><span style="color:#6699cc;">dobro_inplace</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">valores</span><span style="color:#5fb3b3;">)
+
+</span><span style="color:#6699cc;">print</span><span style="color:#5fb3b3;">(</span><span style="color:#c594c5;">f</span><span style="color:#5fb3b3;">&#39;</span><span style="color:#99c794;">Variável: valores | Tipo: </span><span style="color:#5fb3b3;">{</span><span style="color:#6699cc;">type</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">valores</span><span style="color:#5fb3b3;">)}</span><span style="color:#99c794;"> | Valor: </span><span style="color:#5fb3b3;">{</span><span style="color:#6699cc;">valores</span><span style="color:#5fb3b3;">}&#39;)
+</span><span style="color:#6699cc;">print</span><span style="color:#5fb3b3;">(</span><span style="color:#c594c5;">f</span><span style="color:#5fb3b3;">&#39;</span><span style="color:#99c794;">Variável: retorno | Tipo: </span><span style="color:#5fb3b3;">{</span><span style="color:#6699cc;">type</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">retorno</span><span style="color:#5fb3b3;">)}</span><span style="color:#99c794;"> | Valor: </span><span style="color:#5fb3b3;">{</span><span style="color:#6699cc;">retorno</span><span style="color:#5fb3b3;">}&#39;)
+</span></code></pre>
+<p>Resultado da execução:</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-txt" data-lang="txt"><span style="color:#cccece;">Variável: valores | Tipo: &lt;class &#39;list&#39;&gt; | Valor: [10, 4, 16, 12, 8]
+Variável: retorno | Tipo: &lt;class &#39;NoneType&#39;&gt; | Valor: None
+</span></code></pre>
+<p>Com essa execução é possível observar que os valores da lista foram alterados, e que o retorno da função é nulo (<code>None</code>), ou seja, a função alterou a própria lista passada como argumento. Outro ponto importante a ser observado é a assinatura da função (tipo dos argumentos e do retorno da função), que recebe uma lista de inteiros e não tem retorno ou é nulo (<code>None</code>). Dessa forma embora seja possível chamar essa função diretamente quando está se informando os argumentos de outra função, como <code>print(dobro_inplace(valores))</code>, a função <code>print</code> receberia <code>None</code> e não a lista como argumento.</p>
+<h3 id="funcao-com-copia-de-valor">Função com cópia de valor</h3>
+<p>A ideia do padrão cópia de valor é criar uma cópia do valor passado como argumento e retornar essa cópia, sem alterar a variável recebida (ou criando um novo objeto, no caso de orientação a objetos). Neste caso, é necessário criar uma nova lista e adicionar nela os valores calculados. Exemplo:</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-python" data-lang="python"><span style="color:#c594c5;">from </span><span style="color:#cccece;">typing </span><span style="color:#c594c5;">import </span><span style="color:#cccece;">List
+
+
+</span><span style="color:#c594c5;">def </span><span style="color:#6699cc;">dobro_copia</span><span style="color:#5fb3b3;">(</span><span style="color:#f99157;">lista</span><span style="color:#5fb3b3;">: </span><span style="color:#cccece;">List</span><span style="color:#5fb3b3;">[</span><span style="color:#fac863;">int</span><span style="color:#5fb3b3;">]) -&gt; </span><span style="color:#cccece;">List</span><span style="color:#5fb3b3;">[</span><span style="color:#fac863;">int</span><span style="color:#5fb3b3;">]:
+    </span><span style="color:#cccece;">nova_lista </span><span style="color:#5fb3b3;">= []
+
+    </span><span style="color:#c594c5;">for </span><span style="color:#cccece;">i </span><span style="color:#c594c5;">in </span><span style="color:#6699cc;">range</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">len</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">lista</span><span style="color:#5fb3b3;">)):
+        </span><span style="color:#6699cc;">nova_lista</span><span style="color:#5fb3b3;">.</span><span style="color:#6699cc;">append</span><span style="color:#5fb3b3;">(</span><span style="color:#f99157;">2 </span><span style="color:#5fb3b3;">* </span><span style="color:#6699cc;">lista</span><span style="color:#5fb3b3;">[</span><span style="color:#6699cc;">i</span><span style="color:#5fb3b3;">])
+
+    </span><span style="color:#c594c5;">return </span><span style="color:#cccece;">nova_lista
+
+
+valores </span><span style="color:#5fb3b3;">= [</span><span style="color:#f99157;">5</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">2</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">8</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">6</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">4</span><span style="color:#5fb3b3;">]
+</span><span style="color:#cccece;">retorno </span><span style="color:#5fb3b3;">= </span><span style="color:#6699cc;">dobro_copia</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">valores</span><span style="color:#5fb3b3;">)
+
+</span><span style="color:#6699cc;">print</span><span style="color:#5fb3b3;">(</span><span style="color:#c594c5;">f</span><span style="color:#5fb3b3;">&#39;</span><span style="color:#99c794;">Variável: valores | Tipo: </span><span style="color:#5fb3b3;">{</span><span style="color:#6699cc;">type</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">valores</span><span style="color:#5fb3b3;">)}</span><span style="color:#99c794;"> | Valor: </span><span style="color:#5fb3b3;">{</span><span style="color:#6699cc;">valores</span><span style="color:#5fb3b3;">}&#39;)
+</span><span style="color:#6699cc;">print</span><span style="color:#5fb3b3;">(</span><span style="color:#c594c5;">f</span><span style="color:#5fb3b3;">&#39;</span><span style="color:#99c794;">Variável: retorno | Tipo: </span><span style="color:#5fb3b3;">{</span><span style="color:#6699cc;">type</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">retorno</span><span style="color:#5fb3b3;">)}</span><span style="color:#99c794;"> | Valor: </span><span style="color:#5fb3b3;">{</span><span style="color:#6699cc;">retorno</span><span style="color:#5fb3b3;">}&#39;)
+</span></code></pre>
+<p>Resultado da execução:</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-txt" data-lang="txt"><span style="color:#cccece;">Variável: valores | Tipo: &lt;class &#39;list&#39;&gt; | Valor: [5, 2, 8, 6, 4]
+Variável: retorno | Tipo: &lt;class &#39;list&#39;&gt; | Valor: [10, 4, 16, 12, 8]
+</span></code></pre>
+<p>Com essa execução é possível observar que a variável <code>valores</code> continua com os valores que tinha antes da execução da função, e a variável retorno apresenta uma lista com os dobros, ou seja, a função não altera a lista passada como argumento e retorna uma nova lista com os valores calculados. Observado a assinatura da função, ela recebe uma lista de inteiros e retorna uma lista de inteiros. Isso permite chamar essa função diretamente nos argumentos para outra função, como <code>print(dobro_copia(valores))</code>, nesse caso a função <code>print</code> receberia a lista de dobros como argumento. Porém caso o retorno da função não seja armazenado, parecerá que a função não fez nada, ou não funcionou. Então em alguns casos, quando o valor anterior não é mais necessário, pode-se reatribuir o retorno da função a própria variável passada como argumento:</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-python" data-lang="python"><span style="color:#cccece;">valores </span><span style="color:#5fb3b3;">= </span><span style="color:#6699cc;">dobro_copia</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">valores</span><span style="color:#5fb3b3;">)
+</span></code></pre><h3 id="funcao-hibrida">Função híbrida</h3>
+<p>Ainda é possível mesclar os dois padrões de função, alterando o valor passado e retornando-o. Exemplo:</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-python" data-lang="python"><span style="color:#c594c5;">from </span><span style="color:#cccece;">typing </span><span style="color:#c594c5;">import </span><span style="color:#cccece;">List
+
+
+</span><span style="color:#c594c5;">def </span><span style="color:#6699cc;">dobro_hibrido</span><span style="color:#5fb3b3;">(</span><span style="color:#f99157;">lista</span><span style="color:#5fb3b3;">: </span><span style="color:#cccece;">List</span><span style="color:#5fb3b3;">[</span><span style="color:#fac863;">int</span><span style="color:#5fb3b3;">]) -&gt; </span><span style="color:#cccece;">List</span><span style="color:#5fb3b3;">[</span><span style="color:#fac863;">int</span><span style="color:#5fb3b3;">]:
+    </span><span style="color:#c594c5;">for </span><span style="color:#cccece;">i </span><span style="color:#c594c5;">in </span><span style="color:#6699cc;">range</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">len</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">lista</span><span style="color:#5fb3b3;">)):
+        </span><span style="color:#cccece;">lista</span><span style="color:#5fb3b3;">[</span><span style="color:#cccece;">i</span><span style="color:#5fb3b3;">] = </span><span style="color:#f99157;">2 </span><span style="color:#5fb3b3;">* </span><span style="color:#cccece;">lista</span><span style="color:#5fb3b3;">[</span><span style="color:#cccece;">i</span><span style="color:#5fb3b3;">]
+
+    </span><span style="color:#c594c5;">return </span><span style="color:#cccece;">lista
+
+
+valores </span><span style="color:#5fb3b3;">= [</span><span style="color:#f99157;">5</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">2</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">8</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">6</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">4</span><span style="color:#5fb3b3;">]
+</span><span style="color:#cccece;">retorno </span><span style="color:#5fb3b3;">= </span><span style="color:#6699cc;">dobro_hibrido</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">valores</span><span style="color:#5fb3b3;">)
+
+</span><span style="color:#6699cc;">print</span><span style="color:#5fb3b3;">(</span><span style="color:#c594c5;">f</span><span style="color:#5fb3b3;">&#39;</span><span style="color:#99c794;">Variável: valores | Tipo: </span><span style="color:#5fb3b3;">{</span><span style="color:#6699cc;">type</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">valores</span><span style="color:#5fb3b3;">)}</span><span style="color:#99c794;"> | Valor: </span><span style="color:#5fb3b3;">{</span><span style="color:#6699cc;">valores</span><span style="color:#5fb3b3;">}&#39;)
+</span><span style="color:#6699cc;">print</span><span style="color:#5fb3b3;">(</span><span style="color:#c594c5;">f</span><span style="color:#5fb3b3;">&#39;</span><span style="color:#99c794;">Variável: retorno | Tipo: </span><span style="color:#5fb3b3;">{</span><span style="color:#6699cc;">type</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">retorno</span><span style="color:#5fb3b3;">)}</span><span style="color:#99c794;"> | Valor: </span><span style="color:#5fb3b3;">{</span><span style="color:#6699cc;">retorno</span><span style="color:#5fb3b3;">}&#39;)
+</span></code></pre>
+<p>Resultado da execução:</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-txt" data-lang="txt"><span style="color:#cccece;">Variável: valores | Tipo: &lt;class &#39;list&#39;&gt; | Valor: [10, 4, 16, 12, 8]
+Variável: retorno | Tipo: &lt;class &#39;list&#39;&gt; | Valor: [10, 4, 16, 12, 8]
+</span></code></pre>
+<p>Nesse caso, pode-se apenas chamar a função, como também utilizá-la nos argumentos de outras funções. Porém para se ter os valores originais, deve-se fazer uma cópia manualmente antes de executar a função.</p>
+<h2 id="exemplo-na-biblioteca-padrao">Exemplo na biblioteca padrão</h2>
+<p>Na biblioteca padrão do Python, existem os métodos <code>sort</code> e <code>reverse</code> que seguem o padrão <em>in place</em>, e as funções <code>sorted</code> e <code>reversed</code> que seguem o padrão cópia de valor, podendo ser utilizados para ordenar e inverter os valores de uma lista, por exemplo. Quando não é mais necessário uma cópia da lista com a ordem original, é preferível utilizar funções <em>in place</em>, que alteram a própria lista, e como não criam uma cópia da lista, utilizam menos memória. Exemplo:</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-python" data-lang="python"><span style="color:#cccece;">valores </span><span style="color:#5fb3b3;">= [</span><span style="color:#f99157;">5</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">2</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">8</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">6</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">4</span><span style="color:#5fb3b3;">]
+</span><span style="color:#6699cc;">valores</span><span style="color:#5fb3b3;">.</span><span style="color:#6699cc;">sort</span><span style="color:#5fb3b3;">()
+</span><span style="color:#6699cc;">valores</span><span style="color:#5fb3b3;">.</span><span style="color:#6699cc;">reverse</span><span style="color:#5fb3b3;">()
+</span><span style="color:#6699cc;">print</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">valores</span><span style="color:#5fb3b3;">)
+</span></code></pre>
+<p>Se for necessário manter uma cópia da lista inalterada, deve-se optar pelas funções de cópia de valor. Exemplo:</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-python" data-lang="python"><span style="color:#cccece;">valores </span><span style="color:#5fb3b3;">= [</span><span style="color:#f99157;">5</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">2</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">8</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">6</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">4</span><span style="color:#5fb3b3;">]
+</span><span style="color:#cccece;">novos_valores </span><span style="color:#5fb3b3;">= </span><span style="color:#6699cc;">reversed</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">sorted</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">valores</span><span style="color:#5fb3b3;">))
+</span><span style="color:#6699cc;">print</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">novos_valores</span><span style="color:#5fb3b3;">)
+</span></code></pre>
+<p>Porém esse exemplo cria duas cópias da lista, uma em cada função. Para criar apenas uma cópia, pode-se misturar funções <em>in place</em> com cópia de valor. Exemplo:</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-python" data-lang="python"><span style="color:#cccece;">valores </span><span style="color:#5fb3b3;">= [</span><span style="color:#f99157;">5</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">2</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">8</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">6</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">4</span><span style="color:#5fb3b3;">]
+</span><span style="color:#cccece;">novos_valores </span><span style="color:#5fb3b3;">= </span><span style="color:#6699cc;">sorted</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">valores</span><span style="color:#5fb3b3;">)
+</span><span style="color:#6699cc;">novos_valores</span><span style="color:#5fb3b3;">.</span><span style="color:#6699cc;">reverse</span><span style="color:#5fb3b3;">()
+</span><span style="color:#6699cc;">print</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">novos_valores</span><span style="color:#5fb3b3;">)
+</span></code></pre>
+<p>Também vale observar que algumas utilizações dessas funções podem dar a impressão de que elas não funcionaram, como:</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-python" data-lang="python"><span style="color:#cccece;">valores </span><span style="color:#5fb3b3;">= [</span><span style="color:#f99157;">5</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">2</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">8</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">6</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">4</span><span style="color:#5fb3b3;">]
+
+</span><span style="color:#6699cc;">sorted</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">valores</span><span style="color:#5fb3b3;">)
+</span><span style="color:#6699cc;">print</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">valores</span><span style="color:#5fb3b3;">)  </span><span style="color:#5f6364;"># Imprime a lista original, e não a ordenada
+
+</span><span style="color:#6699cc;">print</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">valores</span><span style="color:#5fb3b3;">.</span><span style="color:#6699cc;">sort</span><span style="color:#5fb3b3;">())  </span><span style="color:#5f6364;"># Imprime None e não a lista
+</span></code></pre><h2 id="consideracoes">Considerações</h2>
+<p>Nem sempre é possível utilizar o padrão desejado, <em>strings</em> no Python (<code>str</code>) são imutáveis, logo todas as funções que manipulam elas seguiram o padrão cópia de valor, e para outros tipos, pode ocorrer de só existir funções <em>in place</em>, sendo necessário fazer uma cópia manualmente antes de chamar a função, caso necessário. Para saber qual padrão a função implementa, é necessário consultar sua documentação, ou verificando sua assinatura, embora ainda possa existir uma dúvida entre cópia de valor e híbrida, visto que a assinatura dos dois padrões são iguais.</p>
+<p>Os exemplos aqui dados são didáticos. Caso deseja-se ordenar de forma reversa, tanto o método <code>sort</code>, quanto a função <code>sorted</code> podem receber como argumento <code>reverse=True</code>, e assim já fazer a ordenação reversa. Assim como é possível criar uma nova lista já com os valores, sem precisar adicionar manualmente item por item, como os exemplos:</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-python" data-lang="python"><span style="color:#cccece;">valores </span><span style="color:#5fb3b3;">= [</span><span style="color:#f99157;">5</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">2</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">8</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">6</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">4</span><span style="color:#5fb3b3;">]
+</span><span style="color:#cccece;">partes_dos_valores </span><span style="color:#5fb3b3;">= </span><span style="color:#cccece;">valores</span><span style="color:#5fb3b3;">[</span><span style="color:#f99157;">2</span><span style="color:#5fb3b3;">:]
+</span><span style="color:#cccece;">novos_valores </span><span style="color:#5fb3b3;">= [</span><span style="color:#f99157;">2 </span><span style="color:#5fb3b3;">* </span><span style="color:#cccece;">valor </span><span style="color:#c594c5;">for </span><span style="color:#cccece;">valor </span><span style="color:#c594c5;">in </span><span style="color:#cccece;">valores</span><span style="color:#5fb3b3;">]
+</span></code></pre>
+    </div>
+
+        </div>
+    </body>
+</html>

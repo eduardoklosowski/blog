@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+        <title>Isolamento de aplicações: Pilha de rede - Blog Eduardo Klosowski</title>
+        <meta name="application-name" content="Blog Eduardo Klosowski">
+        <meta name="apple-mobile-web-app-title" content="Blog Eduardo Klosowski">
+
+        <link rel="shortcut icon" href="https://eduardoklosowski.github.io/blog/favicon.webp">
+        <link rel="icon" sizes="188x188" href="https://eduardoklosowski.github.io/blog/logo.png">
+        <link rel="apple-touch-icon" href="https://eduardoklosowski.github.io/blog/logo.png">
+
+        
+            <link rel="alternate" type="application/atom+xml" title="Blog Eduardo Klosowski" href="https://eduardoklosowski.github.io/blog/atom.xml">
+        
+
+        
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Blog Eduardo Klosowski">
+    <meta property="og:title" content="Isolamento de aplicações: Pilha de rede">
+    <meta property="og:description" content="Uma das formas de comunicação mais comum entre processos é através da rede, o que permite tanto a comunicação de processos no mesmo computador, quanto em diferentes computadores. A comunicação pela rede normalmente utiliza portas TCP ou UDP, porém algumas aplicações podem querer utilizar a mesma porta de rede, como a porta 80 TCP que é a porta padrão para serviços HTTP, ou 443 TCP para HTTPS, o que geraria conflitos.">
+    <meta property="og:url" content="https://eduardoklosowski.github.io/blog/aplicacao-isolamento-de-pilha-de-rede/">
+    <meta property="og:image" content="https://eduardoklosowski.github.io/blog/logo.png">
+    <meta property="og:locale" content="pt_BR">
+    <meta property="og:article:published_time" content="2021-06-12">
+    <meta property="og:article:author" content="Eduardo Klosowski">
+    
+        <meta property="og:article:tag" content="Isolamento de aplicações">
+    
+    
+        <meta property="og:article:tag" content="Sistema Operacional">
+    
+        <meta property="og:article:tag" content="Redes">
+    
+    
+
+
+        <link rel="stylesheet" media="all" href="https://eduardoklosowski.github.io/blog/poole.css">
+        <link rel="stylesheet" media="all" href="https://eduardoklosowski.github.io/blog/tema.css">
+        <link rel="stylesheet" media="print" href="https://eduardoklosowski.github.io/blog/print.css">
+
+        
+            <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "73939fe3b7984f859c0427bc6c693927"}'></script>
+        
+        
+            <script async src="https://www.googletagmanager.com/gtag/js?id=G-15ZW1NJTDE"></script>
+            <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', 'G-15ZW1NJTDE');
+            </script>
+        
+    </head>
+
+    <body>
+        <div class="sidebar">
+            <div class="container">
+                <div class="sidebar-about">
+                    <a href="https://eduardoklosowski.github.io/blog/">
+                        <img class="sidebar-logo" src="https://eduardoklosowski.github.io/blog/logo.png">
+                        <h1>Blog Eduardo Klosowski</h1>
+                    </a>
+                </div>
+
+                <ul class="sidebar-nav">
+                    
+                        <li class="sidebar-nav-item">
+                            <a rel="noopener" target="_blank" href="https://github.com/eduardoklosowski">
+                                
+                                    <img src="https://eduardoklosowski.github.io/blog/icons/github.svg" alt="GitHub">
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="sidebar-nav-item">
+                            <a rel="noopener" target="_blank" href="https://twitter.com/eduklosowski">
+                                
+                                    <img src="https://eduardoklosowski.github.io/blog/icons/twitter.svg" alt="Twitter">
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="sidebar-nav-item">
+                            <a rel="noopener" target="_blank" href="https://twitch.tv/eduardoklosowski">
+                                
+                                    <img src="https://eduardoklosowski.github.io/blog/icons/twitch.svg" alt="Twitch">
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="sidebar-nav-item">
+                            <a rel="noopener" target="_blank" href="https://asciinema.org/~eduardoklosowski">
+                                
+                                    <img src="https://eduardoklosowski.github.io/blog/icons/asciinema.svg" alt="asciinema">
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="sidebar-nav-item">
+                            <a rel="noopener" target="_blank" href="https://dev.to/eduardoklosowski">
+                                
+                                    <img src="https://eduardoklosowski.github.io/blog/icons/dev.svg" alt="DEV">
+                                
+                            </a>
+                        </li>
+                    
+                </ul>
+            </div>
+        </div>
+
+        <div class="content container">
+            
+    <div class="post">
+        <h1 class="post-title">Isolamento de aplicações: Pilha de rede</h1>
+        <div class="post-info">
+            Publicado em 12-06-2021
+            &middot;
+            7 minutos de leitura
+        </div>
+        
+            <div class="post-serie">
+                Série
+                
+                    <a href="https://eduardoklosowski.github.io/blog/series/isolamento-de-aplicacoes/">Isolamento de aplicações</a>
+                
+            </div>
+        
+        <div class="post-tags">
+            
+                <a href="https://eduardoklosowski.github.io/blog/tags/sistema-operacional/">#Sistema Operacional</a>,
+            
+                <a href="https://eduardoklosowski.github.io/blog/tags/redes/">#Redes</a>
+            
+            
+        </div>
+        <p>Uma das formas de comunicação mais comum entre processos é através da rede, o que permite tanto a comunicação de processos no mesmo computador, quanto em diferentes computadores. A comunicação pela rede normalmente utiliza portas <a rel="noopener" target="_blank" href="https://pt.wikipedia.org/wiki/Transmission_Control_Protocol">TCP</a> ou <a rel="noopener" target="_blank" href="https://pt.wikipedia.org/wiki/User_Datagram_Protocol">UDP</a>, porém algumas aplicações podem querer utilizar a mesma porta de rede, como a porta 80 TCP que é a porta padrão para serviços <a rel="noopener" target="_blank" href="https://pt.wikipedia.org/wiki/Hypertext_Transfer_Protocol">HTTP</a>, ou 443 TCP para <a rel="noopener" target="_blank" href="https://pt.wikipedia.org/wiki/Hyper_Text_Transfer_Protocol_Secure">HTTPS</a>, o que geraria conflitos.</p>
+<h2 id="solucoes-possiveis">Soluções possíveis</h2>
+<p>Existem algumas formas de lidar com essa questão:</p>
+<h3 id="definindo-o-numero-da-porta">Definindo o número da porta</h3>
+<p>A solução mais simples para o caso de dois processos quererem utilizar o mesmo número de porta é alterar a porta utilizada por algum dos processos. Isso normalmente envolve alterar a configuração da aplicação, e torna obrigatório informar o endereço da porta para acessar o serviço, uma vez que ele não se encontra mais em sua porta padrão. Um exemplo é <code>http://127.0.0.1:8080/</code>, onde esse endereço informa para conectar na porta 8080 em vez da porta 80 (padrão). Porém algumas aplicações não foram feitas pensando na possibilidade de executar em outra porta, e mesmo se configuradas para tal, podem não funcionar corretamente, como um sistema web, onde são utilizados endereços fixos que assumem que o serviço esteja rodando na porta padrão e acabam redirecionando o usuário para ela.</p>
+<p>Para os sistemas que puderem ser executados em outras portas, essa configuração variará conforme o programa. Mas para verificar quais portas estão sendo utilizadas é possível executar o comando <code>ss -nltup</code> que lista todas as portas que estão no modo de escuta (aguardando uma conexão no caso do TCP, ou esperando receber dados no caso do UDP) assim como o processo que está utilizando cada porta, facilitando tanto encontrar um número de porta disponível, quanto identificar qual outra aplicação está utilizando a porta desejada. Porém com essa configuração, além do endereço do servidor, também será necessário lembrar em qual porta que o serviço está rodando para conseguir acessá-lo.</p>
+<h3 id="definindo-outro-endereco-ip">Definindo outro endereço IP</h3>
+<p>Embora muitas vezes se pense em um serviço ouvindo apenas uma porta (ou mais de uma porta, dependendo da aplicação), para o sistema operacional cada processo ouve uma porta de um endereço de rede. Desta forma é possível que dois serviços utilizem a mesma porta TCP ou UDP, porém desde que em endereços de rede diferentes, sendo necessário configurar um segundo endereço no computador (adicionando um novo endereço na interface no caso do IPv6, ou criando um <em>alias</em> para a interface no caso do IPv4), ou configurar para um serviço ser disponibilizado para o endereço de uma interface de rede, e outro serviço para o endereço de outra interface de rede.</p>
+<p>Com a configuração dos endereços de rede feita, na configuração da aplicação é necessário informar em qual endereço de rede e porta que ela deverá aguardar conexões, e isso novamente varia conforme o programa. Porém quando estiver em execução, o mesmo também pode ser visto pelo comando <code>ss -nltup</code>.</p>
+<p>O exemplo a baixo mostra um computador com dois servidores de nomes (<a rel="noopener" target="_blank" href="https://pt.wikipedia.org/wiki/Sistema_de_Nomes_de_Dom%C3%ADnio">DNS</a>) em execução. O primeiro ouvindo no IP 127.0.0.1 e porta 53, tanto TCP, quanto UDP. Esse serviço, por utilizar o endereço de <em>loopback</em>, é acessível apenas da máquina local. O segundo servidor de nomes ouve no IP 192.168.122.1 e porta 53, também nos protocolos TCP e UDP. Nesse caso, o serviço está disponível para uma rede de <a rel="noopener" target="_blank" href="https://pt.wikipedia.org/wiki/M%C3%A1quina_virtual">máquinas virtuais</a> do <a rel="noopener" target="_blank" href="https://libvirt.org/">libvirt</a>. Em ambos os casos, esse serviço está atribuído a um endereço de rede específico, diferente do <a rel="noopener" target="_blank" href="https://pt.wikipedia.org/wiki/Secure_Shell">SSH</a> que ouve em qualquer endereço de rede (0.0.0.0 no caso de IPv4 e [::] no caso de IPv6) na porta 22 apenas TCP.</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-txt" data-lang="txt"><span style="color:#cccece;">Netid     State       Recv-Q      Send-Q            Local Address:Port            Peer Address:Port
+udp       UNCONN      0           0                     127.0.0.1:53                   0.0.0.0:*         users:((&quot;dnsmasq&quot;,pid=994,fd=4))
+udp       UNCONN      0           0                 192.168.122.1:53                   0.0.0.0:*         users:((&quot;dnsmasq&quot;,pid=838,fd=5))
+tcp       LISTEN      0           32                    127.0.0.1:53                   0.0.0.0:*         users:((&quot;dnsmasq&quot;,pid=994,fd=5))
+tcp       LISTEN      0           32                192.168.122.1:53                   0.0.0.0:*         users:((&quot;dnsmasq&quot;,pid=838,fd=6))
+tcp       LISTEN      0           128                     0.0.0.0:22                   0.0.0.0:*         users:((&quot;sshd&quot;,pid=695,fd=3))
+tcp       LISTEN      0           128                        [::]:22                      [::]:*         users:((&quot;sshd&quot;,pid=695,fd=4))
+</span></code></pre><h3 id="outra-pilha-de-rede">Outra pilha de rede</h3>
+<p>Outra opção é utilizar instâncias diferentes da pilha de rede do sistema operacional para cada aplicação, onde cada instância teria suas interfaces e endereços de rede, e assim uma não conflitaria com a outra. Uma forma de fazer isso é através do espaço de nomes, e informado que tal processo será executado dentro de tal espaço.</p>
+<p>Todo o controle do espaço de nomes (criação, configuração e execução de processos) pode ser feito através do comando <code>ip</code> que faz parte do <a rel="noopener" target="_blank" href="https://wiki.linuxfoundation.org/networking/iproute2">iproute2</a>, que substitui o antigo <a rel="noopener" target="_blank" href="https://sourceforge.net/projects/net-tools/">net-tools</a>. Nesse exemplo ele será utilizado para criar um espaço de nomes (<code>app1</code>), criar duas interfaces virtuais conectadas entre si (<code>veth0</code> e <code>veth1</code>), atribuir uma interface ao espaço de nomes da aplicação (<code>veth1</code>), configurado os endereços de rede, e por fim, executado um processo dentro desse espaço:</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-sh" data-lang="sh"><span style="color:#5f6364;"># Cria espaço de nomes app1
+</span><span style="color:#6699cc;">ip netns add app1
+
+</span><span style="color:#5f6364;"># Cria interfaces de redes virtuais
+</span><span style="color:#6699cc;">ip link add veth0 type veth peer name veth1
+
+</span><span style="color:#5f6364;"># Atribui uma interface de rede para a aplicação
+</span><span style="color:#6699cc;">ip link set veth1 netns app1
+
+</span><span style="color:#5f6364;"># Define endereços de rede das interfaces
+</span><span style="color:#6699cc;">ip addr add 10.1.1.1/30 dev veth0
+ip netns exec app1 ip addr add 10.1.1.2/30 dev veth1
+
+</span><span style="color:#5f6364;"># Liga as interfaces
+</span><span style="color:#6699cc;">ip link set veth0 up
+ip netns exec app1 ip link set veth1 up
+ip netns exec app1 ip link set lo up
+
+</span><span style="color:#5f6364;"># Configura gateway para a interface da aplicação
+</span><span style="color:#6699cc;">ip netns exec app1 ip route add default via 10.1.1.1
+
+</span><span style="color:#5f6364;"># Executa processo do Bash dentro do espaço de nomes
+</span><span style="color:#6699cc;">ip netns exec app1 bash
+</span></code></pre>
+<p>Esse último comando abrirá um terminal do <a rel="noopener" target="_blank" href="http://tiswww.case.edu/php/chet/bash/bashtop.html">Bash</a> que terá acesso à outra pilha de rede, sendo possível executar comandos como <code>ping 10.1.1.1</code> para verificar a comunicação com a pilha de rede que está rodando fora desse espaço de nomes. O Bash também pode ser substituído por outro processo, como o <a rel="noopener" target="_blank" href="https://nginx.org/">NGINX</a> (exemplo <code>ip netns exec app1 nginx -g 'daemon off;'</code>), e que assim poderia ser acessado pelo navegador através do endereço <code>http://10.1.1.2/</code>.</p>
+<p>Para que esse serviço possa ser acessado de outro computador, ainda é necessário fazer algumas configurações adicionais, como configurar a rota para a rede das interfaces virtuais nos dispositivos de rede, ou alguma tradução de endereços (<a rel="noopener" target="_blank" href="https://pt.wikipedia.org/wiki/Network_address_translation">NAT</a>) ou porta (<a rel="noopener" target="_blank" href="https://pt.wikipedia.org/wiki/Port_address_translation">PAT</a>), uma vez que a pilha de rede padrão funcionará como um <a rel="noopener" target="_blank" href="https://pt.wikipedia.org/wiki/Roteador">roteador</a> ou <a rel="noopener" target="_blank" href="https://pt.wikipedia.org/wiki/Firewall">firewall</a> para a segunda pilha criada desta forma.</p>
+<h2 id="consideracoes">Considerações</h2>
+<p>A criação de espaços de nomes de rede pode ser bastante interessante para isolar aplicações para que elas não conflitem pelo uso de alguma porta, mas também pode ser utilizada para isolar a comunicação entre processos, de tal forma que a rede entre eles não seja acessível por terceiros. Um exemplo que isola a comunicação entre os processos em redes diferentes é o <a rel="noopener" target="_blank" href="https://www.openstack.org/">OpenStack</a>, que é uma solução para a criação de nuvens privadas (criar um ambiente de nuvem dentro de seu próprio <a rel="noopener" target="_blank" href="https://pt.wikipedia.org/wiki/Centro_de_processamento_de_dados"><em>data center</em></a>), onde alguns desses comandos do <code>ip netns</code> aparecem no <a rel="noopener" target="_blank" href="https://docs.openstack.org/operations-guide/ops-network-troubleshooting.html#dealing-with-network-namespaces">guia para soluções de problemas de rede</a>, permitindo assim executar comando com acessos as redes virtuais da nuvem, o qual não seria possível normalmente.</p>
+
+    </div>
+
+        </div>
+    </body>
+</html>

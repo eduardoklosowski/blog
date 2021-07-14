@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+        <title>Complexidade do algoritmo em relação à memória - Blog Eduardo Klosowski</title>
+        <meta name="application-name" content="Blog Eduardo Klosowski">
+        <meta name="apple-mobile-web-app-title" content="Blog Eduardo Klosowski">
+
+        <link rel="shortcut icon" href="https://eduardoklosowski.github.io/blog/favicon.webp">
+        <link rel="icon" sizes="188x188" href="https://eduardoklosowski.github.io/blog/logo.png">
+        <link rel="apple-touch-icon" href="https://eduardoklosowski.github.io/blog/logo.png">
+
+        
+            <link rel="alternate" type="application/atom+xml" title="Blog Eduardo Klosowski" href="https://eduardoklosowski.github.io/blog/atom.xml">
+        
+
+        
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Blog Eduardo Klosowski">
+    <meta property="og:title" content="Complexidade do algoritmo em relação à memória">
+    <meta property="og:description" content="Recentemente o ProfBrunoLopes fez uma live com a morgiovanelli falando sobre a complexidade dos algoritmos, onde era discutido, de forma matemática, como identificar qual algoritmo era mais eficiente dado o crescimento de seu tempo de execução em relação ao tamanho da entrada. Nesse texto, quero expandir essa análise para outros aspectos, como o uso de memória.">
+    <meta property="og:url" content="https://eduardoklosowski.github.io/blog/complexidade-de-memoria/">
+    <meta property="og:image" content="https://eduardoklosowski.github.io/blog/logo.png">
+    <meta property="og:locale" content="pt_BR">
+    <meta property="og:article:published_time" content="2021-03-14">
+    <meta property="og:article:author" content="Eduardo Klosowski">
+    
+    
+        <meta property="og:article:tag" content="Desempenho">
+    
+        <meta property="og:article:tag" content="Otimização">
+    
+        <meta property="og:article:tag" content="Code Style">
+    
+    
+        <meta property="og:article:tag" content="Java">
+    
+
+
+        <link rel="stylesheet" media="all" href="https://eduardoklosowski.github.io/blog/poole.css">
+        <link rel="stylesheet" media="all" href="https://eduardoklosowski.github.io/blog/tema.css">
+        <link rel="stylesheet" media="print" href="https://eduardoklosowski.github.io/blog/print.css">
+
+        
+            <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "73939fe3b7984f859c0427bc6c693927"}'></script>
+        
+        
+            <script async src="https://www.googletagmanager.com/gtag/js?id=G-15ZW1NJTDE"></script>
+            <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', 'G-15ZW1NJTDE');
+            </script>
+        
+    </head>
+
+    <body>
+        <div class="sidebar">
+            <div class="container">
+                <div class="sidebar-about">
+                    <a href="https://eduardoklosowski.github.io/blog/">
+                        <img class="sidebar-logo" src="https://eduardoklosowski.github.io/blog/logo.png">
+                        <h1>Blog Eduardo Klosowski</h1>
+                    </a>
+                </div>
+
+                <ul class="sidebar-nav">
+                    
+                        <li class="sidebar-nav-item">
+                            <a rel="noopener" target="_blank" href="https://github.com/eduardoklosowski">
+                                
+                                    <img src="https://eduardoklosowski.github.io/blog/icons/github.svg" alt="GitHub">
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="sidebar-nav-item">
+                            <a rel="noopener" target="_blank" href="https://twitter.com/eduklosowski">
+                                
+                                    <img src="https://eduardoklosowski.github.io/blog/icons/twitter.svg" alt="Twitter">
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="sidebar-nav-item">
+                            <a rel="noopener" target="_blank" href="https://twitch.tv/eduardoklosowski">
+                                
+                                    <img src="https://eduardoklosowski.github.io/blog/icons/twitch.svg" alt="Twitch">
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="sidebar-nav-item">
+                            <a rel="noopener" target="_blank" href="https://asciinema.org/~eduardoklosowski">
+                                
+                                    <img src="https://eduardoklosowski.github.io/blog/icons/asciinema.svg" alt="asciinema">
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="sidebar-nav-item">
+                            <a rel="noopener" target="_blank" href="https://dev.to/eduardoklosowski">
+                                
+                                    <img src="https://eduardoklosowski.github.io/blog/icons/dev.svg" alt="DEV">
+                                
+                            </a>
+                        </li>
+                    
+                </ul>
+            </div>
+        </div>
+
+        <div class="content container">
+            
+    <div class="post">
+        <h1 class="post-title">Complexidade do algoritmo em relação à memória</h1>
+        <div class="post-info">
+            Publicado em 14-03-2021
+            &middot;
+            9 minutos de leitura
+        </div>
+        
+        <div class="post-tags">
+            
+                <a href="https://eduardoklosowski.github.io/blog/tags/desempenho/">#Desempenho</a>,
+            
+                <a href="https://eduardoklosowski.github.io/blog/tags/otimizacao/">#Otimização</a>,
+            
+                <a href="https://eduardoklosowski.github.io/blog/tags/code-style/">#Code Style</a>,
+            
+            
+                <a href="https://eduardoklosowski.github.io/blog/linguagens/java/">#Java</a>
+            
+        </div>
+        <p>Recentemente o <a rel="noopener" target="_blank" href="https://www.twitch.tv/profbrunolopes">ProfBrunoLopes</a> fez uma live com a <a rel="noopener" target="_blank" href="https://www.twitch.tv/morgiovanelli">morgiovanelli</a> falando sobre a complexidade dos algoritmos, onde era discutido, de forma matemática, como identificar qual algoritmo era mais eficiente dado o crescimento de seu tempo de execução em relação ao tamanho da entrada. Nesse texto, quero expandir essa análise para outros aspectos, como o uso de memória.</p>
+<h2 id="complexidade-da-funcao-fibonacci">Complexidade da função <code>fibonacci</code></h2>
+<p>Como uma breve revisão, será feita a análise da complexidade do tempo de execução de algoritmos para o cálculo de valores da <a rel="noopener" target="_blank" href="https://pt.wikipedia.org/wiki/Sequ%C3%AAncia_de_Fibonacci">sequência de Fibonacci</a>, que é uma sequência onde os dois primeiros valores são 1, e os demais é a soma dos dois valores anteriores. Um exemplo de algoritmo que faz esse cálculo usando recursividade é:</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-java" data-lang="java"><span style="color:#c594c5;">public class </span><span style="color:#fac863;">FibonacciRecursivo </span><span style="color:#5fb3b3;">{
+    </span><span style="color:#c594c5;">public static int </span><span style="color:#6699cc;">fibonacci</span><span style="color:#5fb3b3;">(</span><span style="color:#c594c5;">int </span><span style="color:#f99157;">n</span><span style="color:#5fb3b3;">) {
+        </span><span style="color:#c594c5;">if </span><span style="color:#5fb3b3;">(</span><span style="color:#cccece;">n </span><span style="color:#5fb3b3;">&lt;= </span><span style="color:#f99157;">1</span><span style="color:#5fb3b3;">) {
+            </span><span style="color:#c594c5;">return</span><span style="color:#cccece;"> n</span><span style="color:#5fb3b3;">;
+        }
+        </span><span style="color:#c594c5;">return </span><span style="color:#6699cc;">fibonacci</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">n </span><span style="color:#5fb3b3;">- </span><span style="color:#f99157;">2</span><span style="color:#5fb3b3;">) + </span><span style="color:#6699cc;">fibonacci</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">n </span><span style="color:#5fb3b3;">- </span><span style="color:#f99157;">1</span><span style="color:#5fb3b3;">);
+    }
+}
+</span></code></pre>
+<p>Todas as instruções dessa função, menos as chamadas recursivas, tem complexidade constante (<code>O(1)</code>), ou seja, o tempo de execução dessas instruções não variam conforme a posição a ser calculada (tamanho da entrada). Em relação a complexidade das chamadas recursivas, é possível verificar que cada chamada, executa novamente a função outras duas vezes (menos quando atinge o caso base), reduzindo o tamanho do problema a ser resolvido em uma e duas unidades, gerando algo parecido com o diagrama a baixo:</p>
+<p><img src="https://eduardoklosowski.github.io/blog/complexidade-de-memoria/chamadas-fibonacci-recursivo.png" alt="Chamadas recursivas da função fibonacci" /></p>
+<p>Dessa forma é possível dizer que a complexidade desse algoritmo é exponencial (<code>O(2^n)</code>), visto que a chamada recursiva não altera a grandeza do tamanho do problema a ser resolvido a cada chamada. E devido a sua complexidade exponencial, esse algoritmo é considerado ineficiente para grandes valores.</p>
+<p>Porém uma vez que um valor da sequência de Fibonacci foi calculado, ele pode ser guardado em memória e reutilizado, em vez de precisar calculá-lo toda vez. E é necessário saber apenas os últimos dois valores da sequência para se calcular o próximo. Assim pode-se implementar um algoritmo iterativo (que itera, utiliza um laço de repetição), como:</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-java" data-lang="java"><span style="color:#c594c5;">public class </span><span style="color:#fac863;">FibonacciIterativo </span><span style="color:#5fb3b3;">{
+    </span><span style="color:#c594c5;">public static int </span><span style="color:#6699cc;">fibonacci</span><span style="color:#5fb3b3;">(</span><span style="color:#c594c5;">int </span><span style="color:#f99157;">n</span><span style="color:#5fb3b3;">) {
+        </span><span style="color:#c594c5;">if </span><span style="color:#5fb3b3;">(</span><span style="color:#cccece;">n </span><span style="color:#5fb3b3;">== </span><span style="color:#f99157;">0</span><span style="color:#5fb3b3;">) {
+            </span><span style="color:#c594c5;">return </span><span style="color:#f99157;">0</span><span style="color:#5fb3b3;">;
+        }
+
+        </span><span style="color:#c594c5;">int</span><span style="color:#cccece;"> a </span><span style="color:#5fb3b3;">= </span><span style="color:#f99157;">0</span><span style="color:#5fb3b3;">;
+        </span><span style="color:#c594c5;">int</span><span style="color:#cccece;"> b </span><span style="color:#5fb3b3;">= </span><span style="color:#f99157;">1</span><span style="color:#5fb3b3;">;
+
+        </span><span style="color:#c594c5;">for </span><span style="color:#5fb3b3;">(</span><span style="color:#c594c5;">int</span><span style="color:#cccece;"> i </span><span style="color:#5fb3b3;">= </span><span style="color:#f99157;">1</span><span style="color:#5fb3b3;">;</span><span style="color:#cccece;"> i </span><span style="color:#5fb3b3;">&lt;</span><span style="color:#cccece;"> n</span><span style="color:#5fb3b3;">; ++</span><span style="color:#cccece;">i</span><span style="color:#5fb3b3;">) {
+            </span><span style="color:#c594c5;">int</span><span style="color:#cccece;"> aux </span><span style="color:#5fb3b3;">=</span><span style="color:#cccece;"> a </span><span style="color:#5fb3b3;">+</span><span style="color:#cccece;"> b</span><span style="color:#5fb3b3;">;
+</span><span style="color:#cccece;">            a </span><span style="color:#5fb3b3;">=</span><span style="color:#cccece;"> b</span><span style="color:#5fb3b3;">;
+</span><span style="color:#cccece;">            b </span><span style="color:#5fb3b3;">=</span><span style="color:#cccece;"> aux</span><span style="color:#5fb3b3;">;
+        }
+
+        </span><span style="color:#c594c5;">return</span><span style="color:#cccece;"> b</span><span style="color:#5fb3b3;">;
+    }
+}
+</span></code></pre>
+<p>Nesse algoritmo, assim como o anterior, todas as instruções possuem complexidade constante, com exceção do laço de repetição, que faz o seu bloco interno ser executado <code>n - 1</code> vezes. Dessa forma esse algoritmo possui complexidade linear (<code>O(n)</code>, visto que seriam <code>n - 1</code> vezes um bloco de complexidade <code>O(1)</code>), sendo bem mais eficiente que a opção anterior.</p>
+<h2 id="complexidade-da-funcao-fatorial">Complexidade da função <code>fatorial</code></h2>
+<p>Outro problema que pode ser analisado é o cálculo do <a rel="noopener" target="_blank" href="https://pt.wikipedia.org/wiki/Fatorial">fatorial</a> de um número. O fatorial de um número é a multiplicação dele por todos os seus antecessores até o 1, ou simplesmente a multiplicação de um número pelo fatorial do seu antecessor, sendo que o fatorial de 1 é 1. Exemplo:</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-txt" data-lang="txt"><span style="color:#cccece;">4! = 4 * 3!
+4! = 4 * 3 * 2!
+4! = 4 * 3 * 2 * 1!
+4! = 4 * 3 * 2 * 1
+</span></code></pre>
+<p>Novamente é possível implementar um algoritmo que resolva esse problema usando recursividade:</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-java" data-lang="java"><span style="color:#c594c5;">public class </span><span style="color:#fac863;">FatorialRecursivo </span><span style="color:#5fb3b3;">{
+    </span><span style="color:#c594c5;">public static int </span><span style="color:#6699cc;">fatorial</span><span style="color:#5fb3b3;">(</span><span style="color:#c594c5;">int </span><span style="color:#f99157;">n</span><span style="color:#5fb3b3;">) {
+        </span><span style="color:#c594c5;">if </span><span style="color:#5fb3b3;">(</span><span style="color:#cccece;">n </span><span style="color:#5fb3b3;">&lt;= </span><span style="color:#f99157;">1</span><span style="color:#5fb3b3;">) {
+            </span><span style="color:#c594c5;">return </span><span style="color:#f99157;">1</span><span style="color:#5fb3b3;">;
+        }
+        </span><span style="color:#c594c5;">return</span><span style="color:#cccece;"> n </span><span style="color:#5fb3b3;">* </span><span style="color:#6699cc;">fatorial</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">n </span><span style="color:#5fb3b3;">- </span><span style="color:#f99157;">1</span><span style="color:#5fb3b3;">);
+    }
+}
+</span></code></pre>
+<p>Onde as chamadas recursivas geram algo parecido com o diagrama a baixo:</p>
+<p><img src="https://eduardoklosowski.github.io/blog/complexidade-de-memoria/chamadas-fatorial-recursivo.png" alt="Chamadas recursivas da função fatorial" /></p>
+<p>Vale observar que novamente todas as instruções possuem complexidade constante, menos as chamadas recursivas, que por sua vez, chama a função mais uma vez, com um problema de tamanho com uma unidade a menos, o que repete a função o mesmo número de vezes do fatorial a ser calculado, portando possui complexidade linear.</p>
+<p>Também é possível fazer um algoritmo iterativo para resolver esse problema, como:</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-java" data-lang="java"><span style="color:#c594c5;">public class </span><span style="color:#fac863;">FatorialIterativo </span><span style="color:#5fb3b3;">{
+    </span><span style="color:#c594c5;">public static int </span><span style="color:#6699cc;">fatorial</span><span style="color:#5fb3b3;">(</span><span style="color:#c594c5;">int </span><span style="color:#f99157;">n</span><span style="color:#5fb3b3;">) {
+        </span><span style="color:#c594c5;">int</span><span style="color:#cccece;"> fatorial </span><span style="color:#5fb3b3;">= </span><span style="color:#f99157;">1</span><span style="color:#5fb3b3;">;
+
+        </span><span style="color:#c594c5;">for </span><span style="color:#5fb3b3;">(</span><span style="color:#c594c5;">int</span><span style="color:#cccece;"> i </span><span style="color:#5fb3b3;">= </span><span style="color:#f99157;">2</span><span style="color:#5fb3b3;">;</span><span style="color:#cccece;"> i </span><span style="color:#5fb3b3;">&lt;=</span><span style="color:#cccece;"> n</span><span style="color:#5fb3b3;">; ++</span><span style="color:#cccece;">i</span><span style="color:#5fb3b3;">) {
+</span><span style="color:#cccece;">            fatorial </span><span style="color:#5fb3b3;">*=</span><span style="color:#cccece;"> i</span><span style="color:#5fb3b3;">;
+        }
+
+        </span><span style="color:#c594c5;">return</span><span style="color:#cccece;"> fatorial</span><span style="color:#5fb3b3;">;
+    }
+}
+</span></code></pre>
+<p>Nesse código é possível identificar o laço de repetição executando <code>n - 1</code> vezes seu bloco de código de complexidade constante, fazendo com que esse algoritmo tenha complexidade linear em seu tempo de execução.</p>
+<p>Embora que para esse problema, tanto o algoritmo recursivo, quanto o algoritmo iterativo apresentem a mesma complexidade no tempo de execução, os dois algoritmos possuem diferenças em relação ao uso de memória. Enquanto o algoritmo iterativo utiliza apenas três variáveis (uma do argumento da função e duas no código), a versão recursiva usa uma só (argumento da função), porém isso se repete para cada chamada da função, e como isso fica em memória até que a última função seja chamada, essa variável chega a existir <code>n</code> vezes na memória ao mesmo tempo, uma em cada contexto da função, como no exemplo de execução do <a rel="noopener" target="_blank" href="https://www.onlinegdb.com/">GDB online Debugger</a>:</p>
+<p><img src="https://eduardoklosowski.github.io/blog/complexidade-de-memoria/stack-fatorial-recursivo.png" alt="Stack de execução do fatorial recursivo" /></p>
+<p>Dessa forma é possível dizer que existe uma diferença na complexidade desses código em relação ao uso de memória, com o algoritmo recursivo usando memória de forma linear ao tamanho da entrada, e a versão iterativa usando memória de forma constante. E essa análise tem o mesmo resultado se feita nos algoritmos para o cálculo da sequência de Fibonacci.</p>
+<h2 id="complexidade-para-se-percorrer-uma-arvore">Complexidade para se percorrer uma árvore</h2>
+<p>É possível armazenar dados em uma estrutura que recebe o nome de <a rel="noopener" target="_blank" href="https://pt.wikipedia.org/wiki/%C3%81rvore_bin%C3%A1ria">árvore binária</a>, que consiste em organizar todos os valores menores que um determinado valor a esquerda, e todo os valores maiores a direita, formando algo que lembra uma árvore com ramificações. Exemplo:</p>
+<p><img src="https://eduardoklosowski.github.io/blog/complexidade-de-memoria/arvore-binaria.png" alt="Árvore binária" /></p>
+<p>É possível utilizar recursividade para percorrer em ordem crescente essa árvore e imprimir na tela seus valores. Exemplo:</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-java" data-lang="java"><span style="color:#c594c5;">class </span><span style="color:#fac863;">ArvoreValor </span><span style="color:#5fb3b3;">{
+    </span><span style="color:#fac863;">ArvoreValor </span><span style="color:#cccece;">esquerda</span><span style="color:#5fb3b3;">;
+    </span><span style="color:#c594c5;">int </span><span style="color:#cccece;">valor</span><span style="color:#5fb3b3;">;
+    </span><span style="color:#fac863;">ArvoreValor </span><span style="color:#cccece;">direita</span><span style="color:#5fb3b3;">;
+
+    </span><span style="color:#c594c5;">public </span><span style="color:#6699cc;">ArvoreValor</span><span style="color:#5fb3b3;">(</span><span style="color:#fac863;">ArvoreValor </span><span style="color:#f99157;">esquerda</span><span style="color:#5fb3b3;">, </span><span style="color:#c594c5;">int </span><span style="color:#f99157;">valor</span><span style="color:#5fb3b3;">, </span><span style="color:#fac863;">ArvoreValor </span><span style="color:#f99157;">direita</span><span style="color:#5fb3b3;">) {
+        </span><span style="color:#ec5f67;">this</span><span style="color:#5fb3b3;">.</span><span style="color:#cccece;">esquerda </span><span style="color:#5fb3b3;">=</span><span style="color:#cccece;"> esquerda</span><span style="color:#5fb3b3;">;
+        </span><span style="color:#ec5f67;">this</span><span style="color:#5fb3b3;">.</span><span style="color:#cccece;">valor </span><span style="color:#5fb3b3;">=</span><span style="color:#cccece;"> valor</span><span style="color:#5fb3b3;">;
+        </span><span style="color:#ec5f67;">this</span><span style="color:#5fb3b3;">.</span><span style="color:#cccece;">direita </span><span style="color:#5fb3b3;">=</span><span style="color:#cccece;"> direita</span><span style="color:#5fb3b3;">;
+    }
+}
+
+</span><span style="color:#c594c5;">public class </span><span style="color:#fac863;">ArvoreRecursiva </span><span style="color:#5fb3b3;">{
+    </span><span style="color:#c594c5;">private </span><span style="color:#fac863;">ArvoreValor </span><span style="color:#cccece;">raiz</span><span style="color:#5fb3b3;">;
+
+    </span><span style="color:#c594c5;">public </span><span style="color:#6699cc;">ArvoreRecursiva</span><span style="color:#5fb3b3;">() {
+</span><span style="color:#cccece;">        raiz </span><span style="color:#5fb3b3;">= </span><span style="color:#c594c5;">new </span><span style="color:#fac863;">ArvoreValor</span><span style="color:#5fb3b3;">(
+            </span><span style="color:#c594c5;">new </span><span style="color:#fac863;">ArvoreValor</span><span style="color:#5fb3b3;">(
+                </span><span style="color:#c594c5;">new </span><span style="color:#fac863;">ArvoreValor</span><span style="color:#5fb3b3;">(</span><span style="color:#f99157;">null</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">1</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">null</span><span style="color:#5fb3b3;">),
+                </span><span style="color:#f99157;">2</span><span style="color:#5fb3b3;">,
+                </span><span style="color:#c594c5;">new </span><span style="color:#fac863;">ArvoreValor</span><span style="color:#5fb3b3;">(</span><span style="color:#f99157;">null</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">3</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">null</span><span style="color:#5fb3b3;">)
+            ),
+            </span><span style="color:#f99157;">4</span><span style="color:#5fb3b3;">,
+            </span><span style="color:#c594c5;">new </span><span style="color:#fac863;">ArvoreValor</span><span style="color:#5fb3b3;">(
+                </span><span style="color:#c594c5;">new </span><span style="color:#fac863;">ArvoreValor</span><span style="color:#5fb3b3;">(</span><span style="color:#f99157;">null</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">5</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">null</span><span style="color:#5fb3b3;">),
+                </span><span style="color:#f99157;">6</span><span style="color:#5fb3b3;">,
+                </span><span style="color:#c594c5;">new </span><span style="color:#fac863;">ArvoreValor</span><span style="color:#5fb3b3;">(</span><span style="color:#f99157;">null</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">7</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">null</span><span style="color:#5fb3b3;">)
+            )
+        );
+    }
+
+    </span><span style="color:#c594c5;">private void </span><span style="color:#6699cc;">printAux</span><span style="color:#5fb3b3;">(</span><span style="color:#fac863;">ArvoreValor </span><span style="color:#f99157;">valor</span><span style="color:#5fb3b3;">) {
+        </span><span style="color:#c594c5;">if </span><span style="color:#5fb3b3;">(</span><span style="color:#cccece;">valor </span><span style="color:#5fb3b3;">== </span><span style="color:#f99157;">null</span><span style="color:#5fb3b3;">) {
+            </span><span style="color:#c594c5;">return</span><span style="color:#5fb3b3;">;
+        }
+
+        </span><span style="color:#6699cc;">printAux</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">valor</span><span style="color:#5fb3b3;">.</span><span style="color:#6699cc;">esquerda</span><span style="color:#5fb3b3;">);
+        </span><span style="color:#fac863;">System</span><span style="color:#5fb3b3;">.</span><span style="color:#cccece;">out</span><span style="color:#5fb3b3;">.</span><span style="color:#6699cc;">println</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">valor</span><span style="color:#5fb3b3;">.</span><span style="color:#6699cc;">valor</span><span style="color:#5fb3b3;">);
+        </span><span style="color:#6699cc;">printAux</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">valor</span><span style="color:#5fb3b3;">.</span><span style="color:#6699cc;">direita</span><span style="color:#5fb3b3;">);
+    }
+
+    </span><span style="color:#c594c5;">public void </span><span style="color:#6699cc;">print</span><span style="color:#5fb3b3;">() {
+        </span><span style="color:#6699cc;">printAux</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">raiz</span><span style="color:#5fb3b3;">);
+    }
+}
+</span></code></pre>
+<p>Nesse caso foram criadas duas funções, a <code>printAux</code> que percorre a árvore de forma recursiva, e a <code>print</code> que expõe essa função, para ser chamada externamente de forma mais simples. Em relação ao tempo de execução, esse algoritmo possui complexidade linear, uma vez que percorre todos os valores da árvore, e em relação ao uso de memória, como só é necessário manter as variáveis de um ramo da árvore por vez em memória, ele cresce de forma logarítmica em relação a quantidade de valores da árvore (<code>O(log2 n)</code>), igual a altura da árvore, considerando que a mesma esteja balanceada (com ramos aproximadamente do mesmo tamanho).</p>
+<p>É possível pensar em um algoritmo iterativo para esse problema. Porém como deve-se passar uma vez pelos valores a esquerda e outra pelos valores a direita de cada valor da árvore, para controlar o estado e saber qual lado deve-se percorrer, cria-se uma estrutura com essa informação. Exemplo:</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-java" data-lang="java"><span style="color:#c594c5;">import </span><span style="color:#fac863;">java</span><span style="color:#5fb3b3;">.</span><span style="color:#fac863;">util</span><span style="color:#5fb3b3;">.</span><span style="color:#fac863;">ArrayList</span><span style="color:#5fb3b3;">;
+</span><span style="color:#c594c5;">import </span><span style="color:#fac863;">java</span><span style="color:#5fb3b3;">.</span><span style="color:#fac863;">util</span><span style="color:#5fb3b3;">.</span><span style="color:#fac863;">List</span><span style="color:#5fb3b3;">;
+
+</span><span style="color:#c594c5;">class </span><span style="color:#fac863;">ArvoreValor </span><span style="color:#5fb3b3;">{
+    </span><span style="color:#fac863;">ArvoreValor </span><span style="color:#cccece;">esquerda</span><span style="color:#5fb3b3;">;
+    </span><span style="color:#c594c5;">int </span><span style="color:#cccece;">valor</span><span style="color:#5fb3b3;">;
+    </span><span style="color:#fac863;">ArvoreValor </span><span style="color:#cccece;">direita</span><span style="color:#5fb3b3;">;
+
+    </span><span style="color:#c594c5;">public </span><span style="color:#6699cc;">ArvoreValor</span><span style="color:#5fb3b3;">(</span><span style="color:#fac863;">ArvoreValor </span><span style="color:#f99157;">esquerda</span><span style="color:#5fb3b3;">, </span><span style="color:#c594c5;">int </span><span style="color:#f99157;">valor</span><span style="color:#5fb3b3;">, </span><span style="color:#fac863;">ArvoreValor </span><span style="color:#f99157;">direita</span><span style="color:#5fb3b3;">) {
+        </span><span style="color:#ec5f67;">this</span><span style="color:#5fb3b3;">.</span><span style="color:#cccece;">esquerda </span><span style="color:#5fb3b3;">=</span><span style="color:#cccece;"> esquerda</span><span style="color:#5fb3b3;">;
+        </span><span style="color:#ec5f67;">this</span><span style="color:#5fb3b3;">.</span><span style="color:#cccece;">valor </span><span style="color:#5fb3b3;">=</span><span style="color:#cccece;"> valor</span><span style="color:#5fb3b3;">;
+        </span><span style="color:#ec5f67;">this</span><span style="color:#5fb3b3;">.</span><span style="color:#cccece;">direita </span><span style="color:#5fb3b3;">=</span><span style="color:#cccece;"> direita</span><span style="color:#5fb3b3;">;
+    }
+}
+
+</span><span style="color:#c594c5;">enum </span><span style="color:#fac863;">ArvoreLado </span><span style="color:#5fb3b3;">{
+    </span><span style="color:#fac863;">Esquerda</span><span style="color:#5fb3b3;">,
+    </span><span style="color:#cccece;">Direita</span><span style="color:#5fb3b3;">;
+}
+
+</span><span style="color:#c594c5;">class </span><span style="color:#fac863;">Estado </span><span style="color:#5fb3b3;">{
+    </span><span style="color:#fac863;">ArvoreValor </span><span style="color:#cccece;">valor</span><span style="color:#5fb3b3;">;
+    </span><span style="color:#fac863;">ArvoreLado </span><span style="color:#cccece;">lado</span><span style="color:#5fb3b3;">;
+
+    </span><span style="color:#c594c5;">public </span><span style="color:#6699cc;">Estado</span><span style="color:#5fb3b3;">(</span><span style="color:#fac863;">ArvoreValor </span><span style="color:#f99157;">valor</span><span style="color:#5fb3b3;">, </span><span style="color:#fac863;">ArvoreLado </span><span style="color:#f99157;">lado</span><span style="color:#5fb3b3;">) {
+        </span><span style="color:#ec5f67;">this</span><span style="color:#5fb3b3;">.</span><span style="color:#cccece;">valor </span><span style="color:#5fb3b3;">=</span><span style="color:#cccece;"> valor</span><span style="color:#5fb3b3;">;
+        </span><span style="color:#ec5f67;">this</span><span style="color:#5fb3b3;">.</span><span style="color:#cccece;">lado </span><span style="color:#5fb3b3;">=</span><span style="color:#cccece;"> lado</span><span style="color:#5fb3b3;">;
+    }
+}
+
+</span><span style="color:#c594c5;">public class </span><span style="color:#fac863;">ArvoreIterativa </span><span style="color:#5fb3b3;">{
+    </span><span style="color:#c594c5;">private </span><span style="color:#fac863;">ArvoreValor </span><span style="color:#cccece;">raiz</span><span style="color:#5fb3b3;">;
+
+    </span><span style="color:#c594c5;">public </span><span style="color:#6699cc;">ArvoreIterativa</span><span style="color:#5fb3b3;">() {
+</span><span style="color:#cccece;">        raiz </span><span style="color:#5fb3b3;">= </span><span style="color:#c594c5;">new </span><span style="color:#fac863;">ArvoreValor</span><span style="color:#5fb3b3;">(
+            </span><span style="color:#c594c5;">new </span><span style="color:#fac863;">ArvoreValor</span><span style="color:#5fb3b3;">(
+                </span><span style="color:#c594c5;">new </span><span style="color:#fac863;">ArvoreValor</span><span style="color:#5fb3b3;">(</span><span style="color:#f99157;">null</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">1</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">null</span><span style="color:#5fb3b3;">),
+                </span><span style="color:#f99157;">2</span><span style="color:#5fb3b3;">,
+                </span><span style="color:#c594c5;">new </span><span style="color:#fac863;">ArvoreValor</span><span style="color:#5fb3b3;">(</span><span style="color:#f99157;">null</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">3</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">null</span><span style="color:#5fb3b3;">)
+            ),
+            </span><span style="color:#f99157;">4</span><span style="color:#5fb3b3;">,
+            </span><span style="color:#c594c5;">new </span><span style="color:#fac863;">ArvoreValor</span><span style="color:#5fb3b3;">(
+                </span><span style="color:#c594c5;">new </span><span style="color:#fac863;">ArvoreValor</span><span style="color:#5fb3b3;">(</span><span style="color:#f99157;">null</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">5</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">null</span><span style="color:#5fb3b3;">),
+                </span><span style="color:#f99157;">6</span><span style="color:#5fb3b3;">,
+                </span><span style="color:#c594c5;">new </span><span style="color:#fac863;">ArvoreValor</span><span style="color:#5fb3b3;">(</span><span style="color:#f99157;">null</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">7</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">null</span><span style="color:#5fb3b3;">)
+            )
+        );
+    }
+
+    </span><span style="color:#c594c5;">public void </span><span style="color:#6699cc;">print</span><span style="color:#5fb3b3;">() {
+        </span><span style="color:#fac863;">List</span><span style="color:#5fb3b3;">&lt;</span><span style="color:#fac863;">Estado</span><span style="color:#5fb3b3;">&gt;</span><span style="color:#cccece;"> estados </span><span style="color:#5fb3b3;">= </span><span style="color:#c594c5;">new </span><span style="color:#fac863;">ArrayList</span><span style="color:#5fb3b3;">&lt;</span><span style="color:#fac863;">Estado</span><span style="color:#5fb3b3;">&gt;();
+</span><span style="color:#cccece;">        estados</span><span style="color:#5fb3b3;">.</span><span style="color:#6699cc;">add</span><span style="color:#5fb3b3;">(</span><span style="color:#c594c5;">new </span><span style="color:#fac863;">Estado</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">raiz</span><span style="color:#5fb3b3;">, </span><span style="color:#fac863;">ArvoreLado</span><span style="color:#5fb3b3;">.</span><span style="color:#fac863;">Esquerda</span><span style="color:#5fb3b3;">));
+
+        </span><span style="color:#c594c5;">while </span><span style="color:#5fb3b3;">(!</span><span style="color:#cccece;">estados</span><span style="color:#5fb3b3;">.</span><span style="color:#6699cc;">isEmpty</span><span style="color:#5fb3b3;">()) {
+            </span><span style="color:#fac863;">Estado</span><span style="color:#cccece;"> estado </span><span style="color:#5fb3b3;">=</span><span style="color:#cccece;"> estados</span><span style="color:#5fb3b3;">.</span><span style="color:#6699cc;">remove</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">estados</span><span style="color:#5fb3b3;">.</span><span style="color:#6699cc;">size</span><span style="color:#5fb3b3;">() - </span><span style="color:#f99157;">1</span><span style="color:#5fb3b3;">);
+            </span><span style="color:#fac863;">ArvoreValor</span><span style="color:#cccece;"> valor </span><span style="color:#5fb3b3;">=</span><span style="color:#cccece;"> estado</span><span style="color:#5fb3b3;">.</span><span style="color:#cccece;">valor</span><span style="color:#5fb3b3;">;
+            </span><span style="color:#c594c5;">if </span><span style="color:#5fb3b3;">(</span><span style="color:#cccece;">valor </span><span style="color:#5fb3b3;">== </span><span style="color:#f99157;">null</span><span style="color:#5fb3b3;">) {
+                </span><span style="color:#c594c5;">continue</span><span style="color:#5fb3b3;">;
+            }
+            </span><span style="color:#c594c5;">switch </span><span style="color:#5fb3b3;">(</span><span style="color:#cccece;">estado</span><span style="color:#5fb3b3;">.</span><span style="color:#cccece;">lado</span><span style="color:#5fb3b3;">) {
+                </span><span style="color:#c594c5;">case </span><span style="color:#fac863;">Esquerda</span><span style="color:#5fb3b3;">:
+</span><span style="color:#cccece;">                    estado</span><span style="color:#5fb3b3;">.</span><span style="color:#cccece;">lado </span><span style="color:#5fb3b3;">= </span><span style="color:#fac863;">ArvoreLado</span><span style="color:#5fb3b3;">.</span><span style="color:#fac863;">Direita</span><span style="color:#5fb3b3;">;
+</span><span style="color:#cccece;">                    estados</span><span style="color:#5fb3b3;">.</span><span style="color:#6699cc;">add</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">estado</span><span style="color:#5fb3b3;">);
+</span><span style="color:#cccece;">                    estados</span><span style="color:#5fb3b3;">.</span><span style="color:#6699cc;">add</span><span style="color:#5fb3b3;">(</span><span style="color:#c594c5;">new </span><span style="color:#fac863;">Estado</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">valor</span><span style="color:#5fb3b3;">.</span><span style="color:#6699cc;">esquerda</span><span style="color:#5fb3b3;">, </span><span style="color:#fac863;">ArvoreLado</span><span style="color:#5fb3b3;">.</span><span style="color:#fac863;">Esquerda</span><span style="color:#5fb3b3;">));
+                    </span><span style="color:#c594c5;">break</span><span style="color:#5fb3b3;">;
+                </span><span style="color:#c594c5;">case </span><span style="color:#fac863;">Direita</span><span style="color:#5fb3b3;">:
+                    </span><span style="color:#fac863;">System</span><span style="color:#5fb3b3;">.</span><span style="color:#cccece;">out</span><span style="color:#5fb3b3;">.</span><span style="color:#6699cc;">println</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">valor</span><span style="color:#5fb3b3;">.</span><span style="color:#6699cc;">valor</span><span style="color:#5fb3b3;">);
+</span><span style="color:#cccece;">                    estados</span><span style="color:#5fb3b3;">.</span><span style="color:#6699cc;">add</span><span style="color:#5fb3b3;">(</span><span style="color:#c594c5;">new </span><span style="color:#fac863;">Estado</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">valor</span><span style="color:#5fb3b3;">.</span><span style="color:#6699cc;">direita</span><span style="color:#5fb3b3;">, </span><span style="color:#fac863;">ArvoreLado</span><span style="color:#5fb3b3;">.</span><span style="color:#fac863;">Esquerda</span><span style="color:#5fb3b3;">));
+                    </span><span style="color:#c594c5;">break</span><span style="color:#5fb3b3;">;
+            }
+        }
+    }
+}
+</span></code></pre>
+<p>Em relação ao tempo de execução, esse algoritmo apresenta uma complexidade linear, e em relação ao uso de memória, como é necessário manter os estados de um ramo da árvore, a complexidade é logarítmica, assim como as complexidades do algoritmo utilizando recurção. Nesse caso a lista de estados criados funciona de forma análoga a pilha de execução, utilizada pelo algoritmo recursivo. Essa solução é melhor do que manter o estado de todo os valores em memória, que teria complexidade linear de uso da memória, conforme a quantidade de valores na árvore. E mesmo em relação a pilha de execução também acaba ocupando menos memória, visto que não é necessário manter o estado de todos os valores do ramo, apenas daqueles que ainda possuem alguma direção (esquerda ou direita) a serem processados. Porém essa solução, embora use um pouco menos de memória por causa disso, possui a mesma complexidade em relação ao uso de memória, sendo um código mais difícil de ler e dar manutenção para se conseguir isso.</p>
+<h2 id="consideracoes">Considerações</h2>
+<p>Um algoritmo pode ser classificado de diferentes formas em relação ao seu desempenho conforme o crescimento do tamanho do problema a ser tratado, como tempo de execução e uso de memória. Embora algoritmos iterativos pareçam mais interessantes a primeira vista, quando comparados aos algoritmos recursivos, para alguns problemas os algoritmos iterativos não apresentam vantagens claras, além de serem mais complexos de implementar.</p>
+<p>Os exemplos apresentados também consideram que todos os valores cabem dentro de um <code>int</code>. Quando se trabalha com valores maiores, por exemplo, utilizando vários <code>int</code> para representar um número, onde cada <code>int</code> representa uma parte do valor, operações de soma deixam de ter complexidade de tempo constante para ter complexidade linear a quantidade de <code>int</code> que representam o número, visto que deve-se executar uma operação de soma para cada <code>int</code>, o que poderia alterar a complexidade do algoritmo.</p>
+
+    </div>
+
+        </div>
+    </body>
+</html>

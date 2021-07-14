@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+        <title>Orientação a objetos de outra forma: Métodos estáticos e de classes - Blog Eduardo Klosowski</title>
+        <meta name="application-name" content="Blog Eduardo Klosowski">
+        <meta name="apple-mobile-web-app-title" content="Blog Eduardo Klosowski">
+
+        <link rel="shortcut icon" href="https://eduardoklosowski.github.io/blog/favicon.webp">
+        <link rel="icon" sizes="188x188" href="https://eduardoklosowski.github.io/blog/logo.png">
+        <link rel="apple-touch-icon" href="https://eduardoklosowski.github.io/blog/logo.png">
+
+        
+            <link rel="alternate" type="application/atom+xml" title="Blog Eduardo Klosowski" href="https://eduardoklosowski.github.io/blog/atom.xml">
+        
+
+        
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Blog Eduardo Klosowski">
+    <meta property="og:title" content="Orientação a objetos de outra forma: Métodos estáticos e de classes">
+    <meta property="og:description" content="Na postagem anterior foi apresentado o self, nessa postagem será discutido mais a respeito desse argumento, considerando opções para ele e suas aplicações.">
+    <meta property="og:url" content="https://eduardoklosowski.github.io/blog/oo-de-outra-forma-2/">
+    <meta property="og:image" content="https://eduardoklosowski.github.io/blog/logo.png">
+    <meta property="og:locale" content="pt_BR">
+    <meta property="og:article:published_time" content="2021-04-10">
+    <meta property="og:article:author" content="Eduardo Klosowski">
+    
+        <meta property="og:article:tag" content="Orientação a objetos de outra forma">
+    
+    
+        <meta property="og:article:tag" content="Orientação a Objetos">
+    
+    
+        <meta property="og:article:tag" content="Python">
+    
+
+
+        <link rel="stylesheet" media="all" href="https://eduardoklosowski.github.io/blog/poole.css">
+        <link rel="stylesheet" media="all" href="https://eduardoklosowski.github.io/blog/tema.css">
+        <link rel="stylesheet" media="print" href="https://eduardoklosowski.github.io/blog/print.css">
+
+        
+            <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "73939fe3b7984f859c0427bc6c693927"}'></script>
+        
+        
+            <script async src="https://www.googletagmanager.com/gtag/js?id=G-15ZW1NJTDE"></script>
+            <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', 'G-15ZW1NJTDE');
+            </script>
+        
+    </head>
+
+    <body>
+        <div class="sidebar">
+            <div class="container">
+                <div class="sidebar-about">
+                    <a href="https://eduardoklosowski.github.io/blog/">
+                        <img class="sidebar-logo" src="https://eduardoklosowski.github.io/blog/logo.png">
+                        <h1>Blog Eduardo Klosowski</h1>
+                    </a>
+                </div>
+
+                <ul class="sidebar-nav">
+                    
+                        <li class="sidebar-nav-item">
+                            <a rel="noopener" target="_blank" href="https://github.com/eduardoklosowski">
+                                
+                                    <img src="https://eduardoklosowski.github.io/blog/icons/github.svg" alt="GitHub">
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="sidebar-nav-item">
+                            <a rel="noopener" target="_blank" href="https://twitter.com/eduklosowski">
+                                
+                                    <img src="https://eduardoklosowski.github.io/blog/icons/twitter.svg" alt="Twitter">
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="sidebar-nav-item">
+                            <a rel="noopener" target="_blank" href="https://twitch.tv/eduardoklosowski">
+                                
+                                    <img src="https://eduardoklosowski.github.io/blog/icons/twitch.svg" alt="Twitch">
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="sidebar-nav-item">
+                            <a rel="noopener" target="_blank" href="https://asciinema.org/~eduardoklosowski">
+                                
+                                    <img src="https://eduardoklosowski.github.io/blog/icons/asciinema.svg" alt="asciinema">
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="sidebar-nav-item">
+                            <a rel="noopener" target="_blank" href="https://dev.to/eduardoklosowski">
+                                
+                                    <img src="https://eduardoklosowski.github.io/blog/icons/dev.svg" alt="DEV">
+                                
+                            </a>
+                        </li>
+                    
+                </ul>
+            </div>
+        </div>
+
+        <div class="content container">
+            
+    <div class="post">
+        <h1 class="post-title">Orientação a objetos de outra forma: Métodos estáticos e de classes</h1>
+        <div class="post-info">
+            Publicado em 10-04-2021
+            &middot;
+            4 minutos de leitura
+        </div>
+        
+            <div class="post-serie">
+                Série
+                
+                    <a href="https://eduardoklosowski.github.io/blog/series/orientacao-a-objetos-de-outra-forma/">Orientação a objetos de outra forma</a>
+                
+            </div>
+        
+        <div class="post-tags">
+            
+                <a href="https://eduardoklosowski.github.io/blog/tags/orientacao-a-objetos/">#Orientação a Objetos</a>,
+            
+            
+                <a href="https://eduardoklosowski.github.io/blog/linguagens/python/">#Python</a>
+            
+        </div>
+        <p>Na <a href="https://eduardoklosowski.github.io/blog/oo-de-outra-forma-1/">postagem anterior</a> foi apresentado o <code>self</code>, nessa postagem será discutido mais a respeito desse argumento, considerando opções para ele e suas aplicações.</p>
+<h2 id="metodos-estaticos">Métodos estáticos</h2>
+<p>Nem todas as funções de uma classe precisam receber uma referência de um objeto para lê-lo ou alterá-lo, muitas vezes uma função pode fazer o seu papel apenas com os dados passados como argumento, por exemplo, receber um nome e validar se ele possui pelo menos três caracteres sem espaço. Dessa forma, essa função poderia ser colocada fora do escopo da classe, porém para facilitar sua chamada, e possíveis alterações (que será discutido em outra postagem), é possível colocar essa função dentro da classe e informar que ela não receberá o argumento <code>self</code> com o decorador <code>@staticmethod</code>:</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-python" data-lang="python"><span style="color:#c594c5;">class </span><span style="color:#fac863;">Pessoa</span><span style="color:#5fb3b3;">:
+    </span><span style="color:#f99157;">...  </span><span style="color:#5f6364;"># Demais funções
+
+    </span><span style="color:#5fb3b3;">@</span><span style="color:#6699cc;">staticmethod
+    </span><span style="color:#c594c5;">def </span><span style="color:#6699cc;">valida_nome</span><span style="color:#5fb3b3;">(</span><span style="color:#f99157;">nome</span><span style="color:#5fb3b3;">):
+        </span><span style="color:#c594c5;">return </span><span style="color:#6699cc;">len</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">nome</span><span style="color:#5fb3b3;">) &gt;= </span><span style="color:#f99157;">3 </span><span style="color:#5fb3b3;">and &#39; &#39; not in </span><span style="color:#cccece;">nome
+</span></code></pre>
+<p>Dessa forma, essa função pode ser chamada diretamente de um objeto pessoa, ou até mesmo diretamente da classe, sem precisar criar um objeto primeiro:</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-python" data-lang="python"><span style="color:#5f6364;"># Chamando diretamente da classe
+</span><span style="color:#6699cc;">print</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">Pessoa</span><span style="color:#5fb3b3;">.</span><span style="color:#6699cc;">valida_nome</span><span style="color:#5fb3b3;">(&#39;</span><span style="color:#99c794;">João</span><span style="color:#5fb3b3;">&#39;))
+
+</span><span style="color:#5f6364;"># Chamando através de um objeto do tipo Pessoa
+</span><span style="color:#cccece;">p1 </span><span style="color:#5fb3b3;">= </span><span style="color:#6699cc;">Pessoa</span><span style="color:#5fb3b3;">(&#39;</span><span style="color:#99c794;">João</span><span style="color:#5fb3b3;">&#39;, &#39;</span><span style="color:#99c794;">da Silva</span><span style="color:#5fb3b3;">&#39;, </span><span style="color:#f99157;">20</span><span style="color:#5fb3b3;">)
+</span><span style="color:#6699cc;">print</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">p1</span><span style="color:#5fb3b3;">.</span><span style="color:#6699cc;">valida_nome</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">p1</span><span style="color:#5fb3b3;">.</span><span style="color:#6699cc;">nome</span><span style="color:#5fb3b3;">))
+</span></code></pre>
+<p>E essa função também pode ser utilizada dendro de outras funções, como validar o nome na criação de uma pessoa, de forma que caso o nome informado seja válido, será criado um objeto do tipo Pessoa, e caso o nome seja inválido, será lançado uma exceção:</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-python" data-lang="python"><span style="color:#c594c5;">class </span><span style="color:#fac863;">Pessoa</span><span style="color:#5fb3b3;">:
+    </span><span style="color:#c594c5;">def </span><span style="color:#6699cc;">__init__</span><span style="color:#5fb3b3;">(</span><span style="color:#f99157;">self</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">nome</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">sobrenome</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">idade</span><span style="color:#5fb3b3;">):
+        </span><span style="color:#c594c5;">if </span><span style="color:#5fb3b3;">not </span><span style="color:#ec5f67;">self</span><span style="color:#5fb3b3;">.</span><span style="color:#6699cc;">valida_nome</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">nome</span><span style="color:#5fb3b3;">):
+            </span><span style="color:#c594c5;">raise </span><span style="color:#fac863;">ValueError</span><span style="color:#5fb3b3;">(&#39;</span><span style="color:#99c794;">Nome inválido</span><span style="color:#5fb3b3;">&#39;)
+
+        </span><span style="color:#ec5f67;">self</span><span style="color:#5fb3b3;">.</span><span style="color:#cccece;">nome </span><span style="color:#5fb3b3;">= </span><span style="color:#cccece;">nome
+        </span><span style="color:#ec5f67;">self</span><span style="color:#5fb3b3;">.</span><span style="color:#cccece;">sobrenome </span><span style="color:#5fb3b3;">= </span><span style="color:#cccece;">sobrenome
+        </span><span style="color:#ec5f67;">self</span><span style="color:#5fb3b3;">.</span><span style="color:#cccece;">idade </span><span style="color:#5fb3b3;">= </span><span style="color:#cccece;">idade
+
+    </span><span style="color:#f99157;">...  </span><span style="color:#5f6364;"># Demais funções
+
+    </span><span style="color:#5fb3b3;">@</span><span style="color:#6699cc;">staticmethod
+    </span><span style="color:#c594c5;">def </span><span style="color:#6699cc;">valida_nome</span><span style="color:#5fb3b3;">(</span><span style="color:#f99157;">nome</span><span style="color:#5fb3b3;">):
+        </span><span style="color:#c594c5;">return </span><span style="color:#6699cc;">len</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">nome</span><span style="color:#5fb3b3;">) &gt;= </span><span style="color:#f99157;">3 </span><span style="color:#5fb3b3;">and &#39; &#39; not in </span><span style="color:#cccece;">nome
+
+
+p1 </span><span style="color:#5fb3b3;">= </span><span style="color:#6699cc;">Pessoa</span><span style="color:#5fb3b3;">(&#39;</span><span style="color:#99c794;">João</span><span style="color:#5fb3b3;">&#39;, &#39;</span><span style="color:#99c794;">da Silva</span><span style="color:#5fb3b3;">&#39;, </span><span style="color:#f99157;">20</span><span style="color:#5fb3b3;">)  </span><span style="color:#5f6364;"># Cria objeto
+</span><span style="color:#cccece;">p2 </span><span style="color:#5fb3b3;">= </span><span style="color:#6699cc;">Pessoa</span><span style="color:#5fb3b3;">(&#39;</span><span style="color:#99c794;">a</span><span style="color:#5fb3b3;">&#39;, &#39;</span><span style="color:#99c794;">da Silva</span><span style="color:#5fb3b3;">&#39;, </span><span style="color:#f99157;">20</span><span style="color:#5fb3b3;">)  </span><span style="color:#5f6364;"># Lança ValueError: Nome inválido
+</span></code></pre><h2 id="metodos-da-classe">Métodos da classe</h2>
+<p>Entretanto algumas funções podem precisar de um meio termo, necessitar acessar o contexto da classe, porém sem necessitar de um objeto. Isso é feito através do decorador <code>@classmethod</code>, onde a função decorada com ele, em vez de receber um objeto como primeiro argumento, recebe a própria classe.</p>
+<p>Para demonstrar essa funcionalidade será implementado um <em>id</em> auto incremental para os objetos da classe <code>Pessoa</code>:</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-python" data-lang="python"><span style="color:#c594c5;">class </span><span style="color:#fac863;">Pessoa</span><span style="color:#5fb3b3;">:
+    </span><span style="color:#cccece;">total_de_pessoas </span><span style="color:#5fb3b3;">= </span><span style="color:#f99157;">0
+
+    </span><span style="color:#5fb3b3;">@</span><span style="color:#6699cc;">classmethod
+    </span><span style="color:#c594c5;">def </span><span style="color:#6699cc;">novo_id</span><span style="color:#5fb3b3;">(</span><span style="color:#f99157;">cls</span><span style="color:#5fb3b3;">):
+        </span><span style="color:#ec5f67;">cls</span><span style="color:#5fb3b3;">.</span><span style="color:#cccece;">total_de_pessoas </span><span style="color:#5fb3b3;">+= </span><span style="color:#f99157;">1
+        </span><span style="color:#c594c5;">return </span><span style="color:#ec5f67;">cls</span><span style="color:#5fb3b3;">.</span><span style="color:#cccece;">total_de_pessoas
+
+    </span><span style="color:#c594c5;">def </span><span style="color:#6699cc;">__init__</span><span style="color:#5fb3b3;">(</span><span style="color:#f99157;">self</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">nome</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">sobrenome</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">idade</span><span style="color:#5fb3b3;">):
+        </span><span style="color:#ec5f67;">self</span><span style="color:#5fb3b3;">.</span><span style="color:#cccece;">id </span><span style="color:#5fb3b3;">= </span><span style="color:#ec5f67;">self</span><span style="color:#5fb3b3;">.</span><span style="color:#6699cc;">novo_id</span><span style="color:#5fb3b3;">()
+        </span><span style="color:#ec5f67;">self</span><span style="color:#5fb3b3;">.</span><span style="color:#cccece;">nome </span><span style="color:#5fb3b3;">= </span><span style="color:#cccece;">nome
+        </span><span style="color:#ec5f67;">self</span><span style="color:#5fb3b3;">.</span><span style="color:#cccece;">sobrenome </span><span style="color:#5fb3b3;">= </span><span style="color:#cccece;">sobrenome
+        </span><span style="color:#ec5f67;">self</span><span style="color:#5fb3b3;">.</span><span style="color:#cccece;">idade </span><span style="color:#5fb3b3;">= </span><span style="color:#cccece;">idade
+
+p1 </span><span style="color:#5fb3b3;">= </span><span style="color:#6699cc;">Pessoa</span><span style="color:#5fb3b3;">(&#39;</span><span style="color:#99c794;">João</span><span style="color:#5fb3b3;">&#39;, &#39;</span><span style="color:#99c794;">da Silva</span><span style="color:#5fb3b3;">&#39;, </span><span style="color:#f99157;">20</span><span style="color:#5fb3b3;">)
+</span><span style="color:#6699cc;">print</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">p1</span><span style="color:#5fb3b3;">.</span><span style="color:#6699cc;">id</span><span style="color:#5fb3b3;">)  </span><span style="color:#5f6364;"># Imprime 1
+</span><span style="color:#cccece;">p2 </span><span style="color:#5fb3b3;">= </span><span style="color:#6699cc;">Pessoa</span><span style="color:#5fb3b3;">(&#39;</span><span style="color:#99c794;">Maria</span><span style="color:#5fb3b3;">&#39;, &#39;</span><span style="color:#99c794;">dos Santos</span><span style="color:#5fb3b3;">&#39;, </span><span style="color:#f99157;">18</span><span style="color:#5fb3b3;">)
+</span><span style="color:#6699cc;">print</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">p2</span><span style="color:#5fb3b3;">.</span><span style="color:#6699cc;">id</span><span style="color:#5fb3b3;">)  </span><span style="color:#5f6364;"># Imprime 2
+</span><span style="color:#6699cc;">print</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">Pessoa</span><span style="color:#5fb3b3;">.</span><span style="color:#6699cc;">total_de_pessoas</span><span style="color:#5fb3b3;">)  </span><span style="color:#5f6364;"># Imprime 2
+</span><span style="color:#6699cc;">print</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">p1</span><span style="color:#5fb3b3;">.</span><span style="color:#6699cc;">total_de_pessoas</span><span style="color:#5fb3b3;">)  </span><span style="color:#5f6364;"># Imprime 2
+</span><span style="color:#6699cc;">print</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">p2</span><span style="color:#5fb3b3;">.</span><span style="color:#6699cc;">total_de_pessoas</span><span style="color:#5fb3b3;">)  </span><span style="color:#5f6364;"># Imprime 2
+</span></code></pre>
+<p>Nesse código é criado uma variável <code>total_de_pessoas</code> dentro do escopo da classe <code>Pessoas</code>, e que é compartilhado tanto pela classe, como pelos objetos dessa classe, diferente de declará-la com <code>self.</code> dentro do <code>__init__</code>, onde esse valor pertenceria apenas ao objeto, e não é compartilhado com os demais objetos. Declarar variáveis dentro do contexto da classe é similar ao se declarar variáveis com <code>static</code> em outras linguagens, assim como o <code>@classmethod</code> é semelhante a declaração de funções com <code>static</code>.</p>
+<p>As funções declaradas com <code>@classmethod</code> também podem ser chamadas sem a necessidade de se criar um objeto, como <code>Pessoa.novo_id()</code>, embora que para essa função específica isso não faça muito sentido, ou receber outros argumentos, tudo depende do que essa função fará.</p>
+<h2 id="consideracoes">Considerações</h2>
+<p>Embora possa parecer confuso identificar a diferença de uma função de um objeto (função sem decorador), função de uma classe (com decorador <code>@classmethod</code>) e função sem acesso a nenhum outro contexto (com decorador <code>@staticmethod</code>), essa diferença fica mais clara ao se analisar o primeiro argumento recebido por cada tipo de função. Podendo ser a referência a um objeto (<code>self</code>) e assim necessitando que um objeto seja criado anteriormente, ser uma classe (<code>cls</code>) e não necessitando receber um objeto, ou simplesmente não recebendo nenhum argumento especial, apenas os demais argumentos necessários para a função. Sendo diferenciados pelo uso dos decoradores.</p>
+<p>Na orientação a objetos implementada pelo Python, algumas coisas podem ficar confusas quando se mistura com nomenclaturas de outras linguagens que possuem implementações diferentes. A linguagem Java, por exemplo, utiliza a palavra-chave <code>static</code> para definir os atributos e métodos de classe, enquanto no Python um método estático é aquele que não acessa nem um objeto, nem uma classe, devendo ser utilizado o escopo da classe e o decorador <code>@classmethod</code> para se criar atributos e métodos da classe.</p>
+
+    </div>
+
+        </div>
+    </body>
+</html>

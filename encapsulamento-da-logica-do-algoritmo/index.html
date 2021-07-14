@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+        <title>Encapsulamento da lógica do algoritmo - Blog Eduardo Klosowski</title>
+        <meta name="application-name" content="Blog Eduardo Klosowski">
+        <meta name="apple-mobile-web-app-title" content="Blog Eduardo Klosowski">
+
+        <link rel="shortcut icon" href="https://eduardoklosowski.github.io/blog/favicon.webp">
+        <link rel="icon" sizes="188x188" href="https://eduardoklosowski.github.io/blog/logo.png">
+        <link rel="apple-touch-icon" href="https://eduardoklosowski.github.io/blog/logo.png">
+
+        
+            <link rel="alternate" type="application/atom+xml" title="Blog Eduardo Klosowski" href="https://eduardoklosowski.github.io/blog/atom.xml">
+        
+
+        
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Blog Eduardo Klosowski">
+    <meta property="og:title" content="Encapsulamento da lógica do algoritmo">
+    <meta property="og:description" content="Muitas listas de exercícios de lógica de programação pedem em algum momento que um valor seja lido do teclado, e caso esse valor seja inválido, deve-se avisar, e repetir a leitura até que um valor válido seja informado. Utilizando a ideia de otimização do algoritmo passo a passo, começando com uma solução simples, pretendo estudar como reduzir a duplicação de código alterando o algoritmo, encapsulando a lógica em funções, e encapsulando em classes.">
+    <meta property="og:url" content="https://eduardoklosowski.github.io/blog/encapsulamento-da-logica-do-algoritmo/">
+    <meta property="og:image" content="https://eduardoklosowski.github.io/blog/logo.png">
+    <meta property="og:locale" content="pt_BR">
+    <meta property="og:article:published_time" content="2021-03-01">
+    <meta property="og:article:author" content="Eduardo Klosowski">
+    
+    
+        <meta property="og:article:tag" content="Code Style">
+    
+        <meta property="og:article:tag" content="Orientação a Objetos">
+    
+    
+        <meta property="og:article:tag" content="Python">
+    
+
+
+        <link rel="stylesheet" media="all" href="https://eduardoklosowski.github.io/blog/poole.css">
+        <link rel="stylesheet" media="all" href="https://eduardoklosowski.github.io/blog/tema.css">
+        <link rel="stylesheet" media="print" href="https://eduardoklosowski.github.io/blog/print.css">
+
+        
+            <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "73939fe3b7984f859c0427bc6c693927"}'></script>
+        
+        
+            <script async src="https://www.googletagmanager.com/gtag/js?id=G-15ZW1NJTDE"></script>
+            <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', 'G-15ZW1NJTDE');
+            </script>
+        
+    </head>
+
+    <body>
+        <div class="sidebar">
+            <div class="container">
+                <div class="sidebar-about">
+                    <a href="https://eduardoklosowski.github.io/blog/">
+                        <img class="sidebar-logo" src="https://eduardoklosowski.github.io/blog/logo.png">
+                        <h1>Blog Eduardo Klosowski</h1>
+                    </a>
+                </div>
+
+                <ul class="sidebar-nav">
+                    
+                        <li class="sidebar-nav-item">
+                            <a rel="noopener" target="_blank" href="https://github.com/eduardoklosowski">
+                                
+                                    <img src="https://eduardoklosowski.github.io/blog/icons/github.svg" alt="GitHub">
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="sidebar-nav-item">
+                            <a rel="noopener" target="_blank" href="https://twitter.com/eduklosowski">
+                                
+                                    <img src="https://eduardoklosowski.github.io/blog/icons/twitter.svg" alt="Twitter">
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="sidebar-nav-item">
+                            <a rel="noopener" target="_blank" href="https://twitch.tv/eduardoklosowski">
+                                
+                                    <img src="https://eduardoklosowski.github.io/blog/icons/twitch.svg" alt="Twitch">
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="sidebar-nav-item">
+                            <a rel="noopener" target="_blank" href="https://asciinema.org/~eduardoklosowski">
+                                
+                                    <img src="https://eduardoklosowski.github.io/blog/icons/asciinema.svg" alt="asciinema">
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="sidebar-nav-item">
+                            <a rel="noopener" target="_blank" href="https://dev.to/eduardoklosowski">
+                                
+                                    <img src="https://eduardoklosowski.github.io/blog/icons/dev.svg" alt="DEV">
+                                
+                            </a>
+                        </li>
+                    
+                </ul>
+            </div>
+        </div>
+
+        <div class="content container">
+            
+    <div class="post">
+        <h1 class="post-title">Encapsulamento da lógica do algoritmo</h1>
+        <div class="post-info">
+            Publicado em 01-03-2021
+            &middot;
+            6 minutos de leitura
+        </div>
+        
+        <div class="post-tags">
+            
+                <a href="https://eduardoklosowski.github.io/blog/tags/code-style/">#Code Style</a>,
+            
+                <a href="https://eduardoklosowski.github.io/blog/tags/orientacao-a-objetos/">#Orientação a Objetos</a>,
+            
+            
+                <a href="https://eduardoklosowski.github.io/blog/linguagens/python/">#Python</a>
+            
+        </div>
+        <p>Muitas listas de exercícios de lógica de programação pedem em algum momento que um valor seja lido do teclado, e caso esse valor seja inválido, deve-se avisar, e repetir a leitura até que um valor válido seja informado. Utilizando a ideia de <a href="https://eduardoklosowski.github.io/blog/otimizando-o-algoritmo/">otimização do algoritmo passo a passo</a>, começando com uma solução simples, pretendo estudar como reduzir a duplicação de código alterando o algoritmo, encapsulando a lógica em funções, e encapsulando em classes.</p>
+<h2 id="exercicio">Exercício</h2>
+<p>Um exemplo de exercício que pede esse tipo de validação é a leitura de notas, que devem estar entre 0 e 10. A solução mais simples, consiste em ler um valor, e enquanto esse valor for inválido, dar o aviso e ler outro valor. Exemplo:</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-python" data-lang="python"><span style="color:#cccece;">nota </span><span style="color:#5fb3b3;">= </span><span style="color:#fac863;">float</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">input</span><span style="color:#5fb3b3;">(&#39;</span><span style="color:#99c794;">Digite a nota: </span><span style="color:#5fb3b3;">&#39;))
+</span><span style="color:#c594c5;">while </span><span style="color:#cccece;">nota </span><span style="color:#5fb3b3;">&lt; </span><span style="color:#f99157;">0 </span><span style="color:#5fb3b3;">or </span><span style="color:#cccece;">nota </span><span style="color:#5fb3b3;">&gt; </span><span style="color:#f99157;">10</span><span style="color:#5fb3b3;">:
+    </span><span style="color:#6699cc;">print</span><span style="color:#5fb3b3;">(&#39;</span><span style="color:#99c794;">Nota inválida</span><span style="color:#5fb3b3;">&#39;)
+    </span><span style="color:#cccece;">nota </span><span style="color:#5fb3b3;">= </span><span style="color:#fac863;">float</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">input</span><span style="color:#5fb3b3;">(&#39;</span><span style="color:#99c794;">Digite a nota: </span><span style="color:#5fb3b3;">&#39;))
+</span></code></pre>
+<p>Esse algoritmo funciona, porém existe uma duplicação no código que faz a leitura da nota (uma antes do <em>loop</em> e outra dentro). Caso seja necessário uma alteração, como a mudança da nota para um valor inteiro entre 0 e 100, deve-se alterar os dois lugares, e se feito em apenas um lugar, o algoritmo poderia processar valores inválidos.</p>
+<h3 id="alterando-o-algoritmo">Alterando o algoritmo</h3>
+<p>Visando remover a repetição de código, é possível unificar a leitura do valor dentro do <em>loop</em>, uma vez que é necessário repetir essa instrução até que o valor válido seja obtido. Exemplo:</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-python" data-lang="python"><span style="color:#c594c5;">while </span><span style="color:#f99157;">True</span><span style="color:#5fb3b3;">:
+    </span><span style="color:#cccece;">nota </span><span style="color:#5fb3b3;">= </span><span style="color:#fac863;">float</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">input</span><span style="color:#5fb3b3;">(&#39;</span><span style="color:#99c794;">Digite a nota: </span><span style="color:#5fb3b3;">&#39;))
+    </span><span style="color:#c594c5;">if </span><span style="color:#f99157;">0 </span><span style="color:#5fb3b3;">&lt;= </span><span style="color:#cccece;">nota </span><span style="color:#5fb3b3;">&lt;= </span><span style="color:#f99157;">10</span><span style="color:#5fb3b3;">:
+        </span><span style="color:#c594c5;">break
+    </span><span style="color:#6699cc;">print</span><span style="color:#5fb3b3;">(&#39;</span><span style="color:#99c794;">Nota inválida!</span><span style="color:#5fb3b3;">&#39;)
+</span></code></pre>
+<p>Dessa forma, não existe mais a repetição de código. A condição de parada, que antes verificava se o valor era inválido (o que pode ter uma leitura não tão intuitiva), agora verifica se é um valor válido (que é geralmente é mais fácil de ler e escrever a condição). E a ordem dos comandos dentro do <em>loop</em>, que agora estão em uma ordem que facilita a leitura, visto que no algoritmo anterior era necessário tem em mente o que era executado antes do <em>loop</em>.</p>
+<p>Porém esses algoritmos validam apenas o valor lido, apresentando erro caso seja informado um valor com formato inválido, como letras em vez de números. Isso pode ser resolvido tratando as exceções lançadas. Exemplo:</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-python" data-lang="python"><span style="color:#c594c5;">while </span><span style="color:#f99157;">True</span><span style="color:#5fb3b3;">:
+    </span><span style="color:#c594c5;">try</span><span style="color:#5fb3b3;">:
+        </span><span style="color:#cccece;">nota </span><span style="color:#5fb3b3;">= </span><span style="color:#fac863;">float</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">input</span><span style="color:#5fb3b3;">(&#39;</span><span style="color:#99c794;">Digite a nota: </span><span style="color:#5fb3b3;">&#39;))
+        </span><span style="color:#c594c5;">if </span><span style="color:#f99157;">0 </span><span style="color:#5fb3b3;">&lt;= </span><span style="color:#cccece;">nota </span><span style="color:#5fb3b3;">&lt;= </span><span style="color:#f99157;">10</span><span style="color:#5fb3b3;">:
+            </span><span style="color:#c594c5;">break
+    except </span><span style="color:#fac863;">ValueError</span><span style="color:#5fb3b3;">:
+        </span><span style="color:#f99157;">...
+    </span><span style="color:#6699cc;">print</span><span style="color:#5fb3b3;">(&#39;</span><span style="color:#99c794;">Nota inválida!</span><span style="color:#5fb3b3;">&#39;)
+</span></code></pre><h3 id="encapsulamento-da-logica-em-funcao">Encapsulamento da lógica em função</h3>
+<p>Caso fosse necessário ler várias notas, com os algoritmos apresentados até então, seria necessário repetir todo esse trecho de código, ou utilizá-lo dentro de uma estrutura de repetição. Para facilitar sua reutilização, evitando a duplicação de código, é possível encapsular esse algoritmo dentro de uma função. Exemplo:</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-python" data-lang="python"><span style="color:#c594c5;">def </span><span style="color:#6699cc;">nota_input</span><span style="color:#5fb3b3;">(</span><span style="color:#f99157;">prompt</span><span style="color:#5fb3b3;">):
+    </span><span style="color:#c594c5;">while </span><span style="color:#f99157;">True</span><span style="color:#5fb3b3;">:
+        </span><span style="color:#c594c5;">try</span><span style="color:#5fb3b3;">:
+            </span><span style="color:#cccece;">nota </span><span style="color:#5fb3b3;">= </span><span style="color:#fac863;">float</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">input</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">prompt</span><span style="color:#5fb3b3;">))
+            </span><span style="color:#c594c5;">if </span><span style="color:#f99157;">0 </span><span style="color:#5fb3b3;">&lt;= </span><span style="color:#cccece;">nota </span><span style="color:#5fb3b3;">&lt;= </span><span style="color:#f99157;">10</span><span style="color:#5fb3b3;">:
+                </span><span style="color:#c594c5;">break
+        except </span><span style="color:#fac863;">ValueError</span><span style="color:#5fb3b3;">:
+            </span><span style="color:#f99157;">...
+        </span><span style="color:#6699cc;">print</span><span style="color:#5fb3b3;">(&#39;</span><span style="color:#99c794;">Nota inválida!</span><span style="color:#5fb3b3;">&#39;)
+    </span><span style="color:#c594c5;">return </span><span style="color:#cccece;">nota
+
+
+nota1 </span><span style="color:#5fb3b3;">= </span><span style="color:#6699cc;">nota_input</span><span style="color:#5fb3b3;">(&#39;</span><span style="color:#99c794;">Digite a primeira nota: </span><span style="color:#5fb3b3;">&#39;)
+</span><span style="color:#cccece;">nota2 </span><span style="color:#5fb3b3;">= </span><span style="color:#6699cc;">nota_input</span><span style="color:#5fb3b3;">(&#39;</span><span style="color:#99c794;">Digite a segunda nota: </span><span style="color:#5fb3b3;">&#39;)
+</span></code></pre><h3 id="encapsulamento-da-logica-em-classes">Encapsulamento da lógica em classes</h3>
+<p>Em vez de encapsular essa lógica em uma função, é possível encapsulá-la em uma classe, o que permitiria separar cada etapa do algoritmo em métodos, assim como ter um método responsável por controlar qual etapa deveria ser chamada em qual momento. Exemplo:</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-python" data-lang="python"><span style="color:#c594c5;">class </span><span style="color:#fac863;">ValidaNotaInput</span><span style="color:#5fb3b3;">:
+    </span><span style="color:#cccece;">mensagem_valor_invalido </span><span style="color:#5fb3b3;">= &#39;</span><span style="color:#99c794;">Nota inválida!</span><span style="color:#5fb3b3;">&#39;
+
+    </span><span style="color:#c594c5;">def </span><span style="color:#6699cc;">ler_entrada</span><span style="color:#5fb3b3;">(</span><span style="color:#f99157;">self</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">prompt</span><span style="color:#5fb3b3;">):
+        </span><span style="color:#c594c5;">return </span><span style="color:#6699cc;">input</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">prompt</span><span style="color:#5fb3b3;">)
+
+    </span><span style="color:#c594c5;">def </span><span style="color:#6699cc;">transformar_entrada</span><span style="color:#5fb3b3;">(</span><span style="color:#f99157;">self</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">entrada</span><span style="color:#5fb3b3;">):
+        </span><span style="color:#c594c5;">return </span><span style="color:#fac863;">float</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">entrada</span><span style="color:#5fb3b3;">)
+
+    </span><span style="color:#c594c5;">def </span><span style="color:#6699cc;">validar_nota</span><span style="color:#5fb3b3;">(</span><span style="color:#f99157;">self</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">nota</span><span style="color:#5fb3b3;">):
+        </span><span style="color:#c594c5;">return </span><span style="color:#f99157;">0 </span><span style="color:#5fb3b3;">&lt;= </span><span style="color:#cccece;">nota </span><span style="color:#5fb3b3;">&lt;= </span><span style="color:#f99157;">10
+
+    </span><span style="color:#c594c5;">def </span><span style="color:#6699cc;">__call__</span><span style="color:#5fb3b3;">(</span><span style="color:#f99157;">self</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">prompt</span><span style="color:#5fb3b3;">):
+        </span><span style="color:#c594c5;">while </span><span style="color:#f99157;">True</span><span style="color:#5fb3b3;">:
+            </span><span style="color:#c594c5;">try</span><span style="color:#5fb3b3;">:
+                </span><span style="color:#cccece;">nota </span><span style="color:#5fb3b3;">= </span><span style="color:#ec5f67;">self</span><span style="color:#5fb3b3;">.</span><span style="color:#6699cc;">transformar_entrada</span><span style="color:#5fb3b3;">(</span><span style="color:#ec5f67;">self</span><span style="color:#5fb3b3;">.</span><span style="color:#6699cc;">ler_entrada</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">prompt</span><span style="color:#5fb3b3;">))
+                </span><span style="color:#c594c5;">if </span><span style="color:#ec5f67;">self</span><span style="color:#5fb3b3;">.</span><span style="color:#6699cc;">validar_nota</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">nota</span><span style="color:#5fb3b3;">):
+                    </span><span style="color:#c594c5;">break
+            except </span><span style="color:#fac863;">ValueError</span><span style="color:#5fb3b3;">:
+                </span><span style="color:#f99157;">...
+            </span><span style="color:#6699cc;">print</span><span style="color:#5fb3b3;">(</span><span style="color:#ec5f67;">self</span><span style="color:#5fb3b3;">.</span><span style="color:#6699cc;">mensagem_valor_invalido</span><span style="color:#5fb3b3;">)
+        </span><span style="color:#c594c5;">return </span><span style="color:#cccece;">nota
+
+
+nota_input </span><span style="color:#5fb3b3;">= </span><span style="color:#6699cc;">ValidaNotaInput</span><span style="color:#5fb3b3;">()
+
+
+</span><span style="color:#cccece;">nota </span><span style="color:#5fb3b3;">= </span><span style="color:#6699cc;">nota_input</span><span style="color:#5fb3b3;">(&#39;</span><span style="color:#99c794;">Digite a nota: </span><span style="color:#5fb3b3;">&#39;)
+</span></code></pre>
+<p>Vale observar que o método <code>__call__</code> permite que o objeto criado a partir dessa classe seja chamado como se fosse uma função. Nesse caso ele é o responsável por chamar cada etapa do algoritmo, como: <code>ler_entrada</code> que é responsável por ler o que foi digitado no teclado, <code>transformar_entrada</code> que é responsável por converter o texto lido para o tipo desejado (converter de <code>str</code> para <code>float</code>), e <code>validar_nota</code> que é responsável por dizer se o valor é válido ou não. Vale observar que ao dividir o algoritmo em métodos diferentes, seu código principal virou uma espécie de código comentado, descrevendo o que está sendo feito e onde está sendo feito.</p>
+<p>Outra vantagem de encapsular a lógica em classe, em vez de uma função, é a possibilidade de generalizá-la. Se fosse necessário validar outro tipo de entrada, encapsulando em uma função, seria necessário criar outra função repetindo todo o algoritmo, alterando apenas a parte referente a transformação do valor lido, e validação, o que gera uma espécie de repetição de código. Ao encapsular em classes, é possível se aproveitar dos mecanismos de herança para evitar essa repetição. Exemplo:</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-python" data-lang="python"><span style="color:#c594c5;">class </span><span style="color:#fac863;">ValidaInput</span><span style="color:#5fb3b3;">:
+    </span><span style="color:#cccece;">mensagem_valor_invalido </span><span style="color:#5fb3b3;">= &#39;</span><span style="color:#99c794;">Valor inválido!</span><span style="color:#5fb3b3;">&#39;
+
+    </span><span style="color:#c594c5;">def </span><span style="color:#6699cc;">ler_entrada</span><span style="color:#5fb3b3;">(</span><span style="color:#f99157;">self</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">prompt</span><span style="color:#5fb3b3;">):
+        </span><span style="color:#c594c5;">return </span><span style="color:#6699cc;">input</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">prompt</span><span style="color:#5fb3b3;">)
+
+    </span><span style="color:#c594c5;">def </span><span style="color:#6699cc;">transformar_entrada</span><span style="color:#5fb3b3;">(</span><span style="color:#f99157;">self</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">entrada</span><span style="color:#5fb3b3;">):
+        </span><span style="color:#c594c5;">raise </span><span style="color:#fac863;">NotImplementedError
+
+    </span><span style="color:#c594c5;">def </span><span style="color:#6699cc;">validar_valor</span><span style="color:#5fb3b3;">(</span><span style="color:#f99157;">self</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">valor</span><span style="color:#5fb3b3;">):
+        </span><span style="color:#c594c5;">raise </span><span style="color:#fac863;">NotImplementedError
+
+    </span><span style="color:#c594c5;">def </span><span style="color:#6699cc;">__call__</span><span style="color:#5fb3b3;">(</span><span style="color:#f99157;">self</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">prompt</span><span style="color:#5fb3b3;">):
+        </span><span style="color:#c594c5;">while </span><span style="color:#f99157;">True</span><span style="color:#5fb3b3;">:
+            </span><span style="color:#c594c5;">try</span><span style="color:#5fb3b3;">:
+                </span><span style="color:#cccece;">valor </span><span style="color:#5fb3b3;">= </span><span style="color:#ec5f67;">self</span><span style="color:#5fb3b3;">.</span><span style="color:#6699cc;">transformar_entrada</span><span style="color:#5fb3b3;">(</span><span style="color:#ec5f67;">self</span><span style="color:#5fb3b3;">.</span><span style="color:#6699cc;">ler_entrada</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">prompt</span><span style="color:#5fb3b3;">))
+                </span><span style="color:#c594c5;">if </span><span style="color:#ec5f67;">self</span><span style="color:#5fb3b3;">.</span><span style="color:#6699cc;">validar_valor</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">valor</span><span style="color:#5fb3b3;">):
+                    </span><span style="color:#c594c5;">break
+            except </span><span style="color:#fac863;">ValueError</span><span style="color:#5fb3b3;">:
+                </span><span style="color:#f99157;">...
+            </span><span style="color:#6699cc;">print</span><span style="color:#5fb3b3;">(</span><span style="color:#ec5f67;">self</span><span style="color:#5fb3b3;">.</span><span style="color:#6699cc;">mensagem_valor_invalido</span><span style="color:#5fb3b3;">)
+        </span><span style="color:#c594c5;">return </span><span style="color:#cccece;">valor
+
+
+</span><span style="color:#c594c5;">class </span><span style="color:#fac863;">ValidaNomeInput</span><span style="color:#5fb3b3;">(</span><span style="color:#99c794;">ValidaInput</span><span style="color:#5fb3b3;">):
+    </span><span style="color:#cccece;">mensagem_valor_invalido </span><span style="color:#5fb3b3;">= &#39;</span><span style="color:#99c794;">Nome inválido!</span><span style="color:#5fb3b3;">&#39;
+
+    </span><span style="color:#c594c5;">def </span><span style="color:#6699cc;">transformar_entrada</span><span style="color:#5fb3b3;">(</span><span style="color:#f99157;">self</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">entrada</span><span style="color:#5fb3b3;">):
+        </span><span style="color:#c594c5;">return </span><span style="color:#6699cc;">entrada</span><span style="color:#5fb3b3;">.</span><span style="color:#6699cc;">strip</span><span style="color:#5fb3b3;">().</span><span style="color:#6699cc;">title</span><span style="color:#5fb3b3;">()
+
+    </span><span style="color:#c594c5;">def </span><span style="color:#6699cc;">validar_valor</span><span style="color:#5fb3b3;">(</span><span style="color:#f99157;">self</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">valor</span><span style="color:#5fb3b3;">):
+        </span><span style="color:#c594c5;">return </span><span style="color:#cccece;">valor </span><span style="color:#5fb3b3;">!= &#39;&#39;
+
+
+</span><span style="color:#c594c5;">class </span><span style="color:#fac863;">ValidaNotaInput</span><span style="color:#5fb3b3;">(</span><span style="color:#99c794;">ValidaInput</span><span style="color:#5fb3b3;">):
+    </span><span style="color:#cccece;">mensagem_valor_invalido </span><span style="color:#5fb3b3;">= &#39;</span><span style="color:#99c794;">Nota inválida!</span><span style="color:#5fb3b3;">&#39;
+
+    </span><span style="color:#c594c5;">def </span><span style="color:#6699cc;">transformar_entrada</span><span style="color:#5fb3b3;">(</span><span style="color:#f99157;">self</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">entrada</span><span style="color:#5fb3b3;">):
+        </span><span style="color:#c594c5;">return </span><span style="color:#fac863;">float</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">entrada</span><span style="color:#5fb3b3;">)
+
+    </span><span style="color:#c594c5;">def </span><span style="color:#6699cc;">validar_valor</span><span style="color:#5fb3b3;">(</span><span style="color:#f99157;">self</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">valor</span><span style="color:#5fb3b3;">):
+        </span><span style="color:#c594c5;">return </span><span style="color:#f99157;">0 </span><span style="color:#5fb3b3;">&lt;= </span><span style="color:#cccece;">valor </span><span style="color:#5fb3b3;">&lt;= </span><span style="color:#f99157;">10
+
+
+</span><span style="color:#cccece;">nome_input </span><span style="color:#5fb3b3;">= </span><span style="color:#6699cc;">ValidaNomeInput</span><span style="color:#5fb3b3;">()
+</span><span style="color:#cccece;">nota_input </span><span style="color:#5fb3b3;">= </span><span style="color:#6699cc;">ValidaNotaInput</span><span style="color:#5fb3b3;">()
+
+
+</span><span style="color:#cccece;">nome </span><span style="color:#5fb3b3;">= </span><span style="color:#6699cc;">nome_input</span><span style="color:#5fb3b3;">(&#39;</span><span style="color:#99c794;">Digite o nome: </span><span style="color:#5fb3b3;">&#39;)
+</span><span style="color:#cccece;">nota </span><span style="color:#5fb3b3;">= </span><span style="color:#6699cc;">nota_input</span><span style="color:#5fb3b3;">(&#39;</span><span style="color:#99c794;">Digite a nota: </span><span style="color:#5fb3b3;">&#39;)
+</span></code></pre>
+<p>Dessa forma, é possível reutilizar o código já existente para criar outras validações, sendo necessário implementar apenas como converter a <code>str</code> lida do teclado para o tipo desejado, e como esse valor deve ser validado. Não é necessário entender e repetir a lógica de ler o valor, validá-lo, imprimir a mensagem de erro, e repetir até que seja informado um valor válido.</p>
+<h2 id="consideracoes">Considerações</h2>
+<p>É possível encapsular a lógica de um algoritmo em funções ou em classes. Embora para fazê-lo em uma classe exija conhecimentos de programação orientada a objetos, o seu reaproveitamento é facilitado, abstraindo toda a complexidade do algoritmo, que pode ser disponibilizado através de uma biblioteca, exigindo apenas a implementações de métodos simples por quem for a utilizar.</p>
+<p>Ainda poderia ser discutido outras formas de fazer essa implementação, como passar funções como parâmetro e a utilização de <a rel="noopener" target="_blank" href="https://docs.python.org/pt-br/3/library/asyncio-task.html">corrotinas</a> no encapsulamento do algoritmo em função, assim como a utilização de <a rel="noopener" target="_blank" href="https://docs.python.org/pt-br/3/library/functions.html#classmethod">classmethod</a>, <a rel="noopener" target="_blank" href="https://docs.python.org/pt-br/3/library/functions.html#staticmethod">staticmethod</a> e <a rel="noopener" target="_blank" href="https://docs.python.org/pt-br/3/library/abc.html">ABC</a> no encapsulamento do algoritmo em classes.</p>
+
+    </div>
+
+        </div>
+    </body>
+</html>

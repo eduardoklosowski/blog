@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+        <title>Orientação a objetos de outra forma: Classes e objetos - Blog Eduardo Klosowski</title>
+        <meta name="application-name" content="Blog Eduardo Klosowski">
+        <meta name="apple-mobile-web-app-title" content="Blog Eduardo Klosowski">
+
+        <link rel="shortcut icon" href="https://eduardoklosowski.github.io/blog/favicon.webp">
+        <link rel="icon" sizes="188x188" href="https://eduardoklosowski.github.io/blog/logo.png">
+        <link rel="apple-touch-icon" href="https://eduardoklosowski.github.io/blog/logo.png">
+
+        
+            <link rel="alternate" type="application/atom+xml" title="Blog Eduardo Klosowski" href="https://eduardoklosowski.github.io/blog/atom.xml">
+        
+
+        
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Blog Eduardo Klosowski">
+    <meta property="og:title" content="Orientação a objetos de outra forma: Classes e objetos">
+    <meta property="og:description" content="Nas poucas e raríssimas lives que eu fiz na Twitch, surgiu a ideia de escrever sobre programação orientada a objetos em Python, principalmente por algumas diferenças de como ela foi implementada nessa linguagem. Aproveitando o tema, vou fazer uma série de postagens dando uma visão diferente sobre orientação a objetos. E nessa primeira postagem falarei sobre classes e objetos.">
+    <meta property="og:url" content="https://eduardoklosowski.github.io/blog/oo-de-outra-forma-1/">
+    <meta property="og:image" content="https://eduardoklosowski.github.io/blog/logo.png">
+    <meta property="og:locale" content="pt_BR">
+    <meta property="og:article:published_time" content="2021-04-04">
+    <meta property="og:article:author" content="Eduardo Klosowski">
+    
+        <meta property="og:article:tag" content="Orientação a objetos de outra forma">
+    
+    
+        <meta property="og:article:tag" content="Orientação a Objetos">
+    
+    
+        <meta property="og:article:tag" content="Python">
+    
+
+
+        <link rel="stylesheet" media="all" href="https://eduardoklosowski.github.io/blog/poole.css">
+        <link rel="stylesheet" media="all" href="https://eduardoklosowski.github.io/blog/tema.css">
+        <link rel="stylesheet" media="print" href="https://eduardoklosowski.github.io/blog/print.css">
+
+        
+            <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "73939fe3b7984f859c0427bc6c693927"}'></script>
+        
+        
+            <script async src="https://www.googletagmanager.com/gtag/js?id=G-15ZW1NJTDE"></script>
+            <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', 'G-15ZW1NJTDE');
+            </script>
+        
+    </head>
+
+    <body>
+        <div class="sidebar">
+            <div class="container">
+                <div class="sidebar-about">
+                    <a href="https://eduardoklosowski.github.io/blog/">
+                        <img class="sidebar-logo" src="https://eduardoklosowski.github.io/blog/logo.png">
+                        <h1>Blog Eduardo Klosowski</h1>
+                    </a>
+                </div>
+
+                <ul class="sidebar-nav">
+                    
+                        <li class="sidebar-nav-item">
+                            <a rel="noopener" target="_blank" href="https://github.com/eduardoklosowski">
+                                
+                                    <img src="https://eduardoklosowski.github.io/blog/icons/github.svg" alt="GitHub">
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="sidebar-nav-item">
+                            <a rel="noopener" target="_blank" href="https://twitter.com/eduklosowski">
+                                
+                                    <img src="https://eduardoklosowski.github.io/blog/icons/twitter.svg" alt="Twitter">
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="sidebar-nav-item">
+                            <a rel="noopener" target="_blank" href="https://twitch.tv/eduardoklosowski">
+                                
+                                    <img src="https://eduardoklosowski.github.io/blog/icons/twitch.svg" alt="Twitch">
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="sidebar-nav-item">
+                            <a rel="noopener" target="_blank" href="https://asciinema.org/~eduardoklosowski">
+                                
+                                    <img src="https://eduardoklosowski.github.io/blog/icons/asciinema.svg" alt="asciinema">
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="sidebar-nav-item">
+                            <a rel="noopener" target="_blank" href="https://dev.to/eduardoklosowski">
+                                
+                                    <img src="https://eduardoklosowski.github.io/blog/icons/dev.svg" alt="DEV">
+                                
+                            </a>
+                        </li>
+                    
+                </ul>
+            </div>
+        </div>
+
+        <div class="content container">
+            
+    <div class="post">
+        <h1 class="post-title">Orientação a objetos de outra forma: Classes e objetos</h1>
+        <div class="post-info">
+            Publicado em 04-04-2021
+            &middot;
+            7 minutos de leitura
+        </div>
+        
+            <div class="post-serie">
+                Série
+                
+                    <a href="https://eduardoklosowski.github.io/blog/series/orientacao-a-objetos-de-outra-forma/">Orientação a objetos de outra forma</a>
+                
+            </div>
+        
+        <div class="post-tags">
+            
+                <a href="https://eduardoklosowski.github.io/blog/tags/orientacao-a-objetos/">#Orientação a Objetos</a>,
+            
+            
+                <a href="https://eduardoklosowski.github.io/blog/linguagens/python/">#Python</a>
+            
+        </div>
+        <p>Nas poucas e raríssimas lives que eu fiz na <a rel="noopener" target="_blank" href="https://www.twitch.tv/eduardoklosowski">Twitch</a>, surgiu a ideia de escrever sobre programação orientada a objetos em <a rel="noopener" target="_blank" href="https://www.python.org/">Python</a>, principalmente por algumas diferenças de como ela foi implementada nessa linguagem. Aproveitando o tema, vou fazer uma série de postagens dando uma visão diferente sobre orientação a objetos. E nessa primeira postagem falarei sobre classes e objetos.</p>
+<h2 id="usando-um-dicionario">Usando um dicionário</h2>
+<p>Entretanto, antes de começar com orientação a objetos, gostaria de apresentar e discutir alguns exemplos sem utilizar esse paradigma de programação.</p>
+<p>Pensando em um sistema que precise manipular dados de pessoas, é possível utilizar os <a rel="noopener" target="_blank" href="https://docs.python.org/pt-br/3/library/stdtypes.html#mapping-types-dict">dicionários</a> do Python para agrupar os dados de uma pessoa em uma única variável, como no exemplo a baixo:</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-python" data-lang="python"><span style="color:#cccece;">pessoa </span><span style="color:#5fb3b3;">= {
+    &#39;</span><span style="color:#99c794;">nome</span><span style="color:#5fb3b3;">&#39;: &#39;</span><span style="color:#99c794;">João</span><span style="color:#5fb3b3;">&#39;,
+    &#39;</span><span style="color:#99c794;">sobrenome</span><span style="color:#5fb3b3;">&#39;: &#39;</span><span style="color:#99c794;">da Silva</span><span style="color:#5fb3b3;">&#39;,
+    &#39;</span><span style="color:#99c794;">idade</span><span style="color:#5fb3b3;">&#39;: </span><span style="color:#f99157;">20</span><span style="color:#5fb3b3;">,
+}
+</span></code></pre>
+<p>Onde os dados poderiam ser acessados através da variável e do nome do dado desejado, como:</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-python" data-lang="python"><span style="color:#6699cc;">print</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">pessoa</span><span style="color:#5fb3b3;">[&#39;</span><span style="color:#99c794;">nome</span><span style="color:#5fb3b3;">&#39;])  </span><span style="color:#5f6364;"># Imprimindo João
+</span></code></pre>
+<p>Assim, todos os dados de uma pessoa ficam agrupados em uma variável, o que facilita bastante a programação, visto que não é necessário criar uma variável para cada dado, e quando se manipula os dados de diferentes pessoas fica muito mais fácil identificar de qual pessoa aquele dado se refere, bastando utilizar variáveis diferentes.</p>
+<h3 id="funcao-para-criar-o-dicionario">Função para criar o dicionário</h3>
+<p>Apesar de prático, é necessário replicar essa estrutura de dicionário toda vez que se desejar utilizar os dados de uma nova pessoa. Para evitar a repetição de código, a criação desse dicionário pode ser feita dentro de uma função que pode ser colocada em um módulo <code>pessoa</code> (arquivo, nesse caso com o nome de <code>pessoa.py</code>):</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-python" data-lang="python"><span style="color:#5f6364;"># Arquivo: pessoa.py
+
+</span><span style="color:#c594c5;">def </span><span style="color:#6699cc;">nova</span><span style="color:#5fb3b3;">(</span><span style="color:#f99157;">nome</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">sobrenome</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">idade</span><span style="color:#5fb3b3;">):
+    </span><span style="color:#c594c5;">return </span><span style="color:#5fb3b3;">{
+        &#39;</span><span style="color:#99c794;">nome</span><span style="color:#5fb3b3;">&#39;: </span><span style="color:#cccece;">nome</span><span style="color:#5fb3b3;">,
+        &#39;</span><span style="color:#99c794;">sobrenome</span><span style="color:#5fb3b3;">&#39;: </span><span style="color:#cccece;">sobrenome</span><span style="color:#5fb3b3;">,
+        &#39;</span><span style="color:#99c794;">idade</span><span style="color:#5fb3b3;">&#39;: </span><span style="color:#cccece;">idade</span><span style="color:#5fb3b3;">,
+    }
+</span></code></pre>
+<p>E para criar o dicionário que representa uma pessoa, basta importar esse módulo (arquivo) e chamar a função <code>nova</code>:</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-python" data-lang="python"><span style="color:#c594c5;">import </span><span style="color:#cccece;">pessoa
+
+p1 </span><span style="color:#5fb3b3;">= </span><span style="color:#6699cc;">pessoa</span><span style="color:#5fb3b3;">.</span><span style="color:#6699cc;">nova</span><span style="color:#5fb3b3;">(&#39;</span><span style="color:#99c794;">João</span><span style="color:#5fb3b3;">&#39;, &#39;</span><span style="color:#99c794;">da Silva</span><span style="color:#5fb3b3;">&#39;, </span><span style="color:#f99157;">20</span><span style="color:#5fb3b3;">)
+</span><span style="color:#cccece;">p2 </span><span style="color:#5fb3b3;">= </span><span style="color:#6699cc;">pessoa</span><span style="color:#5fb3b3;">.</span><span style="color:#6699cc;">nova</span><span style="color:#5fb3b3;">(&#39;</span><span style="color:#99c794;">Maria</span><span style="color:#5fb3b3;">&#39;, &#39;</span><span style="color:#99c794;">dos Santos</span><span style="color:#5fb3b3;">&#39;, </span><span style="color:#f99157;">18</span><span style="color:#5fb3b3;">)
+</span></code></pre>
+<p>Desta forma, garante-se que todos os dicionários representando pessoas terão os campos desejados e devidamente preenchidos.</p>
+<h3 id="funcao-com-o-dicionario">Função com o dicionário</h3>
+<p>Também é possível criar algumas funções para executar operações com os dados desses dicionários, como pegar o nome completo da pessoa, trocar o seu sobrenome, ou fazer aniversário (o que aumentaria a idade da pessoa em um ano):</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-python" data-lang="python"><span style="color:#5f6364;"># Arquivo: pessoa.py
+
+</span><span style="color:#c594c5;">def </span><span style="color:#6699cc;">nova</span><span style="color:#5fb3b3;">(</span><span style="color:#f99157;">nome</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">sobrenome</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">idade</span><span style="color:#5fb3b3;">):
+    </span><span style="color:#f99157;">...  </span><span style="color:#5f6364;"># Código abreviado
+
+
+</span><span style="color:#c594c5;">def </span><span style="color:#6699cc;">nome_completo</span><span style="color:#5fb3b3;">(</span><span style="color:#f99157;">pessoa</span><span style="color:#5fb3b3;">):
+    </span><span style="color:#c594c5;">return f</span><span style="color:#5fb3b3;">&quot;{</span><span style="color:#cccece;">pessoa</span><span style="color:#5fb3b3;">[&#39;</span><span style="color:#99c794;">nome</span><span style="color:#5fb3b3;">&#39;]} {</span><span style="color:#cccece;">pessoa</span><span style="color:#5fb3b3;">[&#39;</span><span style="color:#99c794;">sobrenome</span><span style="color:#5fb3b3;">&#39;]}&quot;
+
+
+</span><span style="color:#c594c5;">def </span><span style="color:#6699cc;">trocar_sobrenome</span><span style="color:#5fb3b3;">(</span><span style="color:#f99157;">pessoa</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">sobrenome</span><span style="color:#5fb3b3;">):
+    </span><span style="color:#cccece;">pessoa</span><span style="color:#5fb3b3;">[&#39;</span><span style="color:#99c794;">sobrenome</span><span style="color:#5fb3b3;">&#39;] = </span><span style="color:#cccece;">sobrenome
+
+
+</span><span style="color:#c594c5;">def </span><span style="color:#6699cc;">fazer_aniversario</span><span style="color:#5fb3b3;">(</span><span style="color:#f99157;">pessoa</span><span style="color:#5fb3b3;">):
+    </span><span style="color:#cccece;">pessoa</span><span style="color:#5fb3b3;">[&#39;</span><span style="color:#99c794;">idade</span><span style="color:#5fb3b3;">&#39;] += </span><span style="color:#f99157;">1
+</span></code></pre>
+<p>E sendo usado como:</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-python" data-lang="python"><span style="color:#c594c5;">import </span><span style="color:#cccece;">pessoa
+
+p1 </span><span style="color:#5fb3b3;">= </span><span style="color:#6699cc;">pessoa</span><span style="color:#5fb3b3;">.</span><span style="color:#6699cc;">nova</span><span style="color:#5fb3b3;">(&#39;</span><span style="color:#99c794;">João</span><span style="color:#5fb3b3;">&#39;, &#39;</span><span style="color:#99c794;">da Silva</span><span style="color:#5fb3b3;">&#39;, </span><span style="color:#f99157;">20</span><span style="color:#5fb3b3;">)
+</span><span style="color:#6699cc;">pessoa</span><span style="color:#5fb3b3;">.</span><span style="color:#6699cc;">trocar_sobrenome</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">p1</span><span style="color:#5fb3b3;">, &#39;</span><span style="color:#99c794;">dos Santos</span><span style="color:#5fb3b3;">&#39;)
+</span><span style="color:#6699cc;">print</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">pessoa</span><span style="color:#5fb3b3;">.</span><span style="color:#6699cc;">nome_completo</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">p1</span><span style="color:#5fb3b3;">))
+</span><span style="color:#6699cc;">pessoa</span><span style="color:#5fb3b3;">.</span><span style="color:#6699cc;">fazer_aniversario</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">p1</span><span style="color:#5fb3b3;">)
+</span><span style="color:#6699cc;">print</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">p1</span><span style="color:#5fb3b3;">[&#39;</span><span style="color:#99c794;">idade</span><span style="color:#5fb3b3;">&#39;])
+</span></code></pre>
+<p>Nesse caso, pode-se observar que todas as funções aqui implementadas seguem o padrão de receber o dicionário que representa a pessoa como primeiro argumento, podendo ter outros argumentos ou não conforme a necessidade, acessando e alterando os valores desse dicionário.</p>
+<h2 id="versao-com-orientacao-a-objetos">Versão com orientação a objetos</h2>
+<p>Antes de entrar na versão orientada a objetos propriamente dita dos exemplos anteriores, vou fazer uma pequena alteração para facilitar o entendimento posterior. A função <code>nova</code> será separada em duas partes, a primeira que criará um dicionário, e chamará uma segunda função (<code>init</code>), que receberá esse dicionário como primeiro argumento (seguindo o padrão das demais funções) e criará sua estrutura com os devidos valores.</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-python" data-lang="python"><span style="color:#5f6364;"># Arquivo: pessoa.py
+
+</span><span style="color:#c594c5;">def </span><span style="color:#6699cc;">init</span><span style="color:#5fb3b3;">(</span><span style="color:#f99157;">pessoa</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">nome</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">sobrenome</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">idade</span><span style="color:#5fb3b3;">):
+    </span><span style="color:#cccece;">pessoa</span><span style="color:#5fb3b3;">[&#39;</span><span style="color:#99c794;">nome</span><span style="color:#5fb3b3;">&#39;] = </span><span style="color:#cccece;">nome
+    pessoa</span><span style="color:#5fb3b3;">[&#39;</span><span style="color:#99c794;">sobrenome</span><span style="color:#5fb3b3;">&#39;] = </span><span style="color:#cccece;">sobrenome
+    pessoa</span><span style="color:#5fb3b3;">[&#39;</span><span style="color:#99c794;">idade</span><span style="color:#5fb3b3;">&#39;] = </span><span style="color:#cccece;">idade
+
+
+</span><span style="color:#c594c5;">def </span><span style="color:#6699cc;">nova</span><span style="color:#5fb3b3;">(</span><span style="color:#f99157;">nome</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">sobrenome</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">idade</span><span style="color:#5fb3b3;">):
+    </span><span style="color:#cccece;">pessoa </span><span style="color:#5fb3b3;">= {}
+    </span><span style="color:#6699cc;">init</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">pessoa</span><span style="color:#5fb3b3;">, </span><span style="color:#6699cc;">nome</span><span style="color:#5fb3b3;">, </span><span style="color:#6699cc;">sobrenome</span><span style="color:#5fb3b3;">, </span><span style="color:#6699cc;">idade</span><span style="color:#5fb3b3;">)
+    </span><span style="color:#c594c5;">return </span><span style="color:#cccece;">pessoa
+
+
+</span><span style="color:#f99157;">...  </span><span style="color:#5f6364;"># Demais funções do arquivo
+</span></code></pre>
+<p>Porém isso não muda a forma de uso:</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-python" data-lang="python"><span style="color:#c594c5;">import </span><span style="color:#cccece;">pessoa
+
+p1 </span><span style="color:#5fb3b3;">= </span><span style="color:#6699cc;">pessoa</span><span style="color:#5fb3b3;">.</span><span style="color:#6699cc;">nova</span><span style="color:#5fb3b3;">(&#39;</span><span style="color:#99c794;">João</span><span style="color:#5fb3b3;">&#39;, &#39;</span><span style="color:#99c794;">da Silva</span><span style="color:#5fb3b3;">&#39;, </span><span style="color:#f99157;">20</span><span style="color:#5fb3b3;">)
+</span></code></pre><h3 id="funcao-para-criar-uma-pessoa">Função para criar uma pessoa</h3>
+<p>A maioria das linguagens de programação que possuem o paradigma de programação orientado a objetos faz o uso de classes para definir a estrutura dos objetos. O Python também utiliza classes, que podem ser definidas com a palavra-chave <code>class</code> seguidas de um nome para ela. E dentro dessa estrutura, podem ser definidas funções para manipular os objetos daquela classe, que em algumas linguagens também são chamadas de métodos (funções declaradas dentro do escopo uma classe).</p>
+<p>Para converter o dicionário para uma classe, o primeiro passo é implementar uma função para criar a estrutura desejada. Essa função deve possui o nome <code>__init__</code>, e é bastante similar a função <code>init</code> do código anterior:</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-python" data-lang="python"><span style="color:#c594c5;">class </span><span style="color:#fac863;">Pessoa</span><span style="color:#5fb3b3;">:
+    </span><span style="color:#c594c5;">def </span><span style="color:#6699cc;">__init__</span><span style="color:#5fb3b3;">(</span><span style="color:#f99157;">self</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">nome</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">sobrenome</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">idade</span><span style="color:#5fb3b3;">):
+        </span><span style="color:#ec5f67;">self</span><span style="color:#5fb3b3;">.</span><span style="color:#cccece;">nome </span><span style="color:#5fb3b3;">= </span><span style="color:#cccece;">nome
+        </span><span style="color:#ec5f67;">self</span><span style="color:#5fb3b3;">.</span><span style="color:#cccece;">sobrenome </span><span style="color:#5fb3b3;">= </span><span style="color:#cccece;">sobrenome
+        </span><span style="color:#ec5f67;">self</span><span style="color:#5fb3b3;">.</span><span style="color:#cccece;">idade </span><span style="color:#5fb3b3;">= </span><span style="color:#cccece;">idade
+</span></code></pre>
+<p>As diferenças são que agora o primeiro parâmetro se chama <code>self</code>, que é um padrão utilizado no Python, e em vez de usar colchetes e aspas para acessar os dados, aqui basta utilizar o ponto e o nome do dado desejado (que aqui também pode ser chamado de atributo, visto que é uma variável do objeto). A função <code>nova</code> implementada anteriormente não é necessária, a própria linguagem cria um objeto e passa ele como primeiro argumento para o <code>__init__</code>. E assim para se criar um objeto da classe <code>Pessoa</code> basta chamar a classe como se fosse uma função, ignorando o argumento <code>self</code> e informando os demais, como se estivesse chamando a função <code>__init__</code> diretamente:</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-python" data-lang="python"><span style="color:#cccece;">p1 </span><span style="color:#5fb3b3;">= </span><span style="color:#6699cc;">Pessoa</span><span style="color:#5fb3b3;">(&#39;</span><span style="color:#99c794;">João</span><span style="color:#5fb3b3;">&#39;, &#39;</span><span style="color:#99c794;">da Silva</span><span style="color:#5fb3b3;">&#39;, </span><span style="color:#f99157;">20</span><span style="color:#5fb3b3;">)
+</span></code></pre>
+<p>Nesse caso, como a própria classe cria um contexto diferente para as funções (escopo ou <em>namespace</em>), não está mais sendo utilizado arquivos diferentes, porém ainda é possível fazê-lo, sendo necessário apenas fazer o <code>import</code> adequado. Mas para simplificação, tanto a declaração da classe, como a criação do objeto da classe <code>Pessoa</code> podem ser feitas no mesmo arquivo, assim como os demais exemplos dessa postagem.</p>
+<h3 id="outras-funcoes">Outras funções</h3>
+<p>As demais funções feitas anteriormente para o dicionário também podem ser feitas na classe <code>Pessoa</code>, seguindo as mesmas diferenças já apontadas anteriormente:</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-python" data-lang="python"><span style="color:#c594c5;">class </span><span style="color:#fac863;">Pessoa</span><span style="color:#5fb3b3;">:
+    </span><span style="color:#c594c5;">def </span><span style="color:#6699cc;">__init__</span><span style="color:#5fb3b3;">(</span><span style="color:#f99157;">self</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">nome</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">sobrenome</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">idade</span><span style="color:#5fb3b3;">):
+        </span><span style="color:#ec5f67;">self</span><span style="color:#5fb3b3;">.</span><span style="color:#cccece;">nome </span><span style="color:#5fb3b3;">= </span><span style="color:#cccece;">nome
+        </span><span style="color:#ec5f67;">self</span><span style="color:#5fb3b3;">.</span><span style="color:#cccece;">sobrenome </span><span style="color:#5fb3b3;">= </span><span style="color:#cccece;">sobrenome
+        </span><span style="color:#ec5f67;">self</span><span style="color:#5fb3b3;">.</span><span style="color:#cccece;">idade </span><span style="color:#5fb3b3;">= </span><span style="color:#cccece;">idade
+
+    </span><span style="color:#c594c5;">def </span><span style="color:#6699cc;">nome_completo</span><span style="color:#5fb3b3;">(</span><span style="color:#f99157;">self</span><span style="color:#5fb3b3;">):
+        </span><span style="color:#c594c5;">return f</span><span style="color:#5fb3b3;">&#39;{</span><span style="color:#ec5f67;">self</span><span style="color:#5fb3b3;">.</span><span style="color:#cccece;">nome</span><span style="color:#5fb3b3;">} {</span><span style="color:#ec5f67;">self</span><span style="color:#5fb3b3;">.</span><span style="color:#cccece;">sobrenome</span><span style="color:#5fb3b3;">}&#39;
+
+    </span><span style="color:#c594c5;">def </span><span style="color:#6699cc;">trocar_sobrenome</span><span style="color:#5fb3b3;">(</span><span style="color:#f99157;">self</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">sobrenome</span><span style="color:#5fb3b3;">):
+        </span><span style="color:#ec5f67;">self</span><span style="color:#5fb3b3;">.</span><span style="color:#cccece;">sobrenome </span><span style="color:#5fb3b3;">= </span><span style="color:#cccece;">sobrenome
+
+    </span><span style="color:#c594c5;">def </span><span style="color:#6699cc;">fazer_aniversario</span><span style="color:#5fb3b3;">(</span><span style="color:#f99157;">self</span><span style="color:#5fb3b3;">):
+        </span><span style="color:#ec5f67;">self</span><span style="color:#5fb3b3;">.</span><span style="color:#cccece;">idade </span><span style="color:#5fb3b3;">+= </span><span style="color:#f99157;">1
+</span></code></pre>
+<p>Para se chamar essas funções, basta acessá-las através do contexto da classe, passando o objeto criado anteriormente como primeiro argumento:</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-python" data-lang="python"><span style="color:#cccece;">p1 </span><span style="color:#5fb3b3;">= </span><span style="color:#6699cc;">Pessoa</span><span style="color:#5fb3b3;">(&#39;</span><span style="color:#99c794;">João</span><span style="color:#5fb3b3;">&#39;, &#39;</span><span style="color:#99c794;">dos Santos</span><span style="color:#5fb3b3;">&#39;, </span><span style="color:#f99157;">20</span><span style="color:#5fb3b3;">)
+</span><span style="color:#6699cc;">Pessoa</span><span style="color:#5fb3b3;">.</span><span style="color:#6699cc;">trocar_sobrenome</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">p1</span><span style="color:#5fb3b3;">, &#39;</span><span style="color:#99c794;">dos Santos</span><span style="color:#5fb3b3;">&#39;)
+</span><span style="color:#6699cc;">print</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">Pessoa</span><span style="color:#5fb3b3;">.</span><span style="color:#6699cc;">nome_completo</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">p1</span><span style="color:#5fb3b3;">))
+</span><span style="color:#6699cc;">Pessoa</span><span style="color:#5fb3b3;">.</span><span style="color:#6699cc;">fazer_aniversario</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">p1</span><span style="color:#5fb3b3;">)
+</span><span style="color:#6699cc;">print</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">p1</span><span style="color:#5fb3b3;">.</span><span style="color:#6699cc;">idade</span><span style="color:#5fb3b3;">)
+</span></code></pre>
+<p>Essa sintaxe é bastante semelhante a versão sem orientação a objetos implementada anteriormente. Porém quando se está utilizando objetos, é possível chamar essas funções com uma outra sintaxe, informando primeiro o objeto, seguido de ponto e o nome da função desejada, com a diferença de que não é mais necessário informar o objeto como primeiro argumento. Como a função foi chamada através de um objeto, o próprio Python se encarrega de passá-lo para o argumento <code>self</code>, sendo necessário informar apenas os demais argumentos:</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-python" data-lang="python"><span style="color:#6699cc;">p1</span><span style="color:#5fb3b3;">.</span><span style="color:#6699cc;">trocar_sobrenome</span><span style="color:#5fb3b3;">(&#39;</span><span style="color:#99c794;">dos Santos</span><span style="color:#5fb3b3;">&#39;)
+</span><span style="color:#6699cc;">print</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">p1</span><span style="color:#5fb3b3;">.</span><span style="color:#6699cc;">nome_completo</span><span style="color:#5fb3b3;">())
+</span><span style="color:#6699cc;">p1</span><span style="color:#5fb3b3;">.</span><span style="color:#6699cc;">fazer_aniversario</span><span style="color:#5fb3b3;">()
+</span><span style="color:#6699cc;">print</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">p1</span><span style="color:#5fb3b3;">.</span><span style="color:#6699cc;">idade</span><span style="color:#5fb3b3;">)
+</span></code></pre>
+<p>Existem algumas diferenças entre as duas sintaxes, porém isso será tratado posteriormente. Por enquanto a segunda sintaxe pode ser vista como um <a rel="noopener" target="_blank" href="https://pt.wikipedia.org/wiki/A%C3%A7%C3%BAcar_sint%C3%A1tico">açúcar sintático</a> da primeira, ou seja, uma forma mais rápida e fácil de fazer a mesma coisa que a primeira, e por isso sendo a recomendada.</p>
+<h2 id="consideracoes">Considerações</h2>
+<p>Como visto nos exemplos, programação orientada a objetos é uma técnica para juntar variáveis em uma mesma estrutura e facilitar a escrita de funções que seguem um determinado padrão, recebendo a estrutura como argumento, porém a sintaxe mais utilizada no Python para chamar as funções de um objeto (métodos) posiciona a variável que guarda a estrutura antes do nome da função, em vez do primeiro argumento.</p>
+<p>No Python, o argumento da estrutura ou objeto (<code>self</code>) aparece explicitamente como primeiro argumento da função, enquanto em outras linguagens essa variável pode receber outro nome (como <code>this</code>) e não aparece explicitamente nos argumentos da função, embora essa variável tenha que ser criada dentro do contexto da função para permitir manipular o objeto.</p>
+
+    </div>
+
+        </div>
+    </body>
+</html>

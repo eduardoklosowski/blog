@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://eduardoklosowski.github.io/blog/sitemap.xml

@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+        <title>Diferentes formas de expressar em código - Blog Eduardo Klosowski</title>
+        <meta name="application-name" content="Blog Eduardo Klosowski">
+        <meta name="apple-mobile-web-app-title" content="Blog Eduardo Klosowski">
+
+        <link rel="shortcut icon" href="https://eduardoklosowski.github.io/blog/favicon.webp">
+        <link rel="icon" sizes="188x188" href="https://eduardoklosowski.github.io/blog/logo.png">
+        <link rel="apple-touch-icon" href="https://eduardoklosowski.github.io/blog/logo.png">
+
+        
+            <link rel="alternate" type="application/atom+xml" title="Blog Eduardo Klosowski" href="https://eduardoklosowski.github.io/blog/atom.xml">
+        
+
+        
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Blog Eduardo Klosowski">
+    <meta property="og:title" content="Diferentes formas de expressar em código">
+    <meta property="og:description" content="Existem diferentes formas de se programar algo, mesmo quando usa-se a mesma linguagem de programação. Embora esses códigos possam ser considerados equivalentes, uma vez que apresentam o mesmo resultado, eles tem suas particularidades, podendo facilitar ou dificultar sua leitura e manutenção. Usando como exemplo a impressão dos valores de uma lista (ou array) no terminal utilizando a linguagem Rust, pretendo mostrar essas diferenças na prática, de forma que também possa ser abstraído para outras lógicas e linguagens.">
+    <meta property="og:url" content="https://eduardoklosowski.github.io/blog/expressar-em-codigo/">
+    <meta property="og:image" content="https://eduardoklosowski.github.io/blog/logo.png">
+    <meta property="og:locale" content="pt_BR">
+    <meta property="og:article:published_time" content="2020-12-14">
+    <meta property="og:article:author" content="Eduardo Klosowski">
+    
+    
+        <meta property="og:article:tag" content="Code Style">
+    
+    
+        <meta property="og:article:tag" content="Rust">
+    
+
+
+        <link rel="stylesheet" media="all" href="https://eduardoklosowski.github.io/blog/poole.css">
+        <link rel="stylesheet" media="all" href="https://eduardoklosowski.github.io/blog/tema.css">
+        <link rel="stylesheet" media="print" href="https://eduardoklosowski.github.io/blog/print.css">
+
+        
+            <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "73939fe3b7984f859c0427bc6c693927"}'></script>
+        
+        
+            <script async src="https://www.googletagmanager.com/gtag/js?id=G-15ZW1NJTDE"></script>
+            <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', 'G-15ZW1NJTDE');
+            </script>
+        
+    </head>
+
+    <body>
+        <div class="sidebar">
+            <div class="container">
+                <div class="sidebar-about">
+                    <a href="https://eduardoklosowski.github.io/blog/">
+                        <img class="sidebar-logo" src="https://eduardoklosowski.github.io/blog/logo.png">
+                        <h1>Blog Eduardo Klosowski</h1>
+                    </a>
+                </div>
+
+                <ul class="sidebar-nav">
+                    
+                        <li class="sidebar-nav-item">
+                            <a rel="noopener" target="_blank" href="https://github.com/eduardoklosowski">
+                                
+                                    <img src="https://eduardoklosowski.github.io/blog/icons/github.svg" alt="GitHub">
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="sidebar-nav-item">
+                            <a rel="noopener" target="_blank" href="https://twitter.com/eduklosowski">
+                                
+                                    <img src="https://eduardoklosowski.github.io/blog/icons/twitter.svg" alt="Twitter">
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="sidebar-nav-item">
+                            <a rel="noopener" target="_blank" href="https://twitch.tv/eduardoklosowski">
+                                
+                                    <img src="https://eduardoklosowski.github.io/blog/icons/twitch.svg" alt="Twitch">
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="sidebar-nav-item">
+                            <a rel="noopener" target="_blank" href="https://asciinema.org/~eduardoklosowski">
+                                
+                                    <img src="https://eduardoklosowski.github.io/blog/icons/asciinema.svg" alt="asciinema">
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="sidebar-nav-item">
+                            <a rel="noopener" target="_blank" href="https://dev.to/eduardoklosowski">
+                                
+                                    <img src="https://eduardoklosowski.github.io/blog/icons/dev.svg" alt="DEV">
+                                
+                            </a>
+                        </li>
+                    
+                </ul>
+            </div>
+        </div>
+
+        <div class="content container">
+            
+    <div class="post">
+        <h1 class="post-title">Diferentes formas de expressar em código</h1>
+        <div class="post-info">
+            Publicado em 14-12-2020
+            &middot;
+            6 minutos de leitura
+        </div>
+        
+        <div class="post-tags">
+            
+                <a href="https://eduardoklosowski.github.io/blog/tags/code-style/">#Code Style</a>,
+            
+            
+                <a href="https://eduardoklosowski.github.io/blog/linguagens/rust/">#Rust</a>
+            
+        </div>
+        <p>Existem diferentes formas de se programar algo, mesmo quando usa-se a mesma linguagem de programação. Embora esses códigos possam ser considerados equivalentes, uma vez que apresentam o mesmo resultado, eles tem suas particularidades, podendo facilitar ou dificultar sua leitura e manutenção. Usando como exemplo a impressão dos valores de uma lista (ou array) no terminal utilizando a linguagem <a rel="noopener" target="_blank" href="https://www.rust-lang.org/pt-BR/">Rust</a>, pretendo mostrar essas diferenças na prática, de forma que também possa ser abstraído para outras lógicas e linguagens.</p>
+<h2 id="problema-proposto">Problema proposto</h2>
+<p>Dado uma lista:</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-rust" data-lang="rust"><span style="color:#c594c5;">let</span><span style="color:#cccece;"> lista </span><span style="color:#5fb3b3;">= [</span><span style="color:#f99157;">1</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">6</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">3</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">8</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">4</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">3</span><span style="color:#5fb3b3;">];
+</span></code></pre>
+<p>Deseja-se imprimir no terminal o índice e valor de cada elemento, conforme a baixo:</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-txt" data-lang="txt"><span style="color:#cccece;">0 =&gt; 1
+1 =&gt; 6
+2 =&gt; 3
+3 =&gt; 8
+4 =&gt; 4
+5 =&gt; 3
+</span></code></pre>
+<p>Uma forma de se resolver esse problema é iterando sobre os elementos da lista, imprimindo os índices e valores.</p>
+<h2 id="codigo-1-acesso-direto">Código 1: Acesso direto</h2>
+<p>Uma primeira forma de resolver esse problema é acessando cada valor diretamente no código. Exemplo:</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-rust" data-lang="rust"><span style="color:#cccece;">println!</span><span style="color:#5fb3b3;">(&quot;</span><span style="color:#99c794;">{} =&gt; {}</span><span style="color:#5fb3b3;">&quot;, </span><span style="color:#f99157;">0</span><span style="color:#5fb3b3;">,</span><span style="color:#cccece;"> lista</span><span style="color:#5fb3b3;">[</span><span style="color:#f99157;">0</span><span style="color:#5fb3b3;">]);
+</span><span style="color:#cccece;">println!</span><span style="color:#5fb3b3;">(&quot;</span><span style="color:#99c794;">{} =&gt; {}</span><span style="color:#5fb3b3;">&quot;, </span><span style="color:#f99157;">1</span><span style="color:#5fb3b3;">,</span><span style="color:#cccece;"> lista</span><span style="color:#5fb3b3;">[</span><span style="color:#f99157;">1</span><span style="color:#5fb3b3;">]);
+</span><span style="color:#cccece;">println!</span><span style="color:#5fb3b3;">(&quot;</span><span style="color:#99c794;">{} =&gt; {}</span><span style="color:#5fb3b3;">&quot;, </span><span style="color:#f99157;">2</span><span style="color:#5fb3b3;">,</span><span style="color:#cccece;"> lista</span><span style="color:#5fb3b3;">[</span><span style="color:#f99157;">2</span><span style="color:#5fb3b3;">]);
+</span><span style="color:#cccece;">println!</span><span style="color:#5fb3b3;">(&quot;</span><span style="color:#99c794;">{} =&gt; {}</span><span style="color:#5fb3b3;">&quot;, </span><span style="color:#f99157;">3</span><span style="color:#5fb3b3;">,</span><span style="color:#cccece;"> lista</span><span style="color:#5fb3b3;">[</span><span style="color:#f99157;">3</span><span style="color:#5fb3b3;">]);
+</span><span style="color:#cccece;">println!</span><span style="color:#5fb3b3;">(&quot;</span><span style="color:#99c794;">{} =&gt; {}</span><span style="color:#5fb3b3;">&quot;, </span><span style="color:#f99157;">4</span><span style="color:#5fb3b3;">,</span><span style="color:#cccece;"> lista</span><span style="color:#5fb3b3;">[</span><span style="color:#f99157;">4</span><span style="color:#5fb3b3;">]);
+</span><span style="color:#cccece;">println!</span><span style="color:#5fb3b3;">(&quot;</span><span style="color:#99c794;">{} =&gt; {}</span><span style="color:#5fb3b3;">&quot;, </span><span style="color:#f99157;">5</span><span style="color:#5fb3b3;">,</span><span style="color:#cccece;"> lista</span><span style="color:#5fb3b3;">[</span><span style="color:#f99157;">5</span><span style="color:#5fb3b3;">]);
+</span></code></pre>
+<p>Esse código é simples e direto, tendo como resultado da sua execução o resultado desejado. Porém apresenta dois pontos principais: ele é fixo para 6 elementos, sendo necessário sua alteração caso a quantidade de elementos da lista seja alterado; também existe uma repetição no código, sendo necessário alterar todos os <code>println!(...)</code> caso deseja-se mudar a saída.</p>
+<h2 id="codigo-2-while">Código 2: <code>while</code></h2>
+<p>É possível escrever o código de forma que ele se adapte a quantidade de elementos da lista, sendo necessário uma estrutura de repetição para isso. Exemplo:</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-rust" data-lang="rust"><span style="color:#c594c5;">let mut</span><span style="color:#cccece;"> i </span><span style="color:#5fb3b3;">= </span><span style="color:#f99157;">0</span><span style="color:#5fb3b3;">;
+</span><span style="color:#c594c5;">while</span><span style="color:#cccece;"> i </span><span style="color:#5fb3b3;">&lt;</span><span style="color:#cccece;"> lista</span><span style="color:#5fb3b3;">.</span><span style="color:#6699cc;">len</span><span style="color:#5fb3b3;">() {
+    </span><span style="color:#cccece;">println!</span><span style="color:#5fb3b3;">(&quot;</span><span style="color:#99c794;">{} =&gt; {}</span><span style="color:#5fb3b3;">&quot;,</span><span style="color:#cccece;"> i</span><span style="color:#5fb3b3;">,</span><span style="color:#cccece;"> lista</span><span style="color:#5fb3b3;">[</span><span style="color:#cccece;">i</span><span style="color:#5fb3b3;">]);
+</span><span style="color:#cccece;">    i </span><span style="color:#5fb3b3;">+= </span><span style="color:#f99157;">1</span><span style="color:#5fb3b3;">;
+}
+</span></code></pre>
+<p>Esse código utiliza a estrutura de repetição <code>while</code> para melhorar os dois pontos destacados no código anterior, verificando o tamanho da lista em tempo de execução, e evitando a repetição do <code>println!(...)</code>. Porém isso vem com o custo adicional de uma variável e alguns ciclos de processamento adicionais para fazer o controle da estrutura de repetição (acessar o tamanho da lista e compará-lo a variável de controle).</p>
+<h2 id="codigo-3-for">Código 3: <code>for</code></h2>
+<p>Outra forma possível é a utilização da estrutura de repetição <code>for</code>. Exemplo:</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-rust" data-lang="rust"><span style="color:#c594c5;">for</span><span style="color:#cccece;"> i </span><span style="color:#5fb3b3;">in </span><span style="color:#f99157;">0</span><span style="color:#5fb3b3;">..</span><span style="color:#cccece;">lista</span><span style="color:#5fb3b3;">.</span><span style="color:#6699cc;">len</span><span style="color:#5fb3b3;">() {
+    </span><span style="color:#cccece;">println!</span><span style="color:#5fb3b3;">(&quot;</span><span style="color:#99c794;">{} =&gt; {}</span><span style="color:#5fb3b3;">&quot;,</span><span style="color:#cccece;"> i</span><span style="color:#5fb3b3;">,</span><span style="color:#cccece;"> lista</span><span style="color:#5fb3b3;">[</span><span style="color:#cccece;">i</span><span style="color:#5fb3b3;">]);
+}
+</span></code></pre>
+<p>Esse código, assim como o anterior, necessita de uma variável para o controle da estrutura de repetição. Entretanto, o controle desta variável fica a cargo da linguagem e não do programador, não sendo necessário incrementá-lo manualmente, e fica mais claro no código como a estrutura de repetição está sendo controlada. Um ponto negativo é que não é possível alterar essa variável diretamente, o que possibilitaria imprimir os valores em outra ordem, com alguma lógica mais elaborada, como seria possível no Código 2.</p>
+<h2 id="codigo-4-iterando-com-for">Código 4: Iterando com <code>for</code></h2>
+<p>Em Rust é possível iterar diretamente os valores de uma lista utilizando o <code>for</code>. Exemplo:</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-rust" data-lang="rust"><span style="color:#c594c5;">for </span><span style="color:#5fb3b3;">&amp;</span><span style="color:#cccece;">v </span><span style="color:#5fb3b3;">in</span><span style="color:#cccece;"> lista</span><span style="color:#5fb3b3;">.</span><span style="color:#6699cc;">iter</span><span style="color:#5fb3b3;">() {
+    </span><span style="color:#cccece;">println!</span><span style="color:#5fb3b3;">(&quot;</span><span style="color:#99c794;">_ =&gt; {}</span><span style="color:#5fb3b3;">&quot;,</span><span style="color:#cccece;"> v</span><span style="color:#5fb3b3;">);
+}
+</span></code></pre>
+<p>Embora esse seja o código mais simples usando uma estrutura de repetição, e fica claro no código de que a interação está ocorrendo em cima dos valores da lista, não é possível mostrar o índice do valor no <code>println!(...)</code>.</p>
+<h2 id="codigo-5-iterando-com-for-e-enumerate">Código 5: Iterando com <code>for</code> e <code>.enumerate()</code></h2>
+<p>Para permitir que o índice seja mostrado, é possível enumerar os valores da lista. Desta forma, em vez de iterar nos elementos da lista diretamente, o <code>for</code> itera em tuplas com o valor dado pelo <code>.enumerate()</code> e o elemento da lista. Exemplo:</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-rust" data-lang="rust"><span style="color:#c594c5;">for </span><span style="color:#5fb3b3;">(</span><span style="color:#cccece;">i</span><span style="color:#5fb3b3;">, &amp;</span><span style="color:#cccece;">v</span><span style="color:#5fb3b3;">) in</span><span style="color:#cccece;"> lista</span><span style="color:#5fb3b3;">.</span><span style="color:#6699cc;">iter</span><span style="color:#5fb3b3;">().</span><span style="color:#6699cc;">enumerate</span><span style="color:#5fb3b3;">() {
+    </span><span style="color:#cccece;">println!</span><span style="color:#5fb3b3;">(&quot;</span><span style="color:#99c794;">{} =&gt; {}</span><span style="color:#5fb3b3;">&quot;,</span><span style="color:#cccece;"> i</span><span style="color:#5fb3b3;">,</span><span style="color:#cccece;"> v</span><span style="color:#5fb3b3;">);
+}
+</span></code></pre>
+<p>Esse código se assemelha ao anterior em simplificação, porém permitindo que o índice seja impresso no terminal. Embora ele seja bem parecido com o Código 3, seu <code>for</code> deixa claro que a estrutura de repetição está iterando sobre os valores da lista, enquanto o <code>for</code> do Código 3 apenas diz que está sendo iterado sobre seus índices, necessitando verificar o bloco de código do <code>for</code> para entender no que o índice está sendo usado, e necessitando acessar manualmente os valores da lista, o que poderia dificultar a alteração do nome da variável da lista, por exemplo, uma vez que o mesmo precisaria ser alterado em diversos lugares.</p>
+<h2 id="codigo-6-for-each">Código 6: <code>.for_each()</code></h2>
+<p>Rust também permite que o código seja feito utilizando funções em vez de uma estrutura de repetição (embora a estrutura de repetição seja usada internamente por essas funções). Para esse caso foi utilizado a função <code>.for_each()</code> do iterador, que permite chamar uma função passada por argumento para cada valor da lista. Exemplo:</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-rust" data-lang="rust"><span style="color:#cccece;">lista
+    </span><span style="color:#5fb3b3;">.</span><span style="color:#6699cc;">iter</span><span style="color:#5fb3b3;">()
+    .</span><span style="color:#6699cc;">enumerate</span><span style="color:#5fb3b3;">()
+    .</span><span style="color:#6699cc;">for_each</span><span style="color:#5fb3b3;">(|(</span><span style="color:#f99157;">i</span><span style="color:#5fb3b3;">,</span><span style="color:#cccece;"> &amp;</span><span style="color:#f99157;">v</span><span style="color:#5fb3b3;">)| </span><span style="color:#cccece;">println!</span><span style="color:#5fb3b3;">(&quot;</span><span style="color:#99c794;">{} =&gt; {}</span><span style="color:#5fb3b3;">&quot;,</span><span style="color:#cccece;"> i</span><span style="color:#5fb3b3;">,</span><span style="color:#cccece;"> v</span><span style="color:#5fb3b3;">));
+</span></code></pre>
+<p>Esse código está dividido em várias linhas apenas para facilitar sua leitura, podendo estar em uma única linha. O compilador do Rust também consegue otimizar esse código deixando-o mais performático que a versão utilizando o <code>for</code>. Porém a versão com <code>for</code> deixa explícito no código a iteração dos elementos da lista, o que poderia facilitar a sua leitura. Nesse código também não é possível utilizar comandos como <code>continue</code> e <code>break</code> para controlar a estrutura de repetição, necessitando utilizar outras <a rel="noopener" target="_blank" href="https://doc.rust-lang.org/std/iter/trait.Iterator.html#required-methods">funções do iterador</a> para comportamentos distintos.</p>
+<h2 id="consideracoes">Considerações</h2>
+<p>Com exceção do Código 4, todos os outros têm o mesmo resultado no terminal, sendo opções de código viáveis de resolução do problema proposto. Cada código possui suas diferenças, variando em legibilidade e flexibilidade. Pensando em percorrer os elementos da lista para resolver o problema, essa lógica pode ser expressa de diferentes formas, como visto nos diferentes códigos apresentados, assim como em português é possível transmitir uma mesma ideia com diferentes frases.</p>
+<p>Abstraindo para um sistema, existem diferentes formas de resolver as pequenas partes do sistema, e muitas vezes essas pequenas partes podem apresentar similaridades. Quando essas partes são resolvidas utilizando a mesma técnica, isso pode facilitar a leitura e manutenção do código, uma vez que fica mais fácil de pressupor o que o código está fazendo conforme o programador se habitua com ele. Assim como, ao se terminar uma alteração, é possível fazer uma análise, verificando se não existe uma melhor forma de expressar a lógica já implementada, deixando o código mais organizado, o que facilitaria a leitura do mesmo.</p>
+
+    </div>
+
+        </div>
+    </body>
+</html>

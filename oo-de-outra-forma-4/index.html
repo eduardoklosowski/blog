@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+        <title>Orientação a objetos de outra forma: Herança múltiplas e mixins - Blog Eduardo Klosowski</title>
+        <meta name="application-name" content="Blog Eduardo Klosowski">
+        <meta name="apple-mobile-web-app-title" content="Blog Eduardo Klosowski">
+
+        <link rel="shortcut icon" href="https://eduardoklosowski.github.io/blog/favicon.webp">
+        <link rel="icon" sizes="188x188" href="https://eduardoklosowski.github.io/blog/logo.png">
+        <link rel="apple-touch-icon" href="https://eduardoklosowski.github.io/blog/logo.png">
+
+        
+            <link rel="alternate" type="application/atom+xml" title="Blog Eduardo Klosowski" href="https://eduardoklosowski.github.io/blog/atom.xml">
+        
+
+        
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Blog Eduardo Klosowski">
+    <meta property="og:title" content="Orientação a objetos de outra forma: Herança múltiplas e mixins">
+    <meta property="og:description" content="No texto anterior foi apresentando o conceito de herança, que herda toda a estrutura e comportamento de uma classe, podendo estendê-la com outros atributos e comportamentos. Esse texto apresentará a ideia de herança múltipla, e uma forma para se aproveitar esse recurso, através de mixins.">
+    <meta property="og:url" content="https://eduardoklosowski.github.io/blog/oo-de-outra-forma-4/">
+    <meta property="og:image" content="https://eduardoklosowski.github.io/blog/logo.png">
+    <meta property="og:locale" content="pt_BR">
+    <meta property="og:article:published_time" content="2021-04-24">
+    <meta property="og:article:author" content="Eduardo Klosowski">
+    
+        <meta property="og:article:tag" content="Orientação a objetos de outra forma">
+    
+    
+        <meta property="og:article:tag" content="Orientação a Objetos">
+    
+    
+        <meta property="og:article:tag" content="Python">
+    
+
+
+        <link rel="stylesheet" media="all" href="https://eduardoklosowski.github.io/blog/poole.css">
+        <link rel="stylesheet" media="all" href="https://eduardoklosowski.github.io/blog/tema.css">
+        <link rel="stylesheet" media="print" href="https://eduardoklosowski.github.io/blog/print.css">
+
+        
+            <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "73939fe3b7984f859c0427bc6c693927"}'></script>
+        
+        
+            <script async src="https://www.googletagmanager.com/gtag/js?id=G-15ZW1NJTDE"></script>
+            <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', 'G-15ZW1NJTDE');
+            </script>
+        
+    </head>
+
+    <body>
+        <div class="sidebar">
+            <div class="container">
+                <div class="sidebar-about">
+                    <a href="https://eduardoklosowski.github.io/blog/">
+                        <img class="sidebar-logo" src="https://eduardoklosowski.github.io/blog/logo.png">
+                        <h1>Blog Eduardo Klosowski</h1>
+                    </a>
+                </div>
+
+                <ul class="sidebar-nav">
+                    
+                        <li class="sidebar-nav-item">
+                            <a rel="noopener" target="_blank" href="https://github.com/eduardoklosowski">
+                                
+                                    <img src="https://eduardoklosowski.github.io/blog/icons/github.svg" alt="GitHub">
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="sidebar-nav-item">
+                            <a rel="noopener" target="_blank" href="https://twitter.com/eduklosowski">
+                                
+                                    <img src="https://eduardoklosowski.github.io/blog/icons/twitter.svg" alt="Twitter">
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="sidebar-nav-item">
+                            <a rel="noopener" target="_blank" href="https://twitch.tv/eduardoklosowski">
+                                
+                                    <img src="https://eduardoklosowski.github.io/blog/icons/twitch.svg" alt="Twitch">
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="sidebar-nav-item">
+                            <a rel="noopener" target="_blank" href="https://asciinema.org/~eduardoklosowski">
+                                
+                                    <img src="https://eduardoklosowski.github.io/blog/icons/asciinema.svg" alt="asciinema">
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="sidebar-nav-item">
+                            <a rel="noopener" target="_blank" href="https://dev.to/eduardoklosowski">
+                                
+                                    <img src="https://eduardoklosowski.github.io/blog/icons/dev.svg" alt="DEV">
+                                
+                            </a>
+                        </li>
+                    
+                </ul>
+            </div>
+        </div>
+
+        <div class="content container">
+            
+    <div class="post">
+        <h1 class="post-title">Orientação a objetos de outra forma: Herança múltiplas e mixins</h1>
+        <div class="post-info">
+            Publicado em 24-04-2021
+            &middot;
+            6 minutos de leitura
+        </div>
+        
+            <div class="post-serie">
+                Série
+                
+                    <a href="https://eduardoklosowski.github.io/blog/series/orientacao-a-objetos-de-outra-forma/">Orientação a objetos de outra forma</a>
+                
+            </div>
+        
+        <div class="post-tags">
+            
+                <a href="https://eduardoklosowski.github.io/blog/tags/orientacao-a-objetos/">#Orientação a Objetos</a>,
+            
+            
+                <a href="https://eduardoklosowski.github.io/blog/linguagens/python/">#Python</a>
+            
+        </div>
+        <p>No <a href="https://eduardoklosowski.github.io/blog/oo-de-outra-forma-3/">texto anterior</a> foi apresentando o conceito de herança, que herda toda a estrutura e comportamento de uma classe, podendo estendê-la com outros atributos e comportamentos. Esse texto apresentará a ideia de <a rel="noopener" target="_blank" href="https://pt.wikipedia.org/wiki/Heran%C3%A7a_m%C3%BAltipla">herança múltipla</a>, e uma forma para se aproveitar esse recurso, através de mixins.</p>
+<h2 id="heranca-multiplas">Herança múltiplas</h2>
+<p>Voltando ao sistema para lidar com dados das pessoas, onde algumas dessas pessoas possuem a possibilidade de acessar o sistema através de usuário e senha, também deseja-se permitir que outros sistemas autentiquem e tenham acesso os dados através de uma <a rel="noopener" target="_blank" href="https://pt.wikipedia.org/wiki/Interface_de_programa%C3%A7%C3%A3o_de_aplica%C3%A7%C3%B5es">API</a>. Isso pode ser feito criando uma classe para representar os sistemas que terão permissão para acessar os dados. Exemplo:</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-python" data-lang="python"><span style="color:#c594c5;">class </span><span style="color:#fac863;">Sistema</span><span style="color:#5fb3b3;">:
+    </span><span style="color:#c594c5;">def </span><span style="color:#6699cc;">__init__</span><span style="color:#5fb3b3;">(</span><span style="color:#f99157;">self</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">usuario</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">senha</span><span style="color:#5fb3b3;">):
+        </span><span style="color:#ec5f67;">self</span><span style="color:#5fb3b3;">.</span><span style="color:#cccece;">usuario </span><span style="color:#5fb3b3;">= </span><span style="color:#cccece;">usuario
+        </span><span style="color:#ec5f67;">self</span><span style="color:#5fb3b3;">.</span><span style="color:#cccece;">senha </span><span style="color:#5fb3b3;">= </span><span style="color:#cccece;">senha
+
+    </span><span style="color:#c594c5;">def </span><span style="color:#6699cc;">autenticar</span><span style="color:#5fb3b3;">(</span><span style="color:#f99157;">self</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">usuario</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">senha</span><span style="color:#5fb3b3;">):
+        </span><span style="color:#c594c5;">return </span><span style="color:#ec5f67;">self</span><span style="color:#5fb3b3;">.</span><span style="color:#cccece;">usuario </span><span style="color:#5fb3b3;">== </span><span style="color:#cccece;">usuario </span><span style="color:#5fb3b3;">and </span><span style="color:#ec5f67;">self</span><span style="color:#5fb3b3;">.</span><span style="color:#cccece;">senha </span><span style="color:#5fb3b3;">== </span><span style="color:#cccece;">senha
+</span></code></pre>
+<p>Porém, esse código repete a implementação feita para <code>PessoaAutenticavel</code>:</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-python" data-lang="python"><span style="color:#c594c5;">class </span><span style="color:#fac863;">PessoaAutenticavel</span><span style="color:#5fb3b3;">(</span><span style="color:#99c794;">Pessoa</span><span style="color:#5fb3b3;">):
+    </span><span style="color:#c594c5;">def </span><span style="color:#6699cc;">__init__</span><span style="color:#5fb3b3;">(</span><span style="color:#f99157;">self</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">nome</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">sobrenome</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">idade</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">usuario</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">senha</span><span style="color:#5fb3b3;">):
+        </span><span style="color:#6699cc;">super</span><span style="color:#5fb3b3;">().</span><span style="color:#6699cc;">__init__</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">nome</span><span style="color:#5fb3b3;">, </span><span style="color:#6699cc;">sobrenome</span><span style="color:#5fb3b3;">, </span><span style="color:#6699cc;">idade</span><span style="color:#5fb3b3;">)
+        </span><span style="color:#ec5f67;">self</span><span style="color:#5fb3b3;">.</span><span style="color:#cccece;">usuario </span><span style="color:#5fb3b3;">= </span><span style="color:#cccece;">usuario
+        </span><span style="color:#ec5f67;">self</span><span style="color:#5fb3b3;">.</span><span style="color:#cccece;">senha </span><span style="color:#5fb3b3;">= </span><span style="color:#cccece;">senha
+
+    </span><span style="color:#c594c5;">def </span><span style="color:#6699cc;">autenticar</span><span style="color:#5fb3b3;">(</span><span style="color:#f99157;">self</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">usuario</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">senha</span><span style="color:#5fb3b3;">):
+        </span><span style="color:#c594c5;">return </span><span style="color:#ec5f67;">self</span><span style="color:#5fb3b3;">.</span><span style="color:#cccece;">usuario </span><span style="color:#5fb3b3;">== </span><span style="color:#cccece;">usuario </span><span style="color:#5fb3b3;">and </span><span style="color:#ec5f67;">self</span><span style="color:#5fb3b3;">.</span><span style="color:#cccece;">senha </span><span style="color:#5fb3b3;">== </span><span style="color:#cccece;">senha
+</span></code></pre>
+<p>Aproveitando que Python, diferente de outras linguagens, possui herança múltipla, é possível extrair essa lógica das classes, centralizando a implementação em uma outra classe e simplesmente herdá-la. Exemplo:</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-python" data-lang="python"><span style="color:#c594c5;">class </span><span style="color:#fac863;">Autenticavel</span><span style="color:#5fb3b3;">:
+    </span><span style="color:#c594c5;">def </span><span style="color:#6699cc;">__init__</span><span style="color:#5fb3b3;">(</span><span style="color:#f99157;">self</span><span style="color:#5fb3b3;">, *</span><span style="color:#f99157;">args</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">usuario</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">senha</span><span style="color:#5fb3b3;">, **</span><span style="color:#f99157;">kwargs</span><span style="color:#5fb3b3;">):
+        </span><span style="color:#6699cc;">super</span><span style="color:#5fb3b3;">().</span><span style="color:#6699cc;">__init__</span><span style="color:#5fb3b3;">(*</span><span style="color:#6699cc;">args</span><span style="color:#5fb3b3;">, **</span><span style="color:#6699cc;">kwargs</span><span style="color:#5fb3b3;">)
+        </span><span style="color:#ec5f67;">self</span><span style="color:#5fb3b3;">.</span><span style="color:#cccece;">usuario </span><span style="color:#5fb3b3;">= </span><span style="color:#cccece;">usuario
+        </span><span style="color:#ec5f67;">self</span><span style="color:#5fb3b3;">.</span><span style="color:#cccece;">senha </span><span style="color:#5fb3b3;">= </span><span style="color:#cccece;">senha
+
+    </span><span style="color:#c594c5;">def </span><span style="color:#6699cc;">autenticar</span><span style="color:#5fb3b3;">(</span><span style="color:#f99157;">self</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">usuario</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">senha</span><span style="color:#5fb3b3;">):
+        </span><span style="color:#c594c5;">return </span><span style="color:#ec5f67;">self</span><span style="color:#5fb3b3;">.</span><span style="color:#cccece;">usuario </span><span style="color:#5fb3b3;">== </span><span style="color:#cccece;">usuario </span><span style="color:#5fb3b3;">and </span><span style="color:#ec5f67;">self</span><span style="color:#5fb3b3;">.</span><span style="color:#cccece;">senha </span><span style="color:#5fb3b3;">== </span><span style="color:#cccece;">senha
+
+
+</span><span style="color:#c594c5;">class </span><span style="color:#fac863;">PessoaAutenticavel</span><span style="color:#5fb3b3;">(</span><span style="color:#99c794;">Autenticavel</span><span style="color:#5fb3b3;">, </span><span style="color:#99c794;">Pessoa</span><span style="color:#5fb3b3;">):
+    </span><span style="color:#f99157;">...
+
+
+</span><span style="color:#c594c5;">class </span><span style="color:#fac863;">Sistema</span><span style="color:#5fb3b3;">(</span><span style="color:#99c794;">Autenticavel</span><span style="color:#5fb3b3;">):
+    </span><span style="color:#f99157;">...
+
+
+</span><span style="color:#cccece;">p </span><span style="color:#5fb3b3;">= </span><span style="color:#6699cc;">PessoaAutenticavel</span><span style="color:#5fb3b3;">(</span><span style="color:#f99157;">nome</span><span style="color:#5fb3b3;">=&#39;</span><span style="color:#99c794;">João</span><span style="color:#5fb3b3;">&#39;, </span><span style="color:#f99157;">sobrenome</span><span style="color:#5fb3b3;">=&#39;</span><span style="color:#99c794;">da Silva</span><span style="color:#5fb3b3;">&#39;, </span><span style="color:#f99157;">idade</span><span style="color:#5fb3b3;">=</span><span style="color:#f99157;">20</span><span style="color:#5fb3b3;">,
+                       </span><span style="color:#f99157;">usuario</span><span style="color:#5fb3b3;">=&#39;</span><span style="color:#99c794;">joao</span><span style="color:#5fb3b3;">&#39;, </span><span style="color:#f99157;">senha</span><span style="color:#5fb3b3;">=&#39;</span><span style="color:#99c794;">secreta</span><span style="color:#5fb3b3;">&#39;)
+</span></code></pre>
+<p>A primeira coisa a ser observada são os argumentos <code>*args</code> e <code>**kwargs</code> no <code>__init__</code> da classe <code>Autenticavel</code>, eles são usados uma vez que não se sabe todos os argumentos que o <code>__init__</code> da classe que estenderá o <code>Autenticavel</code> espera receber, funcionando de forma dinâmica (mais sobre esse recurso pode ser visto na <a rel="noopener" target="_blank" href="https://docs.python.org/pt-br/3/tutorial/controlflow.html#more-on-defining-functions">documentação do Python</a>).</p>
+<p>A segunda coisa a ser verificada é que para a classe <code>PessoaAutenticavel</code>, agora cria em seus objetos, a estrutura tanto da classe <code>Pessoa</code>, quanto <code>Autenticavel</code>. Algo similar a versão sem orientação a objetos a baixo:</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-python" data-lang="python"><span style="color:#5f6364;"># Arquivo: pessoa_autenticavel.py
+
+</span><span style="color:#c594c5;">import </span><span style="color:#cccece;">autenticavel
+</span><span style="color:#c594c5;">import </span><span style="color:#cccece;">pessoa
+
+
+</span><span style="color:#c594c5;">def </span><span style="color:#6699cc;">init</span><span style="color:#5fb3b3;">(</span><span style="color:#f99157;">p</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">nome</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">sobrenome</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">idade</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">usuario</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">senha</span><span style="color:#5fb3b3;">):
+    </span><span style="color:#6699cc;">pessoa</span><span style="color:#5fb3b3;">.</span><span style="color:#6699cc;">init</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">p</span><span style="color:#5fb3b3;">, </span><span style="color:#6699cc;">nome</span><span style="color:#5fb3b3;">, </span><span style="color:#6699cc;">sobrenome</span><span style="color:#5fb3b3;">, </span><span style="color:#6699cc;">idade</span><span style="color:#5fb3b3;">)
+    </span><span style="color:#6699cc;">autenticavel</span><span style="color:#5fb3b3;">.</span><span style="color:#6699cc;">init</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">p</span><span style="color:#5fb3b3;">, </span><span style="color:#6699cc;">usuario</span><span style="color:#5fb3b3;">, </span><span style="color:#6699cc;">senha</span><span style="color:#5fb3b3;">)
+</span></code></pre>
+<p>Também vale observar que as classes <code>PessoaAutenticavel</code> e <code>Sistema</code> não precisam definir nenhuma função, uma vez que elas cumprem seus papéis apenas herdando outras classes, porém seria possível implementar funções específicas dessas classes, assim como sobrescrever as funções definidas por outras classes.</p>
+<h2 id="ordem-de-resolucao-de-metodos">Ordem de resolução de métodos</h2>
+<p>Embora herança múltiplas sejam interessantes, existe um problema, se ambas as classes pai possuírem uma função com um mesmo nome, a classe filha deveria chamar qual das funções? A do primeiro pai? A do último? Para lidar com esse problema o Python usa o MRO (<em>method resolution order</em>, ordem de resolução do método), que consiste em uma tupla com a ordem de qual classe o Python usará para encontrar o método a ser chamado. Exemplo:</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-python" data-lang="python"><span style="color:#6699cc;">print</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">PessoaAutenticavel</span><span style="color:#5fb3b3;">.</span><span style="color:#6699cc;">__mro__</span><span style="color:#5fb3b3;">)
+</span><span style="color:#5f6364;"># (&lt;class &#39;__main__.PessoaAutenticavel&#39;&gt;, &lt;class &#39;__main__.Autenticavel&#39;&gt;, &lt;class &#39;__main__.Pessoa&#39;&gt;, &lt;class &#39;object&#39;&gt;)
+</span></code></pre>
+<p>Por esse motivo que também foi possível chamar o <code>super().__init__</code> dentro de <code>Autenticavel</code>, que devido ao MRO, o Python chama o <code>__init__</code> da outra classe pai da classe que estendeu <code>Autenticavel</code>, em vez de precisar fazer um método <code>__init__</code> em <code>PessoaAutenticavel</code> chamando o <code>__init__</code> de todas as suas classes pais, como foi feito na versão sem orientação a objetos. E por isso a ordem <code>Autenticavel</code> e <code>Pessoa</code> na herança de <code>PessoaAutenticavel</code>, para fazer o MRO procurar os métodos primeiro em <code>Autenticavel</code> e depois em <code>Pessoa</code>.</p>
+<p>Para tentar fugir da complexidade que pode ser herança múltipla, é possível escrever classes que tem por objetivo unicamente incluir alguma funcionalidade em outra, como o caso da classe <code>Autenticavel</code>, que pode ser herdada por qualquer outra classe do sistema para permitir o acesso ao sistema. Essas classes recebem o nome de mixins, e adiciona uma funcionalidade bem definida.</p>
+<h2 id="estendendo-mixins">Estendendo mixins</h2>
+<p>Imagine se além de permitir o acesso ao sistema, também gostaríamos de registrar algumas tentativas de acesso, informando quando houve a tentativa e se o acesso foi concedido ou não. Como <code>Autenticavel</code> é uma classe, é possível extendê-la para implementar essa funcionalidade na função <code>autenticar</code>. Exemplo:</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-python" data-lang="python"><span style="color:#c594c5;">from </span><span style="color:#cccece;">datetime </span><span style="color:#c594c5;">import </span><span style="color:#cccece;">datetime
+
+
+</span><span style="color:#c594c5;">class </span><span style="color:#fac863;">AutenticavelComRegistro</span><span style="color:#5fb3b3;">(</span><span style="color:#99c794;">Autenticavel</span><span style="color:#5fb3b3;">):
+    @</span><span style="color:#6699cc;">staticmethod
+    </span><span style="color:#c594c5;">def </span><span style="color:#6699cc;">_get_data</span><span style="color:#5fb3b3;">():
+        </span><span style="color:#c594c5;">return </span><span style="color:#6699cc;">datetime</span><span style="color:#5fb3b3;">.</span><span style="color:#6699cc;">now</span><span style="color:#5fb3b3;">().</span><span style="color:#6699cc;">strftime</span><span style="color:#5fb3b3;">(&#39;</span><span style="color:#99c794;">%d/%m/%Y %T</span><span style="color:#5fb3b3;">&#39;)
+
+    </span><span style="color:#c594c5;">def </span><span style="color:#6699cc;">autenticar</span><span style="color:#5fb3b3;">(</span><span style="color:#f99157;">self</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">usuario</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">senha</span><span style="color:#5fb3b3;">):
+        </span><span style="color:#6699cc;">print</span><span style="color:#5fb3b3;">(</span><span style="color:#c594c5;">f</span><span style="color:#5fb3b3;">&#39;{</span><span style="color:#ec5f67;">self</span><span style="color:#5fb3b3;">.</span><span style="color:#6699cc;">_get_data</span><span style="color:#5fb3b3;">()}</span><span style="color:#99c794;"> Tentativa de acesso de </span><span style="color:#5fb3b3;">{</span><span style="color:#6699cc;">usuario</span><span style="color:#5fb3b3;">}&#39;)
+        </span><span style="color:#cccece;">acesso </span><span style="color:#5fb3b3;">= </span><span style="color:#6699cc;">super</span><span style="color:#5fb3b3;">().</span><span style="color:#6699cc;">autenticar</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">usuario</span><span style="color:#5fb3b3;">, </span><span style="color:#6699cc;">senha</span><span style="color:#5fb3b3;">)
+        </span><span style="color:#c594c5;">if </span><span style="color:#cccece;">acesso</span><span style="color:#5fb3b3;">:
+            </span><span style="color:#cccece;">acesso_str </span><span style="color:#5fb3b3;">= &#39;</span><span style="color:#99c794;">permitido</span><span style="color:#5fb3b3;">&#39;
+        </span><span style="color:#c594c5;">else</span><span style="color:#5fb3b3;">:
+            </span><span style="color:#cccece;">acesso_str </span><span style="color:#5fb3b3;">= &#39;</span><span style="color:#99c794;">negado</span><span style="color:#5fb3b3;">&#39;
+        </span><span style="color:#6699cc;">print</span><span style="color:#5fb3b3;">(</span><span style="color:#c594c5;">f</span><span style="color:#5fb3b3;">&#39;{</span><span style="color:#ec5f67;">self</span><span style="color:#5fb3b3;">.</span><span style="color:#6699cc;">_get_data</span><span style="color:#5fb3b3;">()}</span><span style="color:#99c794;"> Acesso de </span><span style="color:#5fb3b3;">{</span><span style="color:#6699cc;">usuario</span><span style="color:#5fb3b3;">} {</span><span style="color:#6699cc;">acesso_str</span><span style="color:#5fb3b3;">}&#39;)
+        </span><span style="color:#c594c5;">return </span><span style="color:#cccece;">acesso
+
+
+</span><span style="color:#c594c5;">class </span><span style="color:#fac863;">PessoaAutenticavelComRegistro</span><span style="color:#5fb3b3;">(</span><span style="color:#99c794;">AutenticavelComRegistro</span><span style="color:#5fb3b3;">, </span><span style="color:#99c794;">Pessoa</span><span style="color:#5fb3b3;">):
+    </span><span style="color:#f99157;">...
+
+
+</span><span style="color:#c594c5;">class </span><span style="color:#fac863;">SistemaAutenticavelComRegistro</span><span style="color:#5fb3b3;">(</span><span style="color:#99c794;">AutenticavelComRegistro</span><span style="color:#5fb3b3;">, </span><span style="color:#99c794;">Sistema</span><span style="color:#5fb3b3;">):
+    </span><span style="color:#f99157;">...
+
+
+</span><span style="color:#cccece;">p </span><span style="color:#5fb3b3;">= </span><span style="color:#6699cc;">PessoaAutenticavelComRegistro</span><span style="color:#5fb3b3;">(
+    </span><span style="color:#f99157;">nome</span><span style="color:#5fb3b3;">=&#39;</span><span style="color:#99c794;">João</span><span style="color:#5fb3b3;">&#39;, </span><span style="color:#f99157;">sobrenome</span><span style="color:#5fb3b3;">=&#39;</span><span style="color:#99c794;">da Silva</span><span style="color:#5fb3b3;">&#39;, </span><span style="color:#f99157;">idade</span><span style="color:#5fb3b3;">=</span><span style="color:#f99157;">20</span><span style="color:#5fb3b3;">,
+    </span><span style="color:#f99157;">usuario</span><span style="color:#5fb3b3;">=&#39;</span><span style="color:#99c794;">joao</span><span style="color:#5fb3b3;">&#39;, </span><span style="color:#f99157;">senha</span><span style="color:#5fb3b3;">=&#39;</span><span style="color:#99c794;">secreta</span><span style="color:#5fb3b3;">&#39;,
+)
+</span><span style="color:#6699cc;">p</span><span style="color:#5fb3b3;">.</span><span style="color:#6699cc;">autenticar</span><span style="color:#5fb3b3;">(&#39;</span><span style="color:#99c794;">joao</span><span style="color:#5fb3b3;">&#39;, &#39;</span><span style="color:#99c794;">secreta</span><span style="color:#5fb3b3;">&#39;)
+</span><span style="color:#5f6364;"># Saída na tela:
+# 23/04/2021 16:56:58 Tentativa de acesso de joao
+# 23/04/2021 16:56:58 Acesso de joao permitido
+</span></code></pre>
+<p>Essa implementação utiliza-se do <code>super()</code> para acessar a função <code>autenticar</code> da classe <code>Autenticavel</code> para não precisar reimplementar a autenticação. Porém, antes de chamá-la, manipula seus argumentos para registrar quem tentou acessar o sistema, assim como também manipula o seu retorno para registrar se o acesso foi permitido ou não.</p>
+<p>Essa classe também permite analisar melhor a ordem em que as classes são consultadas quando uma função é chamada:</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-python" data-lang="python"><span style="color:#6699cc;">print</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">PessoaAutenticavelComRegistro</span><span style="color:#5fb3b3;">.</span><span style="color:#6699cc;">__mro__</span><span style="color:#5fb3b3;">)
+</span><span style="color:#5f6364;"># (&lt;class &#39;__main__.PessoaAutenticavelComRegistro&#39;&gt;, &lt;class &#39;__main__.AutenticavelComRegistro&#39;&gt;, &lt;class &#39;__main__.Autenticavel&#39;&gt;, &lt;class &#39;__main__.Pessoa&#39;&gt;, &lt;class &#39;object&#39;&gt;)
+</span></code></pre>
+<p>Que também pode ser visto na forma de um digrama de classes:</p>
+<p><img src="https://eduardoklosowski.github.io/blog/oo-de-outra-forma-4/mro.png" alt="Diagrama de classes" /></p>
+<p>Onde é feito uma <a rel="noopener" target="_blank" href="https://pt.wikipedia.org/wiki/Busca_em_profundidade">busca em profundidade</a>, como se a função fosse chamada no primeiro pai, e só se ela não for encontrada, busca-se no segundo pai e assim por diante. Também é possível observar a classe <code>object</code>, que sempre será a última classe, e é a classe pai de todas as outras classes do Python quando elas não possuirem um pai declarado explicitamente.</p>
+<h2 id="consideracoes">Considerações</h2>
+<p>Herança múltipla pode dificultar bastante o entendimento do código, principalmente para encontrar onde determinada função está definida, porém pode facilitar bastante o código. Um exemplo que usa bastante herança e mixins são as <em>views</em> baseadas em classe do django (<a rel="noopener" target="_blank" href="https://docs.djangoproject.com/pt-br/3.2/topics/class-based-views/"><em>class-based views</em></a>), porém para facilitar a visualização existe o site <a rel="noopener" target="_blank" href="https://ccbv.co.uk/">Classy Class-Based Views</a> que lista todas as classes, e os mixins utilizados em cada uma, como pode ser visto em &quot;Ancestors&quot; como na <a rel="noopener" target="_blank" href="https://ccbv.co.uk/projects/Django/3.1/django.views.generic.edit/UpdateView/">UpdateView</a>, que é usado para criar uma página com formulário para editar um registro já existente no banco, assim ela usa mixins para pegar um objeto do banco (<code>SingleObjectMixin</code>), processar formulário baseado em uma tabela do banco (<code>ModelFormMixin</code>) e algumas outras funcionalidades necessárias para implementar essa página.</p>
+
+    </div>
+
+        </div>
+    </body>
+</html>

@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+        <title>PHP: Interpretação de variáveis em string ou concatenação? - Blog Eduardo Klosowski</title>
+        <meta name="application-name" content="Blog Eduardo Klosowski">
+        <meta name="apple-mobile-web-app-title" content="Blog Eduardo Klosowski">
+
+        <link rel="shortcut icon" href="https://eduardoklosowski.github.io/blog/favicon.webp">
+        <link rel="icon" sizes="188x188" href="https://eduardoklosowski.github.io/blog/logo.png">
+        <link rel="apple-touch-icon" href="https://eduardoklosowski.github.io/blog/logo.png">
+
+        
+            <link rel="alternate" type="application/atom+xml" title="Blog Eduardo Klosowski" href="https://eduardoklosowski.github.io/blog/atom.xml">
+        
+
+        
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Blog Eduardo Klosowski">
+    <meta property="og:title" content="PHP: Interpretação de variáveis em string ou concatenação?">
+    <meta property="og:description" content="Na live do pokemaobr, durante o desenvolvimento de uma funcionalidade do bot, ocorreu uma discussão a respeito de usar interpretação de variáveis dentro da string ou concatenar, tanto em relação a desempenho, quanto legibilidade. Eu fiquei curioso em relação ao desempenho, então resolvi fazer alguns testes estatísticos para verificar isso.">
+    <meta property="og:url" content="https://eduardoklosowski.github.io/blog/php-interpretacao-concatenacao/">
+    <meta property="og:image" content="https://eduardoklosowski.github.io/blog/logo.png">
+    <meta property="og:locale" content="pt_BR">
+    <meta property="og:article:published_time" content="2020-12-29">
+    <meta property="og:article:author" content="Eduardo Klosowski">
+    
+    
+        <meta property="og:article:tag" content="Desempenho">
+    
+    
+        <meta property="og:article:tag" content="PHP">
+    
+
+
+        <link rel="stylesheet" media="all" href="https://eduardoklosowski.github.io/blog/poole.css">
+        <link rel="stylesheet" media="all" href="https://eduardoklosowski.github.io/blog/tema.css">
+        <link rel="stylesheet" media="print" href="https://eduardoklosowski.github.io/blog/print.css">
+
+        
+            <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "73939fe3b7984f859c0427bc6c693927"}'></script>
+        
+        
+            <script async src="https://www.googletagmanager.com/gtag/js?id=G-15ZW1NJTDE"></script>
+            <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', 'G-15ZW1NJTDE');
+            </script>
+        
+    </head>
+
+    <body>
+        <div class="sidebar">
+            <div class="container">
+                <div class="sidebar-about">
+                    <a href="https://eduardoklosowski.github.io/blog/">
+                        <img class="sidebar-logo" src="https://eduardoklosowski.github.io/blog/logo.png">
+                        <h1>Blog Eduardo Klosowski</h1>
+                    </a>
+                </div>
+
+                <ul class="sidebar-nav">
+                    
+                        <li class="sidebar-nav-item">
+                            <a rel="noopener" target="_blank" href="https://github.com/eduardoklosowski">
+                                
+                                    <img src="https://eduardoklosowski.github.io/blog/icons/github.svg" alt="GitHub">
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="sidebar-nav-item">
+                            <a rel="noopener" target="_blank" href="https://twitter.com/eduklosowski">
+                                
+                                    <img src="https://eduardoklosowski.github.io/blog/icons/twitter.svg" alt="Twitter">
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="sidebar-nav-item">
+                            <a rel="noopener" target="_blank" href="https://twitch.tv/eduardoklosowski">
+                                
+                                    <img src="https://eduardoklosowski.github.io/blog/icons/twitch.svg" alt="Twitch">
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="sidebar-nav-item">
+                            <a rel="noopener" target="_blank" href="https://asciinema.org/~eduardoklosowski">
+                                
+                                    <img src="https://eduardoklosowski.github.io/blog/icons/asciinema.svg" alt="asciinema">
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="sidebar-nav-item">
+                            <a rel="noopener" target="_blank" href="https://dev.to/eduardoklosowski">
+                                
+                                    <img src="https://eduardoklosowski.github.io/blog/icons/dev.svg" alt="DEV">
+                                
+                            </a>
+                        </li>
+                    
+                </ul>
+            </div>
+        </div>
+
+        <div class="content container">
+            
+    <div class="post">
+        <h1 class="post-title">PHP: Interpretação de variáveis em string ou concatenação?</h1>
+        <div class="post-info">
+            Publicado em 29-12-2020
+            &middot;
+            7 minutos de leitura
+        </div>
+        
+        <div class="post-tags">
+            
+                <a href="https://eduardoklosowski.github.io/blog/tags/desempenho/">#Desempenho</a>,
+            
+            
+                <a href="https://eduardoklosowski.github.io/blog/linguagens/php/">#PHP</a>
+            
+        </div>
+        <p>Na live do <a rel="noopener" target="_blank" href="https://www.twitch.tv/pokemaobr">pokemaobr</a>, durante o desenvolvimento de uma funcionalidade do bot, ocorreu uma discussão a respeito de usar <a rel="noopener" target="_blank" href="https://www.php.net/manual/pt_BR/language.types.string.php#language.types.string.parsing">interpretação de variáveis dentro da string</a> ou concatenar, tanto em relação a desempenho, quanto legibilidade. Eu fiquei curioso em relação ao desempenho, então resolvi fazer alguns testes estatísticos para verificar isso.</p>
+<h2 id="experimento">Experimento</h2>
+<p>Para fazer um teste estatístico, o primeiro passo é adquirir os dados. Para esse caso, bastaria implementar as diferentes opções e medir o desempenho de cada uma. Então fiz um código que gere uma string a partir de 10 variáveis, repetindo a instrução que gera a string 1 milhão de vezes, o que faz com que a execução do código leve um tempo razoável para ser medido. Então a estrutura do experimento ficou assim:</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-php" data-lang="php"><span style="color:#5fb3b3;">&lt;?php
+
+$</span><span style="color:#cccece;">a </span><span style="color:#5fb3b3;">= </span><span style="color:#f99157;">1</span><span style="color:#5fb3b3;">;
+$</span><span style="color:#cccece;">b </span><span style="color:#5fb3b3;">= </span><span style="color:#f99157;">2</span><span style="color:#5fb3b3;">;
+$</span><span style="color:#cccece;">c </span><span style="color:#5fb3b3;">= </span><span style="color:#f99157;">3</span><span style="color:#5fb3b3;">;
+$</span><span style="color:#cccece;">d </span><span style="color:#5fb3b3;">= </span><span style="color:#f99157;">4</span><span style="color:#5fb3b3;">;
+$</span><span style="color:#cccece;">e </span><span style="color:#5fb3b3;">= </span><span style="color:#f99157;">5</span><span style="color:#5fb3b3;">;
+$</span><span style="color:#cccece;">f </span><span style="color:#5fb3b3;">= </span><span style="color:#f99157;">6</span><span style="color:#5fb3b3;">;
+$</span><span style="color:#cccece;">g </span><span style="color:#5fb3b3;">= </span><span style="color:#f99157;">7</span><span style="color:#5fb3b3;">;
+$</span><span style="color:#cccece;">h </span><span style="color:#5fb3b3;">= </span><span style="color:#f99157;">8</span><span style="color:#5fb3b3;">;
+$</span><span style="color:#cccece;">i </span><span style="color:#5fb3b3;">= </span><span style="color:#f99157;">9</span><span style="color:#5fb3b3;">;
+$</span><span style="color:#cccece;">j </span><span style="color:#5fb3b3;">= </span><span style="color:#f99157;">10</span><span style="color:#5fb3b3;">;
+
+</span><span style="color:#c594c5;">for </span><span style="color:#5fb3b3;">($</span><span style="color:#cccece;">k </span><span style="color:#5fb3b3;">= </span><span style="color:#f99157;">0</span><span style="color:#5fb3b3;">; $</span><span style="color:#cccece;">k </span><span style="color:#5fb3b3;">&lt; </span><span style="color:#f99157;">1000000</span><span style="color:#5fb3b3;">; $</span><span style="color:#cccece;">k</span><span style="color:#5fb3b3;">++) {
+    </span><span style="color:#5f6364;"># Código que gera a string
+</span><span style="color:#5fb3b3;">}
+</span></code></pre>
+<p>A primeira opção a ser testado é a <a rel="noopener" target="_blank" href="https://www.php.net/manual/pt_BR/language.types.string.php#language.types.string.parsing.simple">interpretação simples de variáveis</a>, que consiste em usar as variáveis diretamente entre aspas duplas (<a href="https://eduardoklosowski.github.io/blog/php-interpretacao-concatenacao/codigo1.php">código completo</a>):</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-php" data-lang="php"><span style="color:#cccece;">$str = &quot;$a $b $c $d $e $f $g $h $i $j&quot;;
+</span></code></pre>
+<p>A segunda opção é a <a rel="noopener" target="_blank" href="https://www.php.net/manual/pt_BR/language.types.string.php#language.types.string.parsing.complex">interpretação complexa de variáveis</a>, que é semelhante a primeira, porém coloca a variável entre chaves (<code>{}</code>) (<a href="https://eduardoklosowski.github.io/blog/php-interpretacao-concatenacao/codigo2.php">código completo</a>):</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-php" data-lang="php"><span style="color:#cccece;">$str = &quot;{$a} {$b} {$c} {$d} {$e} {$f} {$g} {$h} {$i} {$j}&quot;;
+</span></code></pre>
+<p>A terceira opção é a concatenação de strings utilizando aspas duplas (<a href="https://eduardoklosowski.github.io/blog/php-interpretacao-concatenacao/codigo3.php">código completo</a>):</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-php" data-lang="php"><span style="color:#cccece;">$str = $a . &quot; &quot; . $b . &quot; &quot; . $c . &quot; &quot; . $d . &quot; &quot; . $e . &quot; &quot; . $f . &quot; &quot; . $g . &quot; &quot; . $h . &quot; &quot; . $i . &quot; &quot; . $j;
+</span></code></pre>
+<p>E a quarta e última opção é a concatenação de strings utilizando aspas simples (<a href="https://eduardoklosowski.github.io/blog/php-interpretacao-concatenacao/codigo4.php">código completo</a>):</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-php" data-lang="php"><span style="color:#cccece;">$str = $a . &#39; &#39; . $b . &#39; &#39; . $c . &#39; &#39; . $d . &#39; &#39; . $e . &#39; &#39; . $f . &#39; &#39; . $g . &#39; &#39; . $h . &#39; &#39; . $i . &#39; &#39; . $j;
+</span></code></pre>
+<p>Ainda é necessário uma forma de medir o desempenho desses códigos. Por ter optado em executá-los diretamente no terminal (para não ter interferência de algum servidor web, por exemplo), é possível medir o desempenho do processo diretamente. Uma ferramenta que faz isso é o <a rel="noopener" target="_blank" href="https://www.gnu.org/software/time/">GNU Time</a>, que pode ser instalado no <a rel="noopener" target="_blank" href="https://www.debian.org/">Debian</a> com <code>apt install time</code>. Porém o <a rel="noopener" target="_blank" href="https://www.gnu.org/software/bash/">Bash</a> também possui um comando interno chamado <code>time</code>, sendo necessário informar o caminho completo do executável (<code>/usr/bin/time</code>) para que ele seja executado, em vez do comando interno do Bash.</p>
+<p>Para facilitar o processo de análise, criei um shell script (<a href="https://eduardoklosowski.github.io/blog/php-interpretacao-concatenacao/run.sh">run.sh</a>) que executa cada código alternadamente 100 vezes, gerando uma boa quantidade de dados para que possa ser feita uma análise estatística, e de forma que outros processos que executem durante algum teste não interfira tanto nos resultados. A saída do script é um <a rel="noopener" target="_blank" href="https://pt.wikipedia.org/wiki/Comma-separated_values">CSV</a> com os valores medidos, semelhante aos <code>.txt</code> utilizados pelo bot já citado. Porém também comprimi o arquivo com <a rel="noopener" target="_blank" href="https://www.gzip.org/">Gzip</a> para reduzir o tamanho do mesmo, embora não fosse realmente necessário para essa pequena base, mas isso é bastante feito para bases CSV grandes, visto a boa taxa de compressão para arquivos de texto, que é o caso do CSV, economizando alguns <em>gigabytes</em> em muitos casos. O resultado final está disponível <a href="https://eduardoklosowski.github.io/blog/php-interpretacao-concatenacao/dados.csv.gz">aqui</a>.</p>
+<p>A versão do PHP utilizada foi a 7.3.19-1~deb10u1, que é a versão mais recente disponível no repositório <em>stable</em> do Debian, que estava na versão 10.7 (Buster) no dia da escrita desse artigo.</p>
+<h2 id="analise-do-tempo-de-execucao">Análise do tempo de execução</h2>
+<p>Para fazer a análise, optei por utilizar a linguagem <a rel="noopener" target="_blank" href="https://www.r-project.org/">R</a>, que é voltada para estatísticas, dentro de um notebook do <a rel="noopener" target="_blank" href="https://jupyter.org/">Jupyter</a>, que facilita a execução e replicação dos testes, podendo ser acessado <a href="https://eduardoklosowski.github.io/blog/php-interpretacao-concatenacao/analise.ipynb">aqui</a> (ou visualizado <a rel="noopener" target="_blank" href="https://github.com/eduardoklosowski/blog/blob/main/content/2020-12-29-php-interpretacao-concatenacao/analise.ipynb">aqui</a>).</p>
+<p>Para visualizar os dados foi escolhido o <a rel="noopener" target="_blank" href="https://pt.wikipedia.org/wiki/Diagrama_de_caixa"><em>boxplot</em></a>, que consiste em um gráfico como qualquer outro, porém em vez de um ponto no plano cartesiano, apresenta a figura a baixo. Essa figura indica qual é o maior e menor valor, mediana (50% dos dados estão a baixo dessa linha e 50% a cima), 1º quartil (25% dos dados estão a baixo dessa linha e 75% a cima) e 3º quartil (75% dos dados estão a baixo dessa linha e 25% dos dados estão a cima). Essas linhas podem estar mais próximas ou distantes conforme a distribuição dos valores representado pelo <em>boxplot</em>. A aparição de algum ponto, além da figura do <em>boxplot</em>, representa um <a rel="noopener" target="_blank" href="https://pt.wikipedia.org/wiki/Outlier"><em>outlier</em></a>, que é um valor bastante diferente dos demais, neste caso, o mais provável é que alguma outra coisa executou no computador e interferiu na execução do código a ser testado.</p>
+<p><img src="https://eduardoklosowski.github.io/blog/php-interpretacao-concatenacao/boxplot.png" alt="Boxplot" /></p>
+<p>A baixo está o <em>boxplot</em> do tempo de execução dos diferentes códigos implementados:</p>
+<p><img src="https://eduardoklosowski.github.io/blog/php-interpretacao-concatenacao/tempo-boxplot.png" alt="Boxplot do tempo de execução" /></p>
+<p>É possível observar uma tendência de tempo menor nas implementações de interpretação de variáveis que nas implementações com concatenação, provavelmente devido a essas últimas precisarem fazer várias operações de concatenações, que por sua vez podem gerar diferentes strings intermediárias. Na linguagem Java, por exemplo, existe a classe <a rel="noopener" target="_blank" href="https://docs.w3cub.com/openjdk%7E11/java.base/java/lang/string"><code>String</code></a>, e a classe <a rel="noopener" target="_blank" href="https://docs.w3cub.com/openjdk%7E11/java.base/java/lang/stringbuilder"><code>StringBuilder</code></a>, que é semelhante a primeira, porém mutável, sendo muito mais rápida para fazer diversas concatenações, uma vez que não precisa gerar diversas strings intermediárias, e depois pode ser convertida para uma <a rel="noopener" target="_blank" href="https://docs.w3cub.com/openjdk%7E11/java.base/java/lang/string"><code>String</code></a> propriamente dita.</p>
+<p>Para verificar se essas diferenças nos tempos de execução é estatisticamente significativa, é possível aplicar um teste <a rel="noopener" target="_blank" href="https://pt.wikipedia.org/wiki/An%C3%A1lise_de_vari%C3%A2ncia">ANOVA</a>:</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-txt" data-lang="txt"><span style="color:#cccece;">             Df Sum Sq Mean Sq F value Pr(&gt;F)
+codigo        3 2.5462  0.8487    2425 &lt;2e-16 ***
+Residuals   396 0.1386  0.0003
+---
+Signif. codes:  0 ‘***’ 0.001 ‘**’ 0.01 ‘*’ 0.05 ‘.’ 0.1 ‘ ’ 1
+</span></code></pre>
+<p>O teste apresenta um valor P bastante significativo (<code>Pr</code> na tabela a cima), indicando que existem diferenças estatisticamente significativas. Para encontrar que diferenças são essas, é possível aplicar um teste de <a rel="noopener" target="_blank" href="https://en.wikipedia.org/wiki/Tukey%27s_range_test">Tukey</a>. Uma forma de representá-lo é através de um gráfico com intervalos das diferenças entre os valores medidos, onde as diferenças estatisticamente significativas não incluirão o 0 no intervalo. A baixo esse gráfico com <a rel="noopener" target="_blank" href="https://pt.wikipedia.org/wiki/Intervalo_de_confian%C3%A7a">nível de confiança</a> de 95% (para entender mais sobre nível ou intervalo de confiança recomendo esse <a rel="noopener" target="_blank" href="https://www.youtube.com/watch?v=GsnnsmZAi5Y">vídeo</a>, e lembrar um pouco da <a rel="noopener" target="_blank" href="https://www.twitch.tv/unnskyld2">unnskyld2</a> também):</p>
+<p><img src="https://eduardoklosowski.github.io/blog/php-interpretacao-concatenacao/tempo-tukey.png" alt="Teste de Tukey para o tempo de execução" /></p>
+<p>Esse gráfico demonstra que existem diferenças estatisticamente significativas entre as implementações com interpretação de variáveis das com concatenação, porém entras as implementações de interpretação de variáveis e entre as com concatenação não foi encontrado diferenças estatisticamente significativas, não sendo possível afirmar qual entre cada grupo é a melhor, se é existe diferença de desempenho.</p>
+<h2 id="uso-de-memoria-ram">Uso de memória RAM</h2>
+<p>Outra coisa que também foi medido pelo <code>time</code> é o uso de memória RAM. Repetindo o processo efetuado com o tempo de execução, temos o <em>boxplot</em>:</p>
+<p><img src="https://eduardoklosowski.github.io/blog/php-interpretacao-concatenacao/memoria-boxplot.png" alt="Boxplot do uso de memória" /></p>
+<p>Nesse gráfico não é possível verificar nenhuma grande diferença de uso de memória entre as implementações, o que é corroborado pelo teste ANOVA, que também não apresenta diferenças, com valor P (0.206) a cima de 0.05 (valor usado para o intervalo de confiança de 95%).</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-txt" data-lang="txt"><span style="color:#cccece;">             Df  Sum Sq Mean Sq F value Pr(&gt;F)
+codigo        3   88864   29621   1.531  0.206
+Residuals   396 7663691   19353
+</span></code></pre>
+<p>Como não foi encontrado diferenças estatisticamente significativas, não é necessário aplicar o teste de Tukey. Mas por curiosidade, segue a baixo:</p>
+<p><img src="https://eduardoklosowski.github.io/blog/php-interpretacao-concatenacao/memoria-tukey.png" alt="Teste de Tukey do uso de memória" /></p>
+<h2 id="consideracoes">Considerações</h2>
+<p>Em relação a discussão inicial, este texto verifica apenas a questão do desempenho, não abordando a questão de legibilidade. Dentro da questão de desempenho, foi verificado que a utilização de interpretação de variável é mais rápida que a concatenação, e essa diferença é estatisticamente significativa. Porém não foi observado nenhuma diferença em relação ao uso de memória RAM, tendo a diferença se restringindo ao tempo de execução.</p>
+
+    </div>
+
+        </div>
+    </body>
+</html>

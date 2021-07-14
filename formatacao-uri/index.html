@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+        <title>Formatação para o URI - Blog Eduardo Klosowski</title>
+        <meta name="application-name" content="Blog Eduardo Klosowski">
+        <meta name="apple-mobile-web-app-title" content="Blog Eduardo Klosowski">
+
+        <link rel="shortcut icon" href="https://eduardoklosowski.github.io/blog/favicon.webp">
+        <link rel="icon" sizes="188x188" href="https://eduardoklosowski.github.io/blog/logo.png">
+        <link rel="apple-touch-icon" href="https://eduardoklosowski.github.io/blog/logo.png">
+
+        
+            <link rel="alternate" type="application/atom+xml" title="Blog Eduardo Klosowski" href="https://eduardoklosowski.github.io/blog/atom.xml">
+        
+
+        
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Blog Eduardo Klosowski">
+    <meta property="og:title" content="Formatação para o URI">
+    <meta property="og:description" content="A levxyca estava resolvendo exercícios do URI em live, e teve alguma dificuldade, não com o exercício, mas com a leitura da entrada e a formatação da saída. Então resolvi descrever um pouco esse processo, que pode ajudar tanto quem for resolver os desafios do URI, como também quem deseja entender mais sobre o funcionamento dos processos em si.">
+    <meta property="og:url" content="https://eduardoklosowski.github.io/blog/formatacao-uri/">
+    <meta property="og:image" content="https://eduardoklosowski.github.io/blog/logo.png">
+    <meta property="og:locale" content="pt_BR">
+    <meta property="og:article:published_time" content="2021-02-07">
+    <meta property="og:article:author" content="Eduardo Klosowski">
+    
+    
+        <meta property="og:article:tag" content="Processos">
+    
+    
+        <meta property="og:article:tag" content="C">
+    
+        <meta property="og:article:tag" content="JavaScript">
+    
+
+
+        <link rel="stylesheet" media="all" href="https://eduardoklosowski.github.io/blog/poole.css">
+        <link rel="stylesheet" media="all" href="https://eduardoklosowski.github.io/blog/tema.css">
+        <link rel="stylesheet" media="print" href="https://eduardoklosowski.github.io/blog/print.css">
+
+        
+            <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "73939fe3b7984f859c0427bc6c693927"}'></script>
+        
+        
+            <script async src="https://www.googletagmanager.com/gtag/js?id=G-15ZW1NJTDE"></script>
+            <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', 'G-15ZW1NJTDE');
+            </script>
+        
+    </head>
+
+    <body>
+        <div class="sidebar">
+            <div class="container">
+                <div class="sidebar-about">
+                    <a href="https://eduardoklosowski.github.io/blog/">
+                        <img class="sidebar-logo" src="https://eduardoklosowski.github.io/blog/logo.png">
+                        <h1>Blog Eduardo Klosowski</h1>
+                    </a>
+                </div>
+
+                <ul class="sidebar-nav">
+                    
+                        <li class="sidebar-nav-item">
+                            <a rel="noopener" target="_blank" href="https://github.com/eduardoklosowski">
+                                
+                                    <img src="https://eduardoklosowski.github.io/blog/icons/github.svg" alt="GitHub">
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="sidebar-nav-item">
+                            <a rel="noopener" target="_blank" href="https://twitter.com/eduklosowski">
+                                
+                                    <img src="https://eduardoklosowski.github.io/blog/icons/twitter.svg" alt="Twitter">
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="sidebar-nav-item">
+                            <a rel="noopener" target="_blank" href="https://twitch.tv/eduardoklosowski">
+                                
+                                    <img src="https://eduardoklosowski.github.io/blog/icons/twitch.svg" alt="Twitch">
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="sidebar-nav-item">
+                            <a rel="noopener" target="_blank" href="https://asciinema.org/~eduardoklosowski">
+                                
+                                    <img src="https://eduardoklosowski.github.io/blog/icons/asciinema.svg" alt="asciinema">
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="sidebar-nav-item">
+                            <a rel="noopener" target="_blank" href="https://dev.to/eduardoklosowski">
+                                
+                                    <img src="https://eduardoklosowski.github.io/blog/icons/dev.svg" alt="DEV">
+                                
+                            </a>
+                        </li>
+                    
+                </ul>
+            </div>
+        </div>
+
+        <div class="content container">
+            
+    <div class="post">
+        <h1 class="post-title">Formatação para o URI</h1>
+        <div class="post-info">
+            Publicado em 07-02-2021
+            &middot;
+            9 minutos de leitura
+        </div>
+        
+        <div class="post-tags">
+            
+                <a href="https://eduardoklosowski.github.io/blog/tags/processos/">#Processos</a>,
+            
+            
+                <a href="https://eduardoklosowski.github.io/blog/linguagens/c/">#C</a>,
+            
+                <a href="https://eduardoklosowski.github.io/blog/linguagens/javascript/">#JavaScript</a>
+            
+        </div>
+        <p>A <a rel="noopener" target="_blank" href="https://www.twitch.tv/levxyca">levxyca</a> estava resolvendo exercícios do <a rel="noopener" target="_blank" href="https://www.urionlinejudge.com.br/">URI</a> em live, e teve alguma dificuldade, não com o exercício, mas com a leitura da entrada e a formatação da saída. Então resolvi descrever um pouco esse processo, que pode ajudar tanto quem for resolver os desafios do URI, como também quem deseja entender mais sobre o funcionamento dos processos em si.</p>
+<h2 id="fluxos-padroes-do-processo">Fluxos padrões do processo</h2>
+<p>O primeiro passo é entender como funcionam as entradas e saídas dos processos. Em sistemas UNIX (que provavelmente é o ambiente onde o URI valida os códigos enviados) todos os processos possuem três fluxos padrões: <code>stdin</code> (<em>standart input stream</em>, fluxo de entrada padrão) que por padrão é o teclado, <code>stdout</code> (<em>standart output stream</em>, fluxo de saída padrão) que por padrão é a tela, e <code>stderr</code> (<em>standart error stream</em>, fluxo de erro padrão) que por padrão também é a tela. Exemplificado como a baixo:</p>
+<p><img src="https://eduardoklosowski.github.io/blog/formatacao-uri/processo.png" alt="Processo com stdin, stdout e stderr" /></p>
+<p>No Linux eles também podem ser visualizados dentro do diretório de dispositivos (<code>/dev</code>) com <code>ls -la /dev/std{in,out,err}</code>:</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-txt" data-lang="txt"><span style="color:#cccece;">lrwxrwxrwx 1 root root 15 fev  6 10:07 /dev/stderr -&gt; /proc/self/fd/2
+lrwxrwxrwx 1 root root 15 fev  6 10:07 /dev/stdin -&gt; /proc/self/fd/0
+lrwxrwxrwx 1 root root 15 fev  6 10:07 /dev/stdout -&gt; /proc/self/fd/1
+</span></code></pre>
+<p>Esse comando apresenta uma informação interessante, eles são <em>links</em> simbólicos para <code>/proc/self/fd/*</code>, onde <code>/proc</code> é o diretório com informações sobre os processos, <code>self</code> é referente ao processo atual, <code>fd</code> são <a rel="noopener" target="_blank" href="https://pt.wikipedia.org/wiki/Descritor_de_arquivo"><em>file descriptor</em></a>, que nada mais são que arquivos abertos pelo processo, numerados de 0, 1 e 2. Quando se usa um comando como <code>grep eduardo &lt; entrada.txt &gt; saida.txt 2&gt; erros.txt</code>, manipula-se o <code>stdin</code> para ler do arquivo <code>entrada.txt</code> em vez do teclado, o <code>stdout</code> para escrever no arquivo <code>saida.txt</code> em vez da tela, e o <code>stderr</code> para escrever no arquivo <code>erros.txt</code>. Esse comando também poderia ser escrito como <code>grep eduardo 0&lt; entrada.txt 1&gt; saida.txt 2&gt; erros.txt</code>, ou seja, os comandos <code>&lt;</code> (ou <code>0&lt;</code>), <code>&gt;</code> (ou <code>1&gt;</code>) e <code>2&gt;</code> manipulando os <em>file descriptors</em> 0, 1 e 2 do processo, inclusive é possível abrir outros arquivos, como <code>3&lt;</code> para abrir um arquivo como leitura ou <code>3&gt;</code> como escrita.</p>
+<p>Também é possível ligar o <code>stdout</code> de um processo com o <code>stdin</code> de outro, como <code>cat &lt; entrada.txt | grep eduardo | wc -l &gt; saida.txt</code>:</p>
+<p><img src="https://eduardoklosowski.github.io/blog/formatacao-uri/pipeline.png" alt="Pipeline de processos" /></p>
+<p>Assim a entrada do primeiro processo é o arquivo <code>entrada.txt</code>, a saída do primeiro processo é ligado na entrada do segundo, e a saída do segundo é ligado na entrada do terceiro, e a saída do terceiro é ligado ao arquivo <code>saida.txt</code>. Também vale observar que como o <code>stderr</code> não é tratado, qualquer mensagem que um processo mandar para ele, será exibido na tela, e não encaminhado para o processo seguindo ou arquivo <code>saida.txt</code>. Porém seria possível mandar as mensagens do <code>stderr</code> junto no <code>stdout</code> para o próximo processo ou arquivo com <code>cat &lt; entrada.txt |&amp; grep eduardo |&amp; wc -l &amp;&gt; saida.txt</code>.</p>
+<h2 id="fluxos-dentro-do-processo">Fluxos dentro do processo</h2>
+<p>Quem já programou em C, provavelmente já usou as funções <code>printf</code> e <code>scanf</code>, usadas respectivamente para escrever na tela e ler do teclado. Na verdade o que essas funções fazem é escrever no <code>stdout</code> e ler do <code>stdin</code>. Para quem já manipulou arquivos, provavelmente usou as funções <code>fprintf</code> e <code>fscanf</code>, que fazem o mesmo das funções já descritas, porém escrevendo e lendo de um arquivo aberto anteriormente, porém é possível em vez de passar a referência a um arquivo (<em>file descriptor</em>), informar <code>stdout</code>, <code>stderr</code> e <code>stdin</code>, exemplo:</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-c" data-lang="c"><span style="color:#c594c5;">#include </span><span style="color:#5fb3b3;">&lt;</span><span style="color:#99c794;">stdio.h</span><span style="color:#5fb3b3;">&gt;
+
+</span><span style="color:#c594c5;">int </span><span style="color:#6699cc;">main</span><span style="color:#5fb3b3;">(</span><span style="color:#c594c5;">int </span><span style="color:#f99157;">argc</span><span style="color:#5fb3b3;">, </span><span style="color:#c594c5;">char </span><span style="color:#5fb3b3;">*</span><span style="color:#f99157;">argv</span><span style="color:#5fb3b3;">[]) {
+    </span><span style="color:#c594c5;">int</span><span style="color:#cccece;"> nota1</span><span style="color:#5fb3b3;">,</span><span style="color:#cccece;"> nota2</span><span style="color:#5fb3b3;">;
+    </span><span style="color:#c594c5;">float</span><span style="color:#cccece;"> media</span><span style="color:#5fb3b3;">;
+
+    </span><span style="color:#6699cc;">printf</span><span style="color:#5fb3b3;">(&quot;</span><span style="color:#99c794;">Digite a primeira nota: </span><span style="color:#5fb3b3;">&quot;);
+    </span><span style="color:#6699cc;">scanf</span><span style="color:#5fb3b3;">(&quot;</span><span style="color:#99c794;">%d</span><span style="color:#5fb3b3;">&quot;, &amp;</span><span style="color:#6699cc;">nota1</span><span style="color:#5fb3b3;">);
+
+    </span><span style="color:#6699cc;">fprintf</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">stdout</span><span style="color:#5fb3b3;">, &quot;</span><span style="color:#99c794;">Digite a segunda nota: </span><span style="color:#5fb3b3;">&quot;);
+    </span><span style="color:#6699cc;">fscanf</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">stdin</span><span style="color:#5fb3b3;">, &quot;</span><span style="color:#99c794;">%d</span><span style="color:#5fb3b3;">&quot;, &amp;</span><span style="color:#6699cc;">nota2</span><span style="color:#5fb3b3;">);
+
+</span><span style="color:#cccece;">    media </span><span style="color:#5fb3b3;">= (</span><span style="color:#cccece;">nota1 </span><span style="color:#5fb3b3;">+</span><span style="color:#cccece;"> nota2</span><span style="color:#5fb3b3;">) / </span><span style="color:#f99157;">2</span><span style="color:#5fb3b3;">.</span><span style="color:#f99157;">0</span><span style="color:#5fb3b3;">;
+    </span><span style="color:#6699cc;">fprintf</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">stderr</span><span style="color:#5fb3b3;">, &quot;\n</span><span style="color:#99c794;">A média é %.2f</span><span style="color:#5fb3b3;">\n&quot;,</span><span style="color:#6699cc;"> media</span><span style="color:#5fb3b3;">);
+
+    </span><span style="color:#c594c5;">return </span><span style="color:#f99157;">0</span><span style="color:#5fb3b3;">;
+}
+</span></code></pre>
+<p>Entretanto algumas funções do C, como <code>puts</code> que recebe um ponteiro de <code>char</code> e imprime na tela, pulando linha ao final, é diferente da função <code>fputs</code> que recebe um arquivo e um ponteiro de <code>char</code>, mas não pula linha (mais informações sobre essas funções podem ser consultadas <a rel="noopener" target="_blank" href="https://cplusplus.com/reference/cstdio/">aqui</a>). Algo semelhante à diferença que existe nas funções <code>System.out.println</code> e <code>System.out.print</code> do Java (presentes na classe <a rel="noopener" target="_blank" href="https://docs.oracle.com/en/java/javase/15/docs/api/java.base/java/io/PrintStream.html"><code>PrintStream</code></a>), onde a primeira pula linha ao final e a segunda não. De forma geral, algumas linguagens e bibliotecas trazem mais facilidades para tratar entradas de dados e formatar a saída que outras.</p>
+<p>Entretanto formatações como abaixo, referente a execução do código a cima, são só visuais.</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-txt" data-lang="txt"><span style="color:#cccece;">Digite a primeira nota: 10
+Digite a segunda nota: 5
+
+A média é 7.50
+</span></code></pre>
+<p>Nesse exemplo estão misturados na tela o <code>stdin</code>, o <code>stdout</code> e o <code>stderr</code>, visto que para facilitar a digitação, normalmente é feito um eco do que é digitado na tela. Gerando um arquivo <code>entrada.txt</code> com o conteúdo:</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-txt" data-lang="txt"><span style="color:#cccece;">10
+5
+</span></code></pre>
+<p>E executado algo como <code>./programa &lt; entrada.txt &gt; saida.txt 2&gt; erros.txt</code>, no arquivo <code>saida.txt</code> teria:</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-txt" data-lang="txt"><span style="color:#cccece;">Digite a primeira nota: Digite a segunda nota:
+</span></code></pre>
+<p>E no arquivo <code>erros.txt</code> teria:</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-txt" data-lang="txt"><span style="color:#cccece;">
+A média é 7.50
+</span></code></pre>
+<p>Repare que o <code>saida.txt</code> não tem uma quebra da linha no final do arquivo, e <code>erros.txt</code> começa com uma linha em branco. Na verdade, a quebra de linha é um caractere como outro qualquer, porém o sistema, em vez de mostrar algo, ele pula para a linha de baixo naquele ponto. Entretanto existem diferenças nas formas como o Windows e sistemas UNIX fazem essa quebra de linha. Em sistemas UNIX é usado o caractere <code>\n</code>, enquanto no Windows são usados os caracteres <code>\r\n</code> também para pular uma única linha. Um visualizador hexadecimal, como o <code>hexdump</code> (ou seu alias <code>hd</code>), que mostra na primeira coluna o endereço dos bytes do arquivo, no centro a representação em hexadecimal dos arquivos, e no final a representação <a rel="noopener" target="_blank" href="https://pt.wikipedia.org/wiki/ASCII">ASCII</a> desses bytes, permite uma visão mais detalhada desses arquivos, onde <code>0a</code> é a representação do <code>\n</code>:</p>
+<p><img src="https://eduardoklosowski.github.io/blog/formatacao-uri/hexdump.png" alt="Exemplo do hexdump" /></p>
+<p>Entretanto, se o arquivo de entrada for feito no Windows (ou configurado o editor para isso), a quebra de linha seria feita com <code>\r\n</code>, veja esse exemplo (onde <code>0d</code> representa o <code>\r</code>):</p>
+<p><img src="https://eduardoklosowski.github.io/blog/formatacao-uri/hexdump2.png" alt="Exemplo do hexdump para o formato do Windows" /></p>
+<p>Perceba que os dois arquivos <code>entrada.txt</code> possuem conteúdos diferentes, apesar de semelhantes. Essa diferença pode gerar resultados diferentes dependendo do que o programa espera tratar na entrada, por exemplo o <a rel="noopener" target="_blank" href="https://developer.mozilla.org/pt-BR/docs/Web/JavaScript">JavaScript</a>, como é sugerido pelo próprio URI:</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-js" data-lang="js"><span style="color:#c594c5;">var </span><span style="color:#cccece;">input </span><span style="color:#5fb3b3;">= </span><span style="color:#6699cc;">require</span><span style="color:#cccece;">(</span><span style="color:#5fb3b3;">&#39;</span><span style="color:#99c794;">fs</span><span style="color:#5fb3b3;">&#39;</span><span style="color:#cccece;">)</span><span style="color:#5fb3b3;">.</span><span style="color:#6699cc;">readFileSync</span><span style="color:#cccece;">(</span><span style="color:#5fb3b3;">&#39;</span><span style="color:#99c794;">/dev/stdin</span><span style="color:#5fb3b3;">&#39;, &#39;</span><span style="color:#99c794;">utf8</span><span style="color:#5fb3b3;">&#39;</span><span style="color:#cccece;">)</span><span style="color:#5fb3b3;">;
+</span><span style="color:#c594c5;">var </span><span style="color:#cccece;">lines </span><span style="color:#5fb3b3;">= </span><span style="color:#cccece;">input</span><span style="color:#5fb3b3;">.</span><span style="color:#6699cc;">split</span><span style="color:#cccece;">(</span><span style="color:#5fb3b3;">&#39;\n&#39;</span><span style="color:#cccece;">)</span><span style="color:#5fb3b3;">;
+</span></code></pre>
+<p>Onde <code>input</code> seria uma string com todo o conteúdo recebido pelo <code>stdin</code>, e <code>lines</code> um array onde cada elemento seria o conteúdo de uma linha, porém como o método <code>split</code> está sendo executado sobre o caractere <code>\n</code>, caso o formato utilizado seja o do Windows, cada posição do array teria um <code>\r</code> no final, com exceção da última linha, o que poderia gerar problemas ao tentar converter essas string para número, visto que existe um caractere que não é numérico na string (o que seria necessário para a entrada que vem sendo utilizada até aqui, visto que a operação <code>+</code> no JavaScript com strings é a concatenação e não a soma matemática). O mesmo pode ocorrer na saída do programa, um <code>\r</code> poderia gerar uma saída diferente, assim como a falta da quebra de linha no final da saída, impossibilitando a leitura correta do arquivo por um processo automatizado, por exemplo.</p>
+<h2 id="simulando-o-uri">Simulando o URI</h2>
+<p>Basicamente o que o URI faz é interagir com o programa que foi submetido para ele através do <code>stdin</code> e <code>stdout</code>, o que facilita o suporte a várias linguagens que eles possuem, e até onde eu já vi, considerando o formato de quebra de linha do UNIX (<code>\n</code>). Sendo possível gerar arquivos com os exemplos de entradas na descrição dos problemas ou presentes em sites como <a rel="noopener" target="_blank" href="https://www.udebug.com/">uDebug</a>, e executado com <code>./programa &lt; entrada.txt &gt; saida.txt</code> ou <code>node programa.js &lt; entrada.txt &gt; saida.txt</code> para ler essa entrada e gerar um arquivo contendo a saída do programa, que pode ser comparada com o comando <code>diff</code> para verificar as diferenças com o exemplo de saída esperada (exemplo: <code>diff saida.txt esperado.txt</code>). Embora isso possa ser trabalhoso para programas pequenos, conforme a complexidade dos problemas aumentem, e com diversos casos a serem testados, isso pode facilitar bastante, principalmente os exemplos do uDebug, cobrindo algum caso especial que não foi coberto pelos exemplos do próprio URI.</p>
+<p>Uma recomendação minha é utilizar o <a rel="noopener" target="_blank" href="https://editorconfig.org/">EditorConfig</a> para facilitar a configuração do seu editor. Basta instalar o plugin, se o seu editor não tiver o suporte nativo, e ele lerá o arquivo <code>.editorconfig</code> quando aberto, já aplicando a configuração correta para formatar os arquivos, que podem ser diferentes para cada projeto, inclusive optando entre tab e espaço (quantidade de espaços também). A configuração mínima que recomendo para esse caso é:</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-ini" data-lang="ini"><span style="color:#f99157;">root </span><span style="color:#5fb3b3;">= </span><span style="color:#f99157;">true
+
+</span><span style="color:#c594c5;">[*]
+</span><span style="color:#f99157;">end_of_line </span><span style="color:#5fb3b3;">=</span><span style="color:#cccece;"> lf
+</span><span style="color:#f99157;">trim_trailing_whitespace </span><span style="color:#5fb3b3;">= </span><span style="color:#f99157;">true
+insert_final_newline </span><span style="color:#5fb3b3;">= </span><span style="color:#f99157;">true
+</span></code></pre>
+<p>Assim é usado o formato do UNIX (<code>lf</code> ou <em>line feed</em> é o nome do caractere <code>\n</code>), ele terminará sempre o arquivo com uma quebra de linha, e remover os espaços em branco no final das linhas, que também podem fazer diferença, e nem sempre são tão visíveis.</p>
+<h2 id="consideracoes">Considerações</h2>
+<p>Muitas vezes a maior dificuldades das pessoas com o URI, não são seus problemas, mas seguir corretamente e de forma precisa a formatação da saída, e tratar e converter os dados na entrada, visto que muitas vezes é necessário converter de string para inteiro, e esses caracteres não visíveis podem causar diversos erros, ou funcionar no computador com Windows, uma vez que é possível fazer o programa esperar que a entrada tenha <code>\r\n</code> como quebra de linhas, mas não rodar corretamente na hora do URI validar a resposta, uma vez que eles lidam com formatos diferentes de entrada.</p>
+
+    </div>
+
+        </div>
+    </body>
+</html>

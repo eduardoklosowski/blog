@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+        <title>Orientação a objetos de outra forma: Herança - Blog Eduardo Klosowski</title>
+        <meta name="application-name" content="Blog Eduardo Klosowski">
+        <meta name="apple-mobile-web-app-title" content="Blog Eduardo Klosowski">
+
+        <link rel="shortcut icon" href="https://eduardoklosowski.github.io/blog/favicon.webp">
+        <link rel="icon" sizes="188x188" href="https://eduardoklosowski.github.io/blog/logo.png">
+        <link rel="apple-touch-icon" href="https://eduardoklosowski.github.io/blog/logo.png">
+
+        
+            <link rel="alternate" type="application/atom+xml" title="Blog Eduardo Klosowski" href="https://eduardoklosowski.github.io/blog/atom.xml">
+        
+
+        
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Blog Eduardo Klosowski">
+    <meta property="og:title" content="Orientação a objetos de outra forma: Herança">
+    <meta property="og:description" content="Algo que ajuda no desenvolvimento é a reutilização de código. Em orientação a objetos, essa reutilização pode ocorrer através de herança, onde um objeto pode se comportar como um objeto da sua própria classe, como também da classe que herdou.">
+    <meta property="og:url" content="https://eduardoklosowski.github.io/blog/oo-de-outra-forma-3/">
+    <meta property="og:image" content="https://eduardoklosowski.github.io/blog/logo.png">
+    <meta property="og:locale" content="pt_BR">
+    <meta property="og:article:published_time" content="2021-04-17">
+    <meta property="og:article:author" content="Eduardo Klosowski">
+    
+        <meta property="og:article:tag" content="Orientação a objetos de outra forma">
+    
+    
+        <meta property="og:article:tag" content="Orientação a Objetos">
+    
+    
+        <meta property="og:article:tag" content="Python">
+    
+
+
+        <link rel="stylesheet" media="all" href="https://eduardoklosowski.github.io/blog/poole.css">
+        <link rel="stylesheet" media="all" href="https://eduardoklosowski.github.io/blog/tema.css">
+        <link rel="stylesheet" media="print" href="https://eduardoklosowski.github.io/blog/print.css">
+
+        
+            <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "73939fe3b7984f859c0427bc6c693927"}'></script>
+        
+        
+            <script async src="https://www.googletagmanager.com/gtag/js?id=G-15ZW1NJTDE"></script>
+            <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', 'G-15ZW1NJTDE');
+            </script>
+        
+    </head>
+
+    <body>
+        <div class="sidebar">
+            <div class="container">
+                <div class="sidebar-about">
+                    <a href="https://eduardoklosowski.github.io/blog/">
+                        <img class="sidebar-logo" src="https://eduardoklosowski.github.io/blog/logo.png">
+                        <h1>Blog Eduardo Klosowski</h1>
+                    </a>
+                </div>
+
+                <ul class="sidebar-nav">
+                    
+                        <li class="sidebar-nav-item">
+                            <a rel="noopener" target="_blank" href="https://github.com/eduardoklosowski">
+                                
+                                    <img src="https://eduardoklosowski.github.io/blog/icons/github.svg" alt="GitHub">
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="sidebar-nav-item">
+                            <a rel="noopener" target="_blank" href="https://twitter.com/eduklosowski">
+                                
+                                    <img src="https://eduardoklosowski.github.io/blog/icons/twitter.svg" alt="Twitter">
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="sidebar-nav-item">
+                            <a rel="noopener" target="_blank" href="https://twitch.tv/eduardoklosowski">
+                                
+                                    <img src="https://eduardoklosowski.github.io/blog/icons/twitch.svg" alt="Twitch">
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="sidebar-nav-item">
+                            <a rel="noopener" target="_blank" href="https://asciinema.org/~eduardoklosowski">
+                                
+                                    <img src="https://eduardoklosowski.github.io/blog/icons/asciinema.svg" alt="asciinema">
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="sidebar-nav-item">
+                            <a rel="noopener" target="_blank" href="https://dev.to/eduardoklosowski">
+                                
+                                    <img src="https://eduardoklosowski.github.io/blog/icons/dev.svg" alt="DEV">
+                                
+                            </a>
+                        </li>
+                    
+                </ul>
+            </div>
+        </div>
+
+        <div class="content container">
+            
+    <div class="post">
+        <h1 class="post-title">Orientação a objetos de outra forma: Herança</h1>
+        <div class="post-info">
+            Publicado em 17-04-2021
+            &middot;
+            7 minutos de leitura
+        </div>
+        
+            <div class="post-serie">
+                Série
+                
+                    <a href="https://eduardoklosowski.github.io/blog/series/orientacao-a-objetos-de-outra-forma/">Orientação a objetos de outra forma</a>
+                
+            </div>
+        
+        <div class="post-tags">
+            
+                <a href="https://eduardoklosowski.github.io/blog/tags/orientacao-a-objetos/">#Orientação a Objetos</a>,
+            
+            
+                <a href="https://eduardoklosowski.github.io/blog/linguagens/python/">#Python</a>
+            
+        </div>
+        <p>Algo que ajuda no desenvolvimento é a reutilização de código. Em orientação a objetos, essa reutilização pode ocorrer através de herança, onde um objeto pode se comportar como um objeto da sua própria classe, como também da classe que herdou.</p>
+<h2 id="adicionando-funcionalidades">Adicionando funcionalidades</h2>
+<p>Uma das utilidades da herança é estender uma classe para adicionar funcionalidades. Pensando no contexto das postagens anteriores, poderíamos querer criar um usuário e senha para algumas pessoas poderem acessar o sistema. Isso poderia ser feito adicionando atributos usuário e senha para as pessoas, além de uma função para validar se os dados estão corretos, e assim permitir o acesso ao sistema. Porém isso não pode ser feito para todas as pessoas, e sim apenas para aqueles que possuem permissão de acesso.</p>
+<h3 id="sem-orientacao-a-objetos">Sem orientação a objetos</h3>
+<p>Voltando a solução com dicionários (sem utilizar orientação a objetos), isso consistiria em criar um dicionário com a estrutura de uma pessoa, e em seguida estender essa estrutura com os novos campos de usuário e senha nesse mesmo dicionário, algo como:</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-python" data-lang="python"><span style="color:#5f6364;"># Arquivo: pessoa.py
+
+</span><span style="color:#c594c5;">def </span><span style="color:#6699cc;">init</span><span style="color:#5fb3b3;">(</span><span style="color:#f99157;">pessoa</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">nome</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">sobrenome</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">idade</span><span style="color:#5fb3b3;">):
+    </span><span style="color:#cccece;">pessoa</span><span style="color:#5fb3b3;">[&#39;</span><span style="color:#99c794;">nome</span><span style="color:#5fb3b3;">&#39;] = </span><span style="color:#cccece;">nome
+    pessoa</span><span style="color:#5fb3b3;">[&#39;</span><span style="color:#99c794;">sobrenome</span><span style="color:#5fb3b3;">&#39;] = </span><span style="color:#cccece;">sobrenome
+    pessoa</span><span style="color:#5fb3b3;">[&#39;</span><span style="color:#99c794;">idade</span><span style="color:#5fb3b3;">&#39;] = </span><span style="color:#cccece;">idade
+
+
+</span><span style="color:#c594c5;">def </span><span style="color:#6699cc;">nome_completo</span><span style="color:#5fb3b3;">(</span><span style="color:#f99157;">pessoa</span><span style="color:#5fb3b3;">):
+    </span><span style="color:#c594c5;">return f</span><span style="color:#5fb3b3;">&quot;{</span><span style="color:#cccece;">pessoa</span><span style="color:#5fb3b3;">[&#39;</span><span style="color:#99c794;">nome</span><span style="color:#5fb3b3;">&#39;]} {</span><span style="color:#cccece;">pessoa</span><span style="color:#5fb3b3;">[&#39;</span><span style="color:#99c794;">sobrenome</span><span style="color:#5fb3b3;">&#39;]}&quot;
+</span></code></pre><pre style="background-color:#2b2c2f;">
+<code class="language-python" data-lang="python"><span style="color:#5f6364;"># Arquivo: pessoa_autenticavel.py
+
+</span><span style="color:#c594c5;">def </span><span style="color:#6699cc;">init</span><span style="color:#5fb3b3;">(</span><span style="color:#f99157;">pessoa</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">usuario</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">senha</span><span style="color:#5fb3b3;">):
+    </span><span style="color:#cccece;">pessoa</span><span style="color:#5fb3b3;">[&#39;</span><span style="color:#99c794;">usuario</span><span style="color:#5fb3b3;">&#39;] = </span><span style="color:#cccece;">usuario
+    pessoa</span><span style="color:#5fb3b3;">[&#39;</span><span style="color:#99c794;">senha</span><span style="color:#5fb3b3;">&#39;] = </span><span style="color:#cccece;">senha
+
+
+</span><span style="color:#c594c5;">def </span><span style="color:#6699cc;">autenticar</span><span style="color:#5fb3b3;">(</span><span style="color:#f99157;">pessoa</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">usuario</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">senha</span><span style="color:#5fb3b3;">):
+    </span><span style="color:#c594c5;">return </span><span style="color:#cccece;">pessoa</span><span style="color:#5fb3b3;">[&#39;</span><span style="color:#99c794;">usuario</span><span style="color:#5fb3b3;">&#39;] == </span><span style="color:#cccece;">usuario </span><span style="color:#5fb3b3;">and </span><span style="color:#cccece;">pessoa</span><span style="color:#5fb3b3;">[&#39;</span><span style="color:#99c794;">senha</span><span style="color:#5fb3b3;">&#39;] == </span><span style="color:#cccece;">senha
+</span></code></pre><pre style="background-color:#2b2c2f;">
+<code class="language-python" data-lang="python"><span style="color:#c594c5;">import </span><span style="color:#cccece;">pessoa
+</span><span style="color:#c594c5;">import </span><span style="color:#cccece;">pessoa_autenticavel
+
+p </span><span style="color:#5fb3b3;">= {}
+</span><span style="color:#6699cc;">pessoa</span><span style="color:#5fb3b3;">.</span><span style="color:#6699cc;">init</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">p</span><span style="color:#5fb3b3;">, &#39;</span><span style="color:#99c794;">João</span><span style="color:#5fb3b3;">&#39;, &#39;</span><span style="color:#99c794;">da Silva</span><span style="color:#5fb3b3;">&#39;, </span><span style="color:#f99157;">20</span><span style="color:#5fb3b3;">)
+</span><span style="color:#6699cc;">pessoa_autenticavel</span><span style="color:#5fb3b3;">.</span><span style="color:#6699cc;">init</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">p</span><span style="color:#5fb3b3;">, &#39;</span><span style="color:#99c794;">joao</span><span style="color:#5fb3b3;">&#39;, &#39;</span><span style="color:#99c794;">secreta</span><span style="color:#5fb3b3;">&#39;)
+
+</span><span style="color:#6699cc;">print</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">pessoa</span><span style="color:#5fb3b3;">.</span><span style="color:#6699cc;">nome_completo</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">p</span><span style="color:#5fb3b3;">))
+</span><span style="color:#6699cc;">print</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">pessoa_autenticavel</span><span style="color:#5fb3b3;">.</span><span style="color:#6699cc;">autenticar</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">p</span><span style="color:#5fb3b3;">, &#39;</span><span style="color:#99c794;">joao</span><span style="color:#5fb3b3;">&#39;, &#39;</span><span style="color:#99c794;">secreta</span><span style="color:#5fb3b3;">&#39;))
+</span></code></pre>
+<p>Porém nessa solução é possível que o programador esqueça de chamar as duas funções <code>init</code> diferentes, e como queremos que todo dicionário com a estrutura de <code>pessoa_autenticavel</code> contenha também a estrutura de <code>pessoa</code>, podemos chamar o <code>init</code> de pessoa dentro do <code>init</code> de <code>pessoa_autenticavel</code>:</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-python" data-lang="python"><span style="color:#5f6364;"># Arquivo: pessoa_autenticavel.py
+
+</span><span style="color:#c594c5;">import </span><span style="color:#cccece;">pessoa
+
+
+</span><span style="color:#c594c5;">def </span><span style="color:#6699cc;">init</span><span style="color:#5fb3b3;">(</span><span style="color:#f99157;">p</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">nome</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">sobrenome</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">idade</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">usuario</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">senha</span><span style="color:#5fb3b3;">):
+    </span><span style="color:#6699cc;">pessoa</span><span style="color:#5fb3b3;">.</span><span style="color:#6699cc;">init</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">p</span><span style="color:#5fb3b3;">, </span><span style="color:#6699cc;">nome</span><span style="color:#5fb3b3;">, </span><span style="color:#6699cc;">sobrenome</span><span style="color:#5fb3b3;">, </span><span style="color:#6699cc;">idade</span><span style="color:#5fb3b3;">)
+    </span><span style="color:#cccece;">p</span><span style="color:#5fb3b3;">[&#39;</span><span style="color:#99c794;">usuario</span><span style="color:#5fb3b3;">&#39;] = </span><span style="color:#cccece;">usuario
+    p</span><span style="color:#5fb3b3;">[&#39;</span><span style="color:#99c794;">senha</span><span style="color:#5fb3b3;">&#39;] = </span><span style="color:#cccece;">senha
+
+
+</span><span style="color:#f99157;">...  </span><span style="color:#5f6364;"># Demais funções
+</span></code></pre><pre style="background-color:#2b2c2f;">
+<code class="language-python" data-lang="python"><span style="color:#c594c5;">import </span><span style="color:#cccece;">pessoa
+</span><span style="color:#c594c5;">import </span><span style="color:#cccece;">pessoa_autenticavel
+
+p </span><span style="color:#5fb3b3;">= {}
+</span><span style="color:#6699cc;">pessoa_autenticavel</span><span style="color:#5fb3b3;">.</span><span style="color:#6699cc;">init</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">p</span><span style="color:#5fb3b3;">, &#39;</span><span style="color:#99c794;">João</span><span style="color:#5fb3b3;">&#39;, &#39;</span><span style="color:#99c794;">da Silva</span><span style="color:#5fb3b3;">&#39;, </span><span style="color:#f99157;">20</span><span style="color:#5fb3b3;">, &#39;</span><span style="color:#99c794;">joao</span><span style="color:#5fb3b3;">&#39;, &#39;</span><span style="color:#99c794;">secreta</span><span style="color:#5fb3b3;">&#39;)
+
+</span><span style="color:#6699cc;">print</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">pessoa</span><span style="color:#5fb3b3;">.</span><span style="color:#6699cc;">nome_completo</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">p</span><span style="color:#5fb3b3;">))
+</span><span style="color:#6699cc;">print</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">pessoa_autenticavel</span><span style="color:#5fb3b3;">.</span><span style="color:#6699cc;">autenticar</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">p</span><span style="color:#5fb3b3;">, &#39;</span><span style="color:#99c794;">joao</span><span style="color:#5fb3b3;">&#39;, &#39;</span><span style="color:#99c794;">secreta</span><span style="color:#5fb3b3;">&#39;))
+</span></code></pre>
+<p>Nesse caso foi necessário alterar o nome do argumento <code>pessoa</code> da função <code>pessoa_autenticavel.init</code> para não conflitar com o outro módulo importado com esse mesmo nome. Porém ao chamar um <code>init</code> dentro de outro, temos a garantia de que o dicionário será compatível tanto com a estrutura pedida para ser criada pelo programador, quanto pelas estruturas pais dela.</p>
+<h3 id="com-orientacao-a-objetos">Com orientação a objetos</h3>
+<pre style="background-color:#2b2c2f;">
+<code class="language-python" data-lang="python"><span style="color:#c594c5;">class </span><span style="color:#fac863;">Pessoa</span><span style="color:#5fb3b3;">:
+    </span><span style="color:#c594c5;">def </span><span style="color:#6699cc;">__init__</span><span style="color:#5fb3b3;">(</span><span style="color:#f99157;">self</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">nome</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">sobrenome</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">idade</span><span style="color:#5fb3b3;">):
+        </span><span style="color:#ec5f67;">self</span><span style="color:#5fb3b3;">.</span><span style="color:#cccece;">nome </span><span style="color:#5fb3b3;">= </span><span style="color:#cccece;">nome
+        </span><span style="color:#ec5f67;">self</span><span style="color:#5fb3b3;">.</span><span style="color:#cccece;">sobrenome </span><span style="color:#5fb3b3;">= </span><span style="color:#cccece;">sobrenome
+        </span><span style="color:#ec5f67;">self</span><span style="color:#5fb3b3;">.</span><span style="color:#cccece;">idade </span><span style="color:#5fb3b3;">= </span><span style="color:#cccece;">idade
+
+    </span><span style="color:#c594c5;">def </span><span style="color:#6699cc;">nome_completo</span><span style="color:#5fb3b3;">(</span><span style="color:#f99157;">self</span><span style="color:#5fb3b3;">):
+        </span><span style="color:#c594c5;">return f</span><span style="color:#5fb3b3;">&#39;{</span><span style="color:#ec5f67;">self</span><span style="color:#5fb3b3;">.</span><span style="color:#cccece;">nome</span><span style="color:#5fb3b3;">} {</span><span style="color:#ec5f67;">self</span><span style="color:#5fb3b3;">.</span><span style="color:#cccece;">sobrenome</span><span style="color:#5fb3b3;">}&#39;
+
+
+</span><span style="color:#c594c5;">class </span><span style="color:#fac863;">PessoaAutenticavel</span><span style="color:#5fb3b3;">(</span><span style="color:#99c794;">Pessoa</span><span style="color:#5fb3b3;">):
+    </span><span style="color:#c594c5;">def </span><span style="color:#6699cc;">__init__</span><span style="color:#5fb3b3;">(</span><span style="color:#f99157;">self</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">nome</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">sobrenome</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">idade</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">usuario</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">senha</span><span style="color:#5fb3b3;">):
+        </span><span style="color:#6699cc;">Pessoa</span><span style="color:#5fb3b3;">.</span><span style="color:#6699cc;">__init__</span><span style="color:#5fb3b3;">(</span><span style="color:#ec5f67;">self</span><span style="color:#5fb3b3;">, </span><span style="color:#6699cc;">nome</span><span style="color:#5fb3b3;">, </span><span style="color:#6699cc;">sobrenome</span><span style="color:#5fb3b3;">, </span><span style="color:#6699cc;">idade</span><span style="color:#5fb3b3;">)
+        </span><span style="color:#ec5f67;">self</span><span style="color:#5fb3b3;">.</span><span style="color:#cccece;">usuario </span><span style="color:#5fb3b3;">= </span><span style="color:#cccece;">usuario
+        </span><span style="color:#ec5f67;">self</span><span style="color:#5fb3b3;">.</span><span style="color:#cccece;">senha </span><span style="color:#5fb3b3;">= </span><span style="color:#cccece;">senha
+
+    </span><span style="color:#c594c5;">def </span><span style="color:#6699cc;">autenticar</span><span style="color:#5fb3b3;">(</span><span style="color:#f99157;">self</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">usuario</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">senha</span><span style="color:#5fb3b3;">):
+        </span><span style="color:#c594c5;">return </span><span style="color:#ec5f67;">self</span><span style="color:#5fb3b3;">.</span><span style="color:#cccece;">usuario </span><span style="color:#5fb3b3;">== </span><span style="color:#cccece;">usuario </span><span style="color:#5fb3b3;">and </span><span style="color:#ec5f67;">self</span><span style="color:#5fb3b3;">.</span><span style="color:#cccece;">senha </span><span style="color:#5fb3b3;">== </span><span style="color:#cccece;">senha
+
+
+p </span><span style="color:#5fb3b3;">= </span><span style="color:#6699cc;">PessoaAutenticavel</span><span style="color:#5fb3b3;">(&#39;</span><span style="color:#99c794;">João</span><span style="color:#5fb3b3;">&#39;, &#39;</span><span style="color:#99c794;">da Silva</span><span style="color:#5fb3b3;">&#39;, </span><span style="color:#f99157;">20</span><span style="color:#5fb3b3;">, &#39;</span><span style="color:#99c794;">joao</span><span style="color:#5fb3b3;">&#39;, &#39;</span><span style="color:#99c794;">secreta</span><span style="color:#5fb3b3;">&#39;)
+
+</span><span style="color:#6699cc;">print</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">Pessoa</span><span style="color:#5fb3b3;">.</span><span style="color:#6699cc;">nome_completo</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">p</span><span style="color:#5fb3b3;">))
+</span><span style="color:#6699cc;">print</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">PessoaAutenticavel</span><span style="color:#5fb3b3;">.</span><span style="color:#6699cc;">autenticar</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">p</span><span style="color:#5fb3b3;">, &#39;</span><span style="color:#99c794;">joao</span><span style="color:#5fb3b3;">&#39;, &#39;</span><span style="color:#99c794;">secreta</span><span style="color:#5fb3b3;">&#39;))
+</span></code></pre>
+<p>A principal novidade desse exemplo é que ao declarar a classe <code>PessoaAutenticavel</code> (filha), foi declarado a classe <code>Pessoa</code> (pai) entre parênteses, isso faz o interpretador Python criar uma cópia dessa classe estendendo-a com as novas funções que estamos criando. Porém pode ser um pouco redundante chamar <code>Pessoa.__init__</code> dentro da função <code>__init__</code> sendo que já foi declarado que ela estende <code>Pessoa</code>, podendo ser trocado por <code>super()</code>, que aponta para a classe que foi estendida. Exemplo:</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-python" data-lang="python"><span style="color:#c594c5;">class </span><span style="color:#fac863;">PessoaAutenticavel</span><span style="color:#5fb3b3;">(</span><span style="color:#99c794;">Pessoa</span><span style="color:#5fb3b3;">):
+    </span><span style="color:#c594c5;">def </span><span style="color:#6699cc;">__init__</span><span style="color:#5fb3b3;">(</span><span style="color:#f99157;">self</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">nome</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">sobrenome</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">idade</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">usuario</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">senha</span><span style="color:#5fb3b3;">):
+        </span><span style="color:#6699cc;">super</span><span style="color:#5fb3b3;">().</span><span style="color:#6699cc;">__init__</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">nome</span><span style="color:#5fb3b3;">, </span><span style="color:#6699cc;">sobrenome</span><span style="color:#5fb3b3;">, </span><span style="color:#6699cc;">idade</span><span style="color:#5fb3b3;">)
+        </span><span style="color:#ec5f67;">self</span><span style="color:#5fb3b3;">.</span><span style="color:#cccece;">usuario </span><span style="color:#5fb3b3;">= </span><span style="color:#cccece;">usuario
+        </span><span style="color:#ec5f67;">self</span><span style="color:#5fb3b3;">.</span><span style="color:#cccece;">senha </span><span style="color:#5fb3b3;">= </span><span style="color:#cccece;">senha
+
+    </span><span style="color:#f99157;">...  </span><span style="color:#5f6364;"># Demais funções
+</span></code></pre>
+<p>Assim se evita repetir o nome da classe, e já passa automaticamente a referência para <code>self</code>, assim como quando usamos o açúcar sintático apresentado na primeira postagem dessa série. E esse açúcar sintática também pode ser usado para chamar tanto as funções declaradas em <code>Pessoa</code> quanto em <code>PessoaAutenticavel</code>. Exemplo:</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-python" data-lang="python"><span style="color:#cccece;">p </span><span style="color:#5fb3b3;">= </span><span style="color:#6699cc;">PessoaAutenticavel</span><span style="color:#5fb3b3;">(&#39;</span><span style="color:#99c794;">João</span><span style="color:#5fb3b3;">&#39;, &#39;</span><span style="color:#99c794;">da Silva</span><span style="color:#5fb3b3;">&#39;, </span><span style="color:#f99157;">20</span><span style="color:#5fb3b3;">, &#39;</span><span style="color:#99c794;">joao</span><span style="color:#5fb3b3;">&#39;, &#39;</span><span style="color:#99c794;">secreta</span><span style="color:#5fb3b3;">&#39;)
+
+</span><span style="color:#6699cc;">print</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">p</span><span style="color:#5fb3b3;">.</span><span style="color:#6699cc;">nome_completo</span><span style="color:#5fb3b3;">())
+</span><span style="color:#6699cc;">print</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">p</span><span style="color:#5fb3b3;">.</span><span style="color:#6699cc;">autenticar</span><span style="color:#5fb3b3;">(&#39;</span><span style="color:#99c794;">joao</span><span style="color:#5fb3b3;">&#39;, &#39;</span><span style="color:#99c794;">secreta</span><span style="color:#5fb3b3;">&#39;))
+</span></code></pre>
+<p>Esse método também facilita a utilização das funções, uma vez que não é necessário lembrar em qual classe que cada função foi declarada. Na verdade, como <code>PessoaAutenticavel</code> estende <code>Pessoa</code>, seria possível executar também <code>PessoaAutenticavel.nome_completo</code>, porém eles apontam para a mesma função.</p>
+<h2 id="sobrescrevendo-uma-funcao">Sobrescrevendo uma função</h2>
+<p>A classe <code>Pessoa</code> possui a função <code>nome_completo</code> que retorna uma <code>str</code> contento nome e sobrenome. Porém no Japão, assim como em outros países asiáticos, o sobrenome vem primeiro, e até <a rel="noopener" target="_blank" href="https://noticias.uol.com.br/ultimas-noticias/efe/2019/06/24/japao-quer-voltar-a-ordem-tradicional-dos-nomes-abe-shinzo-nao-shinzo-abe.htm">estão pedindo para seguir a tradição deles ao falarem os nomes de japoneses</a>, como o caso do primeiro-ministro, mudando de Shinzo Abe para Abe Shinzo.</p>
+<h3 id="com-orientacao-a-objetos-1">Com orientação a objetos</h3>
+<p>Isso também pode ser feito no sistema usando herança, porém em vez de criar uma nova função com outro nome, é possível criar uma função com o mesmo nome, sobrescrevendo a anterior, porém apenas para os objetos da classe filha. Algo semelhante ao que já foi feito com a função <code>__init__</code>. Exemplo:</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-python" data-lang="python"><span style="color:#c594c5;">class </span><span style="color:#fac863;">Japones</span><span style="color:#5fb3b3;">(</span><span style="color:#99c794;">Pessoa</span><span style="color:#5fb3b3;">):
+    </span><span style="color:#c594c5;">def </span><span style="color:#6699cc;">nome_completo</span><span style="color:#5fb3b3;">(</span><span style="color:#f99157;">self</span><span style="color:#5fb3b3;">):
+        </span><span style="color:#c594c5;">return f</span><span style="color:#5fb3b3;">&#39;{</span><span style="color:#ec5f67;">self</span><span style="color:#5fb3b3;">.</span><span style="color:#cccece;">sobrenome</span><span style="color:#5fb3b3;">} {</span><span style="color:#ec5f67;">self</span><span style="color:#5fb3b3;">.</span><span style="color:#cccece;">nome</span><span style="color:#5fb3b3;">}&#39;
+
+
+</span><span style="color:#cccece;">p1 </span><span style="color:#5fb3b3;">= </span><span style="color:#6699cc;">Pessoa</span><span style="color:#5fb3b3;">(&#39;</span><span style="color:#99c794;">João</span><span style="color:#5fb3b3;">&#39;, &#39;</span><span style="color:#99c794;">da Silva</span><span style="color:#5fb3b3;">&#39;, </span><span style="color:#f99157;">20</span><span style="color:#5fb3b3;">)
+</span><span style="color:#cccece;">p2 </span><span style="color:#5fb3b3;">= </span><span style="color:#6699cc;">Japones</span><span style="color:#5fb3b3;">(&#39;</span><span style="color:#99c794;">Shinzo</span><span style="color:#5fb3b3;">&#39;, &#39;</span><span style="color:#99c794;">Abe</span><span style="color:#5fb3b3;">&#39;, </span><span style="color:#f99157;">66</span><span style="color:#5fb3b3;">)
+
+</span><span style="color:#6699cc;">print</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">p1</span><span style="color:#5fb3b3;">.</span><span style="color:#6699cc;">nome_completo</span><span style="color:#5fb3b3;">())  </span><span style="color:#5f6364;"># João da Silva
+</span><span style="color:#6699cc;">print</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">p2</span><span style="color:#5fb3b3;">.</span><span style="color:#6699cc;">nome_completo</span><span style="color:#5fb3b3;">())  </span><span style="color:#5f6364;"># Abe Shinzo
+</span></code></pre>
+<p>Essa relação de herança traz algo interessante, todo objeto da classe <code>Japones</code> se comporta como um objeto da classe <code>Pessoa</code>, porém a relação inversa não é verdade. Assim como podemos dizer que todo japonês é uma pessoa, mas nem todas as pessoas são japonesas. Ser japonês é um caso mais específico de pessoa, assim como as demais nacionalidades.</p>
+<h3 id="sem-orientacao-a-objetos-1">Sem orientação a objetos</h3>
+<p>Esse comportamento de sobrescrever a função <code>nome_completo</code> não é tão simples de replicar em uma estrutura de dicionário, porém é possível fazer. Porém como uma pessoa pode ser tanto japonês quanto não ser, não é possível saber de antemão para escrever no código <code>pessoa.nome_completo</code> ou <code>japones.nome_completo</code>, que diferente do exemplo da autenticação, agora são duas funções diferentes, isso precisa ser descoberto dinamicamente quando se precisar chamar a função.</p>
+<p>Uma forma de fazer isso é guardar uma referência para a função que deve ser chamada dentro da própria estrutura. Exemplo:</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-python" data-lang="python"><span style="color:#5f6364;"># Arquivo: pessoa.py
+
+</span><span style="color:#c594c5;">def </span><span style="color:#6699cc;">init</span><span style="color:#5fb3b3;">(</span><span style="color:#f99157;">pessoa</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">nome</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">sobrenome</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">idade</span><span style="color:#5fb3b3;">):
+    </span><span style="color:#cccece;">pessoa</span><span style="color:#5fb3b3;">[&#39;</span><span style="color:#99c794;">nome</span><span style="color:#5fb3b3;">&#39;] = </span><span style="color:#cccece;">nome
+    pessoa</span><span style="color:#5fb3b3;">[&#39;</span><span style="color:#99c794;">sobrenome</span><span style="color:#5fb3b3;">&#39;] = </span><span style="color:#cccece;">sobrenome
+    pessoa</span><span style="color:#5fb3b3;">[&#39;</span><span style="color:#99c794;">idade</span><span style="color:#5fb3b3;">&#39;] = </span><span style="color:#cccece;">idade
+    pessoa</span><span style="color:#5fb3b3;">[&#39;</span><span style="color:#99c794;">nome_completo</span><span style="color:#5fb3b3;">&#39;] = </span><span style="color:#cccece;">nome_completo
+
+
+</span><span style="color:#c594c5;">def </span><span style="color:#6699cc;">nome_completo</span><span style="color:#5fb3b3;">(</span><span style="color:#f99157;">pessoa</span><span style="color:#5fb3b3;">):
+    </span><span style="color:#c594c5;">return f</span><span style="color:#5fb3b3;">&quot;{</span><span style="color:#cccece;">pessoa</span><span style="color:#5fb3b3;">[&#39;</span><span style="color:#99c794;">nome</span><span style="color:#5fb3b3;">&#39;]} {</span><span style="color:#cccece;">pessoa</span><span style="color:#5fb3b3;">[&#39;</span><span style="color:#99c794;">sobrenome</span><span style="color:#5fb3b3;">&#39;]}&quot;
+</span></code></pre><pre style="background-color:#2b2c2f;">
+<code class="language-python" data-lang="python"><span style="color:#5f6364;"># Arquivo: japones.py
+
+</span><span style="color:#c594c5;">import </span><span style="color:#cccece;">pessoa
+
+
+</span><span style="color:#c594c5;">def </span><span style="color:#6699cc;">init</span><span style="color:#5fb3b3;">(</span><span style="color:#f99157;">japones</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">nome</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">sobrenome</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">idade</span><span style="color:#5fb3b3;">):
+    </span><span style="color:#6699cc;">pessoa</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">japones</span><span style="color:#5fb3b3;">, </span><span style="color:#6699cc;">nome</span><span style="color:#5fb3b3;">, </span><span style="color:#6699cc;">sobrenome</span><span style="color:#5fb3b3;">, </span><span style="color:#6699cc;">idade</span><span style="color:#5fb3b3;">)
+    </span><span style="color:#cccece;">japones</span><span style="color:#5fb3b3;">[&#39;</span><span style="color:#99c794;">nome_completo</span><span style="color:#5fb3b3;">&#39;] = </span><span style="color:#cccece;">nome_completo
+
+
+</span><span style="color:#c594c5;">def </span><span style="color:#6699cc;">nome_completo</span><span style="color:#5fb3b3;">(</span><span style="color:#f99157;">japones</span><span style="color:#5fb3b3;">):
+    </span><span style="color:#c594c5;">return f</span><span style="color:#5fb3b3;">&quot;{</span><span style="color:#cccece;">pessoa</span><span style="color:#5fb3b3;">[&#39;</span><span style="color:#99c794;">sobrenome</span><span style="color:#5fb3b3;">&#39;]} {</span><span style="color:#cccece;">pessoa</span><span style="color:#5fb3b3;">[&#39;</span><span style="color:#99c794;">nome</span><span style="color:#5fb3b3;">&#39;]}&quot;
+</span></code></pre><pre style="background-color:#2b2c2f;">
+<code class="language-python" data-lang="python"><span style="color:#c594c5;">import </span><span style="color:#cccece;">pessoa
+</span><span style="color:#c594c5;">import </span><span style="color:#cccece;">japones
+
+p1 </span><span style="color:#5fb3b3;">= {}
+</span><span style="color:#6699cc;">pessoa</span><span style="color:#5fb3b3;">.</span><span style="color:#6699cc;">init</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">p1</span><span style="color:#5fb3b3;">, &#39;</span><span style="color:#99c794;">João</span><span style="color:#5fb3b3;">&#39;, &#39;</span><span style="color:#99c794;">da Silva</span><span style="color:#5fb3b3;">&#39;, </span><span style="color:#f99157;">20</span><span style="color:#5fb3b3;">)
+</span><span style="color:#cccece;">p2 </span><span style="color:#5fb3b3;">= {}
+</span><span style="color:#6699cc;">japones</span><span style="color:#5fb3b3;">.</span><span style="color:#6699cc;">init</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">p2</span><span style="color:#5fb3b3;">, &#39;</span><span style="color:#99c794;">Shinzo</span><span style="color:#5fb3b3;">&#39;, &#39;</span><span style="color:#99c794;">Abe</span><span style="color:#5fb3b3;">&#39;, </span><span style="color:#f99157;">66</span><span style="color:#5fb3b3;">)
+
+</span><span style="color:#6699cc;">print</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">p1</span><span style="color:#5fb3b3;">[&#39;</span><span style="color:#99c794;">nome_completo</span><span style="color:#5fb3b3;">&#39;](</span><span style="color:#6699cc;">p1</span><span style="color:#5fb3b3;">))  </span><span style="color:#5f6364;"># João da Silva
+</span><span style="color:#6699cc;">print</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">p2</span><span style="color:#5fb3b3;">[&#39;</span><span style="color:#99c794;">nome_completo</span><span style="color:#5fb3b3;">&#39;](</span><span style="color:#6699cc;">p2</span><span style="color:#5fb3b3;">))  </span><span style="color:#5f6364;"># Abe Shinzo
+</span></code></pre>
+<p>Perceba que a forma de chamar a função foi alterada. O que acontece na prática é que toda função que pode ser sobrescrita não é chamada diretamente, e sim a partir de uma referência, e isso gera um custo computacional adicional. Como esse custo não é tão alto (muitas vezes sendo quase irrelevante), esse é o comportamento adotado em várias linguagens, porém em C++, por exemplo, existe a palavra-chave <code>virtual</code> para descrever quando uma função pode ser sobrescrita ou não.</p>
+<h2 id="consideracoes">Considerações</h2>
+<p>Herança é um mecanismo interessante para ser explorado com o objetivo de reaproveitar código e evitar repeti-lo. Porém isso pode vir com alguns custos, seja computacional durante sua execução, seja durante a leitura do código, sendo necessário verificar diversas classes para saber o que de fato está sendo executado, porém isso também pode ser usado para ocultar e abstrair lógicas mais complicadas, como eu já comentei em outra <a href="https://eduardoklosowski.github.io/blog/encapsulamento-da-logica-do-algoritmo/">postagem</a>.</p>
+<p>Herança também permite trabalhar com generalização e especialização, podendo descrever o comportamento mais geral, ou mais específico. Ou simplesmente só adicionar mais funcionalidades a uma classe já existente.</p>
+<p>Assim como foi utilizado o <code>super()</code> para chamar a função <code>__init__</code> da classe pai, é possível utilizá-lo para chamar qualquer outra função. Isso permite, por exemplo, tratar os argumentos da função, aplicando modificações antes de chamar a função original, ou seu retorno, executando algum processamento em cima do retorno dela, não precisando rescrever toda a função.</p>
+
+    </div>
+
+        </div>
+    </body>
+</html>

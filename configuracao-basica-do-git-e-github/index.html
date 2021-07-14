@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+        <title>Configuração básica do Git e GitHub - Blog Eduardo Klosowski</title>
+        <meta name="application-name" content="Blog Eduardo Klosowski">
+        <meta name="apple-mobile-web-app-title" content="Blog Eduardo Klosowski">
+
+        <link rel="shortcut icon" href="https://eduardoklosowski.github.io/blog/favicon.webp">
+        <link rel="icon" sizes="188x188" href="https://eduardoklosowski.github.io/blog/logo.png">
+        <link rel="apple-touch-icon" href="https://eduardoklosowski.github.io/blog/logo.png">
+
+        
+            <link rel="alternate" type="application/atom+xml" title="Blog Eduardo Klosowski" href="https://eduardoklosowski.github.io/blog/atom.xml">
+        
+
+        
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Blog Eduardo Klosowski">
+    <meta property="og:title" content="Configuração básica do Git e GitHub">
+    <meta property="og:description" content="O GitHub é um serviço bastante popular para hospedar repositórios Git. Porém para conseguir utilizá-lo, e de forma segura, existem diversas configurações que podem ser feitas. Nesse texto pretendo mostrar como fazer algumas configurações como autenticação de dois fatores (2FA), chave SSH, utilizar diferentes chaves SSH para diferentes contas no mesmo computador, e assinar commits e tags com PGP.">
+    <meta property="og:url" content="https://eduardoklosowski.github.io/blog/configuracao-basica-do-git-e-github/">
+    <meta property="og:image" content="https://eduardoklosowski.github.io/blog/logo.png">
+    <meta property="og:locale" content="pt_BR">
+    <meta property="og:article:published_time" content="2021-03-22">
+    <meta property="og:article:author" content="Eduardo Klosowski">
+    
+    
+        <meta property="og:article:tag" content="Git">
+    
+        <meta property="og:article:tag" content="GitHub">
+    
+    
+
+
+        <link rel="stylesheet" media="all" href="https://eduardoklosowski.github.io/blog/poole.css">
+        <link rel="stylesheet" media="all" href="https://eduardoklosowski.github.io/blog/tema.css">
+        <link rel="stylesheet" media="print" href="https://eduardoklosowski.github.io/blog/print.css">
+
+        
+            <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "73939fe3b7984f859c0427bc6c693927"}'></script>
+        
+        
+            <script async src="https://www.googletagmanager.com/gtag/js?id=G-15ZW1NJTDE"></script>
+            <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', 'G-15ZW1NJTDE');
+            </script>
+        
+    </head>
+
+    <body>
+        <div class="sidebar">
+            <div class="container">
+                <div class="sidebar-about">
+                    <a href="https://eduardoklosowski.github.io/blog/">
+                        <img class="sidebar-logo" src="https://eduardoklosowski.github.io/blog/logo.png">
+                        <h1>Blog Eduardo Klosowski</h1>
+                    </a>
+                </div>
+
+                <ul class="sidebar-nav">
+                    
+                        <li class="sidebar-nav-item">
+                            <a rel="noopener" target="_blank" href="https://github.com/eduardoklosowski">
+                                
+                                    <img src="https://eduardoklosowski.github.io/blog/icons/github.svg" alt="GitHub">
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="sidebar-nav-item">
+                            <a rel="noopener" target="_blank" href="https://twitter.com/eduklosowski">
+                                
+                                    <img src="https://eduardoklosowski.github.io/blog/icons/twitter.svg" alt="Twitter">
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="sidebar-nav-item">
+                            <a rel="noopener" target="_blank" href="https://twitch.tv/eduardoklosowski">
+                                
+                                    <img src="https://eduardoklosowski.github.io/blog/icons/twitch.svg" alt="Twitch">
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="sidebar-nav-item">
+                            <a rel="noopener" target="_blank" href="https://asciinema.org/~eduardoklosowski">
+                                
+                                    <img src="https://eduardoklosowski.github.io/blog/icons/asciinema.svg" alt="asciinema">
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="sidebar-nav-item">
+                            <a rel="noopener" target="_blank" href="https://dev.to/eduardoklosowski">
+                                
+                                    <img src="https://eduardoklosowski.github.io/blog/icons/dev.svg" alt="DEV">
+                                
+                            </a>
+                        </li>
+                    
+                </ul>
+            </div>
+        </div>
+
+        <div class="content container">
+            
+    <div class="post">
+        <h1 class="post-title">Configuração básica do Git e GitHub</h1>
+        <div class="post-info">
+            Publicado em 22-03-2021
+            &middot;
+            18 minutos de leitura
+        </div>
+        
+        <div class="post-tags">
+            
+                <a href="https://eduardoklosowski.github.io/blog/tags/git/">#Git</a>,
+            
+                <a href="https://eduardoklosowski.github.io/blog/tags/github/">#GitHub</a>
+            
+            
+        </div>
+        <p>O <a rel="noopener" target="_blank" href="https://github.com/">GitHub</a> é um serviço bastante popular para hospedar repositórios <a rel="noopener" target="_blank" href="https://git-scm.com/">Git</a>. Porém para conseguir utilizá-lo, e de forma segura, existem diversas configurações que podem ser feitas. Nesse texto pretendo mostrar como fazer algumas configurações como <a href="https://eduardoklosowski.github.io/blog/configuracao-basica-do-git-e-github/#2fa">autenticação de dois fatores (2FA)</a>, <a href="https://eduardoklosowski.github.io/blog/configuracao-basica-do-git-e-github/#chave-ssh">chave SSH</a>, utilizar <a href="https://eduardoklosowski.github.io/blog/configuracao-basica-do-git-e-github/#chave-ssh-multiplas">diferentes chaves SSH</a> para diferentes contas no mesmo computador, e assinar <em>commits</em> e <em>tags</em> com <a href="https://eduardoklosowski.github.io/blog/configuracao-basica-do-git-e-github/#chave-pgp">PGP</a>.</p>
+<h2 id="conta-no-github">Conta no GitHub</h2>
+<p>Para poder utilizar o GitHub, o primeiro passo é ter uma conta. Uma conta pode ser criada preenchendo o <a rel="noopener" target="_blank" href="https://github.com/join">formulário de cadastro</a>, que é bastante simples, requisitando um nome de usuário, e-mail e senha.</p>
+<p><img src="https://eduardoklosowski.github.io/blog/configuracao-basica-do-git-e-github/nova-conta-1.png" alt="Formulário de cadastro" /></p>
+<p>Assim que enviado o formulário, será necessário confirmar o endereço de e-mail, que é feito abrindo o link enviado para o e-mail informado no cadastro.</p>
+<p><img src="https://eduardoklosowski.github.io/blog/configuracao-basica-do-git-e-github/nova-conta-2.png" alt="E-mail de confirmação" /></p>
+<h2 id="2fa">Autenticação de dois fatores</h2>
+<p>A <a rel="noopener" target="_blank" href="https://en.wikipedia.org/wiki/Two-factor_authentication">autenticação de dois fatores (2FA)</a> não é obrigatória, mas bastante recomendada por questões de segurança. Ela consiste em usar, além de usuário e senha, uma senha de uso único válida apenas por um curto período de tempo. Em <a rel="noopener" target="_blank" href="https://docs.github.com/pt/github/authenticating-to-github/countries-where-sms-authentication-is-supported#supported-countries-for-sms-authentication">alguns países</a> é possível receber essas senhas via SMS. Quando essa opção não está disponível, ou como alternativa a ela, pode-se utilizar algum programa que gera senhas <a rel="noopener" target="_blank" href="https://en.wikipedia.org/wiki/Time-based_One-Time_Password">TOTP (Time-based One-Time Password)</a>.</p>
+<p>Uma opção para utilizar no computador é o <a rel="noopener" target="_blank" href="https://keepassxc.org/">KeePassXC</a>, que possui uma versão para celular chamada <a rel="noopener" target="_blank" href="https://www.keepassdx.com/">KeePassDX</a>. Para utilizá-lo, basta instalar o programa, criar um banco de dados (arquivo criptografado), e adicionar uma entrada para o GitHub, que pode ser usada para guardar a senha também se desejar, embora se alguém tiver acesso ao arquivo e conseguir descriptografá-lo, conseguirá ter acesso a conta, visto que teria os dois fatores necessários para autenticar.</p>
+<p><img src="https://eduardoklosowski.github.io/blog/configuracao-basica-do-git-e-github/2fa-1.png" alt="Criando entrada para o GitHub" /></p>
+<p>Com o programa para gerar as senhas TOTP pronto, basta habilitar a autenticação de dois fatores na conta. Isso pode ser feito acessando a opção correspondente nas <a rel="noopener" target="_blank" href="https://github.com/settings/two_factor_authentication/intro">configurações</a>, que apresentará as opções, que neste caso será via <em>app</em> (<em>&quot;Set up using an app&quot;</em>).</p>
+<p><img src="https://eduardoklosowski.github.io/blog/configuracao-basica-do-git-e-github/2fa-2.png" alt="Opções para autenticação em duas etapas" /></p>
+<p>Primeiro serão exibidas chaves de recuperação, que funcionam como qualquer outra senha TOTP, e podem ser usadas uma única vez cada, útil quando não foi possível gerar uma senha TOTP. É recomendável guardar essas senhas em lugar seguro, e utilizá-las para recuperar o acesso a conta se houver algum problema com o dispositivo usado para gerar as senhas TOTP. Escolha uma das opções disponíveis para guardar essas chaves.</p>
+<p><img src="https://eduardoklosowski.github.io/blog/configuracao-basica-do-git-e-github/2fa-3.png" alt="Chaves de recuperação" /></p>
+<p>Na tela seguinte será pedido para escanear o código <a rel="noopener" target="_blank" href="https://pt.wikipedia.org/wiki/C%C3%B3digo_QR">QR</a> com o dispositivo, o que pode ser feito caso esteja utilizando o celular. Se estiver utilizando o computador (ou tenha problemas com a câmera), basta clicar em <em>&quot;enter this text code&quot;</em> e copiá-lo.</p>
+<p><img src="https://eduardoklosowski.github.io/blog/configuracao-basica-do-git-e-github/2fa-4.png" alt="Código para ativar o TOTP" /></p>
+<p>Agora basta voltar ao KeePass, clicar com o botão direito em cima da entrada feita para o GitHub, ir na opção &quot;Senha única baseada em tempo&quot; e &quot;Configurar TOTP...&quot;.</p>
+<p><img src="https://eduardoklosowski.github.io/blog/configuracao-basica-do-git-e-github/2fa-5.png" alt="Acessando a configuração do TOTP no KeePassXC" /></p>
+<p>Na tela de configuração basta colar o código copiado do GitHub no campo &quot;Chave&quot;, as demais opções podem ser deixadas em branco.</p>
+<p><img src="https://eduardoklosowski.github.io/blog/configuracao-basica-do-git-e-github/2fa-6.png" alt="Configuração do TOTP" /></p>
+<p>Agora é necessário gerar uma senha TOTP e usá-la no GitHub para que ele saiba que o processo foi feito corretamente. Existem algumas formas para gerar uma senha TOTP: clicar com o botão direito, &quot;Senha única baseada em tempo&quot; e &quot;Copiar TOTP&quot; para copiar a senha para a área de transferência, ou &quot;Mostrar TOTP&quot; para exibir a senha na tela (útil quando se está fazendo o login em algum outro dispositivo), ou mesmo clicar no relógio ao final da lista de entradas, conforme a imagem a baixo para gerar e exibir a senha ao lado.</p>
+<p><img src="https://eduardoklosowski.github.io/blog/configuracao-basica-do-git-e-github/2fa-7.png" alt="Gerando senha TOTP" /></p>
+<p>Ao inseri-la no GitHub (o caractere de espaço não é necessário), o processo será terminado e a autenticação em duas etapas estará habilitada.</p>
+<h2 id="chave-ssh">Chave SSH</h2>
+<p>Uma das formas mais seguras para enviar <em>commits</em> para o GitHub é através de uma conexão <a rel="noopener" target="_blank" href="https://pt.wikipedia.org/wiki/Secure_Shell">SSH</a>, o qual pode ser autenticada através de uma chave criptográfica. Para isso é necessário gerar uma chave localmente, e adicioná-la à conta do GitHub.</p>
+<p>O programa que gera chaves criptográficas é distribuído junto com o cliente SSH, que em sistemas <a rel="noopener" target="_blank" href="https://www.debian.org/">Debian</a> e derivados (como <a rel="noopener" target="_blank" href="https://ubuntu.com/">Ubuntu</a>), pode ser instalado através do pacote <a rel="noopener" target="_blank" href="https://packages.debian.org/stable/openssh-client"><code>openssh-client</code></a> que se encontra no repositório da distribuição.</p>
+<blockquote>
+<p>Caso você não saiba instalar pacotes, em sistemas que utilizam o APT e tiver o <code>sudo</code> configurado (padrão do Ubuntu), basta executar os seguintes comandos:</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-bash" data-lang="bash"><span style="color:#6699cc;">sudo apt update
+</span><span style="color:#6699cc;">sudo apt install openssh-client
+</span></code></pre></blockquote>
+<p>No Windows, é possível utilizar o cliente que vem junto ao instalar o Git, bastando acessar o <a rel="noopener" target="_blank" href="https://git-scm.com/download/win">site</a>, fazer o download, instalá-lo e utilizar o terminal do Git Bash.</p>
+<p>As chaves utilizadas por padrão pelo cliente SSH ficam em diferentes arquivos no diretório <code>.ssh</code> que está na <em>home</em> do usuário. Por padrão, os arquivos <code>id_&lt;algoritmo&gt;</code> são as chaves privadas, que não devem ser compartilhadas com ninguém (o ideal é que ela nem mesmo seja copiada para outro dispositivo), e os arquivos <code>id_&lt;algoritmo&gt;.pub</code> são as chaves públicas, sendo apenas esse arquivo que deve ser copiado para o GitHub, podendo existir diversas chaves, cada uma utilizando diferentes algoritmos. Para verificar se já existe alguma chave é possível executar o comando <code>ls -1 ~/.ssh/id_*</code> para listar os arquivos (o exemplo a baixo mostra duas chaves).</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-txt" data-lang="txt"><span style="color:#cccece;">user@pc:~$ ls -1 ~/.ssh/id_*
+/home/user/.ssh/id_ed25519
+/home/user/.ssh/id_ed25519.pub
+/home/user/.ssh/id_rsa
+/home/user/.ssh/id_rsa.pub
+</span></code></pre>
+<p>Para criar uma nova chave, basta executar o comando <code>ssh-keygen</code> informando o algoritmo desejado, a quantidade de bits (quando aplicável, conforme o algoritmo) e um nome para a chave, que normalmente é um endereço de e-mail. Para criar uma chave com o <a rel="noopener" target="_blank" href="https://pt.wikipedia.org/wiki/ECDSA">Ed25519</a>, que é o algoritmo mais indicado atualmente, basta executar <code>ssh-keygen -t ed25519 -C 'user@email.com'</code>, será perguntado sobre o local onde a chave deve ser salva, basta apartar <code>Enter</code> para aceitar o padrão (isso sobrescreverá a chave, se já existir alguma chave nesse arquivo), e informar uma senha para criptografar a chave, repetindo ela em seguida.</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-txt" data-lang="txt"><span style="color:#cccece;">user@pc:~$ ssh-keygen -t ed25519 -C &#39;user@email.com&#39;
+Generating public/private ed25519 key pair.
+Enter file in which to save the key (/home/user/.ssh/id_ed25519):
+Enter passphrase (empty for no passphrase):
+Enter same passphrase again:
+Your identification has been saved in /home/user/.ssh/id_ed25519.
+Your public key has been saved in /home/user/.ssh/id_ed25519.pub.
+The key fingerprint is:
+SHA256:j5DuwjiW/FVudh0ENVEofbWxnIGYiDdhvLdXrOY4Lxc user@email.com
+The key&#39;s randomart image is:
++--[ED25519 256]--+
+|        oo+o*+o+.|
+|       ..=.+ooo *|
+|        . o....= |
+|       . . o   o |
+|      o S . o o  |
+|     . + o o E   |
+| . +  o = o * .  |
+|  * oo o . + o   |
+| . o...     =.   |
++----[SHA256]-----+
+</span></code></pre>
+<p>Também é possível gerar uma chave <a rel="noopener" target="_blank" href="https://pt.wikipedia.org/wiki/RSA_(sistema_criptogr%C3%A1fico)">RSA</a> caso o sistema não suporte Ed25519. Por padrão são gerados chaves com 2048 bits, mas atualmente recomenda-se criar chaves com 3072 ou mesmo 4096 bits, o que pode ser feito com o comando <code>ssh-keygen -t rsa -b 4096 -C 'seu@email.com'</code>, respondendo as mesmas perguntas do Ed25519.</p>
+<p>Com a chave crida, é necessário adicionar a chave pública à conta do usuário no GitHub, o que pode ser feito nas <a rel="noopener" target="_blank" href="https://github.com/settings/keys">configurações</a>, clicando em <em>&quot;New SSH key&quot;</em>.</p>
+<p><img src="https://eduardoklosowski.github.io/blog/configuracao-basica-do-git-e-github/ssh-1.png" alt="Opção para adicionar chave SSH" /></p>
+<p>Nessa tela basta colar o conteúdo da chave pública no campo <em>&quot;Key&quot;</em>, o que pode ser conseguido executando no terminal o comando <code>cat ~/.ssh/id_ed25519.pub</code>. O campo <em>&quot;Title&quot;</em> é opcional, e caso não seja informado, será utilizado o mesmo nome (e-mail no caso) utilizado para gerar a chave.</p>
+<p><img src="https://eduardoklosowski.github.io/blog/configuracao-basica-do-git-e-github/ssh-2.png" alt="Formulário para adicionar chave SSH" /></p>
+<p>Para testar o acesso SSH, é possível utilizar o comando <code>ssh -T git@github.com</code>. Caso tudo tenha sido configurado corretamente, no terminal será exibido uma mensagem com o seu nome de usuário:</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-txt" data-lang="txt"><span style="color:#cccece;">Hi &lt;username&gt;! You&#39;ve successfully authenticated, but GitHub does not provide shell access.
+</span></code></pre>
+<blockquote>
+<p>No primeiro acesso a algum servidor através de SSH, é possível que alguma mensagem como a abaixo seja exibida:</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-txt" data-lang="txt"><span style="color:#cccece;">The authenticity of host &#39;github.com (140.82.113.4)&#39; can&#39;t be established.
+</span><span style="color:#cccece;">RSA key fingerprint is SHA256:nThbg6kXUpJWGl7E1IGOCspRomTxdCARLviKw6E5SY8.
+</span><span style="color:#cccece;">Are you sure you want to continue connecting (yes/no)?
+</span></code></pre>
+<p>Nesse caso basta confirmar com <code>yes</code> para que o seu cliente SSH adicione esse servidor a lista de servidores conhecidos, e continue com o processo de conexão.</p>
+</blockquote>
+<p>Caso algum problema ocorra e a conexão não tenha sido feita, é possível utilizar o modo verboso do SSH para verificar o processo e tentar identificar o problema, exemplo: <code>ssh -vT git@github.com</code>.</p>
+<h3 id="nao-precisar-repetir-a-senha">Não precisar repetir a senha</h3>
+<p>Caso a chave SSH tenha sido criada com alguma senha, toda vez que ela for utilizada para se conectar no servidor será necessário informar essa senha. Uma forma de evitar isso é usando o <code>ssh-agent</code> para armazenar em memória essa senha, e enquanto o processo do <code>ssh-agent</code> estiver rodando, o cliente SSH utilizará essa chave sem pedir a senha novamente.</p>
+<p>Para adicionar uma chave ao <code>ssh-agent</code> basta executar o comando <code>ssh-add &lt;caminho-da-chave&gt;</code> informando o arquivo que contem a chave privada, caso a chave esteja no caminho padrão, basta executar <code>ssh-add</code> para carregar todas as chaves padrões.</p>
+<blockquote>
+<p>Caso o comando <code>ssh-add</code> apresente alguma mensagem de que não foi possível conectar ao <code>ssh-agent</code>, o mesmo pode ser iniciado com o comando <code>eval &quot;$(ssh-agent -s)&quot;</code>. Porém recomendo verificar como ativar esse serviço por padrão, de forma que todos os terminais consigam utilizar o mesmo agente, essa configuração varia de ambiente para ambiente.</p>
+</blockquote>
+<p>Outra forma de adicionar a chave ao <code>ssh-agent</code> é configurando o cliente SSH para fazer isso automaticamente, o que pode ser feito adicionando o parâmetro <code>AddKeysToAgent yes</code> na sua configuração que fica em <code>~/.ssh/config</code>. A baixo seguem um exemplo utilizando esse parâmetro, assim como outros parâmetros específicos para o GitHub (usuário <code>git</code> por padrão e autenticação apenas pela chave Ed25519).</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-config" data-lang="config"><span style="color:#f99157;">Host </span><span style="color:#cccece;">github</span><span style="color:#5fb3b3;">.</span><span style="color:#cccece;">com
+  </span><span style="color:#f99157;">User </span><span style="color:#cccece;">git
+  </span><span style="color:#f99157;">IdentitiesOnly yes
+  IdentityFile </span><span style="color:#5fb3b3;">~/.</span><span style="color:#fac863;">ssh/id_ed25519
+
+</span><span style="color:#f99157;">Host </span><span style="color:#5fb3b3;">*
+  </span><span style="color:#f99157;">AddKeysToAgent yes
+</span></code></pre>
+<p>Para mais detalhes sobre esse arquivo de configuração consulte sua <a rel="noopener" target="_blank" href="https://manpages.debian.org/stable/ssh_config">manpage</a> (<code>man ssh_config</code>).</p>
+<h3 id="chave-ssh-multiplas">Múltiplas chaves</h3>
+<p>Eventualmente pode existir a necessidade de utilizar duas ou mais contas do GitHub no mesmo computador, como uma conta pessoal e outra do trabalho. Para que o acesso SSH seja possível, é necessário criar uma chave diferente para cada conta, o que se resume a executar o comando já informado, apenas informar um caminho ou nome de arquivo diferente.</p>
+<p>Porém para o cliente SSH utilizar uma chave diferente é necessário informar essa nova chave, como <code>ssh -i ~/.ssh/id_ed25519_empresa -T git@github.com</code>. Para facilitar o acesso, é possível criar um apelido para o GitHub, e dizer que todo o acesso feito através desse apelido usará outra chave, como com a configuração a baixo do arquivo <code>~/.ssh/config</code>:</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-config" data-lang="config"><span style="color:#f99157;">Host </span><span style="color:#cccece;">github</span><span style="color:#5fb3b3;">.</span><span style="color:#cccece;">com
+  </span><span style="color:#f99157;">User </span><span style="color:#cccece;">git
+  </span><span style="color:#f99157;">IdentitiesOnly yes
+  IdentityFile </span><span style="color:#5fb3b3;">~/.</span><span style="color:#fac863;">ssh/id_ed25519
+
+</span><span style="color:#f99157;">Host </span><span style="color:#cccece;">empresa</span><span style="color:#5fb3b3;">.</span><span style="color:#cccece;">github</span><span style="color:#5fb3b3;">.</span><span style="color:#cccece;">com
+  </span><span style="color:#f99157;">HostName </span><span style="color:#cccece;">github</span><span style="color:#5fb3b3;">.</span><span style="color:#cccece;">com
+  </span><span style="color:#f99157;">User </span><span style="color:#cccece;">git
+  </span><span style="color:#f99157;">IdentitiesOnly yes
+  IdentityFile </span><span style="color:#5fb3b3;">~/.</span><span style="color:#fac863;">ssh/id_ed25519_empresa
+
+</span><span style="color:#f99157;">Host </span><span style="color:#5fb3b3;">*
+  </span><span style="color:#f99157;">AddKeysToAgent yes
+</span></code></pre>
+<p>Assim todo acesso feito para <code>github.com</code> usará a chave padrão, enquanto <code>empresa.github.com</code> usará outra chave, se cada chave estiver cadastrada para diferentes usuários, seus nomes devem aparecer ao executar <code>ssh -T git@github.com</code> e <code>ssh -T git@empresa.github.com</code>.</p>
+<p>Ainda é possível configurar o Git para passar a chave como parâmetro para o cliente SSH com o comando <code>git config core.sshCommand 'ssh -i ~/.ssh/id_ed25519_empresa'</code>, porém seria necessário fazer isso individualmente para cada repositório, além de dificultar o processo de clone do repositório, visto que seria necessário criar um repositório vazio, fazer essa configuração para aquele repositório, e só então fazer o clone manualmente (adicionando a URL remota e fazendo o <code>fetch</code>).</p>
+<h2 id="chave-pgp">Chave PGP</h2>
+<p>O Git permite assinar digitalmente <em>commits</em> e <em>tags</em>, o que permitiria a qualquer pessoa verificar se realmente quem as fez foi seu autor, e que não houve nenhuma modificação por terceiros. Para isso é possível utilizar chaves <a rel="noopener" target="_blank" href="https://pt.wikipedia.org/wiki/Pretty_Good_Privacy">PGP</a>, que as vezes são chamadas de chaves GPG devido ao nome do programa utilizado para isso (<a rel="noopener" target="_blank" href="https://www.gnupg.org/">GNU Privacy Guard</a>).</p>
+<p>Em sistemas Debian e derivados, basta instalar o pacote <a rel="noopener" target="_blank" href="https://packages.debian.org/stable/gnupg"><code>gnupg</code></a>, enquanto no Windows ele é instalado junto com o Git, e está disponível no terminal Git Bash.</p>
+<p>Para verificar as chaves PGP existentes, pode-se utilizar o comando <code>gpg --list-secret-keys --keyid-format LONG</code>, que listará todas as chaves privadas existentes.</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-txt" data-lang="txt"><span style="color:#cccece;">user@pc:/$ gpg --list-secret-keys --keyid-format LONG
+/home/user/.gnupg/pubring.kbx
+------------------------
+sec   rsa4096/F1EFDB0A94CDCE4F 2021-03-17 [SC]
+      08955621A4971CD813051D4CF1EFDB0A94CDCE4F
+uid                 [ultimate] Seu Nome &lt;user@email.com&gt;
+ssb   rsa4096/40629AC8A26C0D62 2021-03-17 [E]
+</span></code></pre>
+<p>Onde o código de identificação da chave (<code>id_chave</code>) é exibido na linha <code>sec</code>, logo após o algoritmo utilizado pela chave, que nesse caso é <code>F1EFDB0A94CDCE4F</code>.</p>
+<p>Para se gerar uma nova chave PGP, pode-se utilizar o comando <code>gpg --full-generate-key</code> e responder as perguntas feitas.</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-txt" data-lang="txt"><span style="color:#cccece;">user@pc:~$ gpg --full-generate-key
+gpg (GnuPG) 2.2.12; Copyright (C) 2018 Free Software Foundation, Inc.
+This is free software: you are free to change and redistribute it.
+There is NO WARRANTY, to the extent permitted by law.
+
+Please select what kind of key you want:
+   (1) RSA and RSA (default)
+   (2) DSA and Elgamal
+   (3) DSA (sign only)
+   (4) RSA (sign only)
+Your selection? 1
+RSA keys may be between 1024 and 4096 bits long.
+What keysize do you want? (3072) 4096
+Requested keysize is 4096 bits
+Please specify how long the key should be valid.
+         0 = key does not expire
+      &lt;n&gt;  = key expires in n days
+      &lt;n&gt;w = key expires in n weeks
+      &lt;n&gt;m = key expires in n months
+      &lt;n&gt;y = key expires in n years
+Key is valid for? (0) 0
+Key does not expire at all
+Is this correct? (y/N) y
+
+GnuPG needs to construct a user ID to identify your key.
+
+Real name: Seu Nome
+Email address: user@email.com
+Comment:
+You selected this USER-ID:
+    &quot;Seu Nome &lt;user@email.com&gt;&quot;
+
+Change (N)ame, (C)omment, (E)mail or (O)kay/(Q)uit? o
+We need to generate a lot of random bytes. It is a good idea to perform
+some other action (type on the keyboard, move the mouse, utilize the
+disks) during the prime generation; this gives the random number
+generator a better chance to gain enough entropy.
+We need to generate a lot of random bytes. It is a good idea to perform
+some other action (type on the keyboard, move the mouse, utilize the
+disks) during the prime generation; this gives the random number
+generator a better chance to gain enough entropy.
+gpg: key F1EFDB0A94CDCE4F marked as ultimately trusted
+gpg: revocation certificate stored as &#39;/home/user/.gnupg/openpgp-revocs.d/08955621A4971CD813051D4CF1EFDB0A94CDCE4F.rev&#39;
+public and secret key created and signed.
+
+pub   rsa4096 2021-03-17 [SC]
+      08955621A4971CD813051D4CF1EFDB0A94CDCE4F
+uid                      Seu Nome &lt;user@email.com&gt;
+sub   rsa4096 2021-03-17 [E]
+</span></code></pre>
+<p>Para testar a chave PGP, basta criar um arquivo qualquer, e executar o comando <code>gpg -sbu &lt;id_chave&gt; &lt;arquivo&gt;</code>, e para verificar a assinatura executar o comando <code>gpg --verify &lt;arquivo&gt;.sig</code>.</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-txt" data-lang="txt"><span style="color:#cccece;">user@pc:~$ gpg -sbu F1EFDB0A94CDCE4F arquivo.txt
+user@pc:~$ gpg --verify arquivo.txt.sig
+gpg: assuming signed data in &#39;arquivo.txt&#39;
+gpg: Signature made dom 21 mar 2021 21:19:07 -03
+gpg:                using RSA key 08955621A4971CD813051D4CF1EFDB0A94CDCE4F
+gpg: Good signature from &quot;Seu Nome &lt;user@email.com&gt;&quot; [ultimate]
+</span></code></pre>
+<p>A configuração de qual chave o Git deverá utilizar será discutido na seção seguinte. Porém para utilizar a chave para assinar um <em>commit</em> basta acrescentar o parâmetro <code>-S</code> no comando <code>git commit</code>, e para assinar uma <em>tag</em> basta acrescentar o parâmetro <code>-s</code> no comando <code>git tag</code>.</p>
+<p>Para adicionar a chave PGP no GitHub, basta acessar a opção nas <a rel="noopener" target="_blank" href="https://github.com/settings/keys">configurações</a>, clicando em <em>&quot;New GPG key&quot;</em>.</p>
+<p><img src="https://eduardoklosowski.github.io/blog/configuracao-basica-do-git-e-github/ssh-1.png" alt="Opção para adicionar chave PGP" /></p>
+<p>Nessa tela basta colar o conteúdo da chave pública no campo <em>&quot;Key&quot;</em>, o que pode ser conseguido executando no terminal o comando <code>gpg --armor --export &lt;id_chave&gt;</code> (exemplo <code>gpg --armor --export F1EFDB0A94CDCE4F</code>).</p>
+<p><img src="https://eduardoklosowski.github.io/blog/configuracao-basica-do-git-e-github/gpg-2.png" alt="Formulário para adicionar chave PGP" /></p>
+<h2 id="configuracao-do-git">Configuração do Git</h2>
+<p>Para utilizar o Git em sistemas Debian e derivados, é necessário instalar o pacote <a rel="noopener" target="_blank" href="https://packages.debian.org/stable/git"><code>git</code></a>. No Windows, a instalação pode ser feita como já apresentado anteriormente.</p>
+<p>Em relação a configuração do Git, ela pode ser feita com <code>git config</code> e aplicada em 3 níveis: Sistema, que é aplicável a qualquer repositório de qualquer usuário. Global, que é aplicável a qualquer repositório de um usuário específico. E local, que se aplica apenas ao repositório onde a configuração foi feita. A configuração do sistema fica em <code>/etc/gitconfig</code> e pode ser acessada com o parâmetro <code>--system</code>, mas normalmente não é utilizada. A configuração global fica em <code>~/.gitconfig</code> ou <code>~/.config/git/config</code> e pode ser acessada com o parâmetro <code>--global</code>. E a configuração local fica em <code>.git/config</code> dentro de cada repositório, podendo ser acessada com o parâmetro <code>--local</code> ou não informando outro nível (nível padrão).</p>
+<p>Duas configurações obrigatórias para usar o Git são <code>user.name</code>, que é o nome do usuário, e <code>user.email</code>, que é o endereço de e-mail, ambos utilizados como autor ao se fazer um <em>commit</em>. Para evitar o trabalho de reconfigurá-los toda hora, essa configuração normalmente é feita em nível global, como no exemplo a baixo:</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-bash" data-lang="bash"><span style="color:#6699cc;">git config</span><span style="color:#5fb3b3;"> --</span><span style="color:#f99157;">global</span><span style="color:#6699cc;"> user.name </span><span style="color:#5fb3b3;">&quot;</span><span style="color:#99c794;">Seu Nome</span><span style="color:#5fb3b3;">&quot;
+</span><span style="color:#6699cc;">git config</span><span style="color:#5fb3b3;"> --</span><span style="color:#f99157;">global</span><span style="color:#6699cc;"> user.email </span><span style="color:#5fb3b3;">&quot;</span><span style="color:#99c794;">user@email.com</span><span style="color:#5fb3b3;">&quot;
+</span></code></pre>
+<p>Porém caso deseja-se utilizar um nome ou e-mail diferente em determinado repositório, esses comandos podem ser usados dentro do repositório sem o parâmetro <code>--global</code>, como no caso de usar o e-mail da empresa em vez do e-mail pessoal.</p>
+<p>Ainda existem outros parâmetros, como <code>user.signingkey</code> que informa qual chave PGP deve ser utilizada, <code>core.editor</code> que informa o editor a ser utilizado para editar mensagens de <em>commit</em>, por exemplo (substituindo o <a rel="noopener" target="_blank" href="https://www.vim.org/">vim</a> caso queira utilizar outro editor). Mais informações podem ser vistas na sua <a rel="noopener" target="_blank" href="https://manpages.debian.org/stable/git-config">manpage</a> (<code>man git-config</code>), assim como uma descrição do formato do arquivo de configuração, que pode ser editador, ou simplesmente visualizado para verificar as configurações aplicadas, como o exemplo a baixo:</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-ini" data-lang="ini"><span style="color:#c594c5;">[user]
+    </span><span style="color:#f99157;">name </span><span style="color:#5fb3b3;">=</span><span style="color:#cccece;"> Seu Nome
+    </span><span style="color:#f99157;">email </span><span style="color:#5fb3b3;">=</span><span style="color:#cccece;"> user@email</span><span style="color:#5fb3b3;">.</span><span style="color:#cccece;">com
+    </span><span style="color:#f99157;">signingkey </span><span style="color:#5fb3b3;">= </span><span style="color:#f99157;">F1EFDB0A94CDCE4F
+</span><span style="color:#c594c5;">[core]
+    </span><span style="color:#f99157;">editor </span><span style="color:#5fb3b3;">=</span><span style="color:#cccece;"> vim
+</span></code></pre><h3 id="branch-padrao">Branch padrão</h3>
+<p>Seguindo a nomenclatura do <a rel="noopener" target="_blank" href="https://www.bitkeeper.org/">Bitkeeper</a>, a <em>branch</em> padrão do Git é a <code>master</code>, porém aos poucos está sendo alterado para <code>main</code>. No GitHub essa mudança já <a rel="noopener" target="_blank" href="https://github.com/github/renaming">foi feita</a> e qualquer novo repositório criado pela interface com um arquivo de licença ou <em>readme</em> terá a branch <code>main</code>, embora esse nome possa ser alterado nas <a rel="noopener" target="_blank" href="https://github.com/settings/repositories">configurações</a>. O <a rel="noopener" target="_blank" href="https://gitlab.com/">GitLab</a> também segue pelo <a rel="noopener" target="_blank" href="https://about.gitlab.com/blog/2021/03/10/new-git-default-branch-name/">mesmo caminho</a>. Porém no Git essa mudança ainda não se tornou o padrão, mas a partir da versão 2.28.0, foi acrescentado um parâmetro para definir o nome padrão da <em>branch</em> ao se criar um repositório (<code>init.defaultBranch</code>). Então caso deseja que ao executar um <code>git init</code> seja criado a branch <code>main</code> em vez da <code>master</code>, basta alterar as configurações com <code>git config --global init.defaultBranch main</code>.</p>
+<h3 id="linha-de-comando">Linha de comando</h3>
+<p>Uma configuração bastante útil do Git é mostrar a <em>branch</em> atual o estado do repositório na linha de comando. No Git Bash isso já vem ativo por padrão, porém em outros ambientes é necessário ativar. O <em>script</em> responsável por isso é o <a rel="noopener" target="_blank" href="https://github.com/git/git/blob/master/contrib/completion/git-prompt.sh"><code>git-prompt</code></a>, e no Debian e derivados já é instalado junto com o Git, porém dependendo do pacote <code>bash-completion</code> para ser carregado e que seja habilitado na variável de ambiente <code>PS1</code>. A baixo segue um exemplo de configuração que pode ser adicionado ao arquivo <code>~/.bashrc</code> para habilitá-lo, junto com alguns de seus parâmetros de configuração:</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-.bashrc" data-lang=".bashrc"><span style="color:#cccece;">PS1</span><span style="color:#5fb3b3;">=&quot;${</span><span style="color:#cccece;">PS1</span><span style="color:#5fb3b3;">/</span><span style="color:#f99157;">/</span><span style="color:#5fb3b3;">\\\$/\$</span><span style="color:#99c794;">(__git_ps1)</span><span style="color:#5fb3b3;">\\\$}&quot;
+</span><span style="color:#cccece;">GIT_PS1_SHOWDIRTYSTATE</span><span style="color:#5fb3b3;">=</span><span style="color:#99c794;">true
+</span><span style="color:#cccece;">GIT_PS1_SHOWSTASHSTATE</span><span style="color:#5fb3b3;">=</span><span style="color:#99c794;">true
+</span><span style="color:#cccece;">GIT_PS1_SHOWUNTRACKEDFILES</span><span style="color:#5fb3b3;">=</span><span style="color:#99c794;">true
+</span><span style="color:#cccece;">GIT_PS1_SHOWUPSTREAM</span><span style="color:#5fb3b3;">=</span><span style="color:#99c794;">auto
+</span><span style="color:#cccece;">GIT_PS1_SHOWCOLORHINTS</span><span style="color:#5fb3b3;">=</span><span style="color:#99c794;">true
+</span></code></pre><h2 id="consideracoes">Considerações</h2>
+<p>Embora esse texto se focou no GitHub, ele também pode ser aplicado para outros sistemas, como o GitLab. Algumas partes, como a configuração do SSH pode ser reaproveitada para acesso a servidores, e o KeePass para a autenticação em duas etapas de outros sites.</p>
+<p>Por questões de segurança, todas as chaves geradas durante a criação desse texto foram apagadas, assim como a conta criada no GitHub.</p>
+
+    </div>
+
+        </div>
+    </body>
+</html>

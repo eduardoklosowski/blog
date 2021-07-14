@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+        <title>Tags - Docker - Blog Eduardo Klosowski</title>
+        <meta name="application-name" content="Blog Eduardo Klosowski">
+        <meta name="apple-mobile-web-app-title" content="Blog Eduardo Klosowski">
+
+        <link rel="shortcut icon" href="https://eduardoklosowski.github.io/blog/favicon.webp">
+        <link rel="icon" sizes="188x188" href="https://eduardoklosowski.github.io/blog/logo.png">
+        <link rel="apple-touch-icon" href="https://eduardoklosowski.github.io/blog/logo.png">
+
+        
+            <link rel="alternate" type="application/atom+xml" title="Blog Eduardo Klosowski" href="https://eduardoklosowski.github.io/blog/atom.xml">
+        
+
+        
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="Blog Eduardo Klosowski">
+    <meta property="og:title" content="Tags - Docker">
+    <meta property="og:description" content="Artigos sobre docker.">
+    <meta property="og:url" content="https://eduardoklosowski.github.io/blog/tags/docker/">
+    <meta property="og:image" content="https://eduardoklosowski.github.io/blog/logo.png">
+    <meta property="og:locale" content="pt_BR">
+
+
+        <link rel="stylesheet" media="all" href="https://eduardoklosowski.github.io/blog/poole.css">
+        <link rel="stylesheet" media="all" href="https://eduardoklosowski.github.io/blog/tema.css">
+        <link rel="stylesheet" media="print" href="https://eduardoklosowski.github.io/blog/print.css">
+
+        
+            <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "73939fe3b7984f859c0427bc6c693927"}'></script>
+        
+        
+            <script async src="https://www.googletagmanager.com/gtag/js?id=G-15ZW1NJTDE"></script>
+            <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', 'G-15ZW1NJTDE');
+            </script>
+        
+    </head>
+
+    <body>
+        <div class="sidebar">
+            <div class="container">
+                <div class="sidebar-about">
+                    <a href="https://eduardoklosowski.github.io/blog/">
+                        <img class="sidebar-logo" src="https://eduardoklosowski.github.io/blog/logo.png">
+                        <h1>Blog Eduardo Klosowski</h1>
+                    </a>
+                </div>
+
+                <ul class="sidebar-nav">
+                    
+                        <li class="sidebar-nav-item">
+                            <a rel="noopener" target="_blank" href="https://github.com/eduardoklosowski">
+                                
+                                    <img src="https://eduardoklosowski.github.io/blog/icons/github.svg" alt="GitHub">
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="sidebar-nav-item">
+                            <a rel="noopener" target="_blank" href="https://twitter.com/eduklosowski">
+                                
+                                    <img src="https://eduardoklosowski.github.io/blog/icons/twitter.svg" alt="Twitter">
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="sidebar-nav-item">
+                            <a rel="noopener" target="_blank" href="https://twitch.tv/eduardoklosowski">
+                                
+                                    <img src="https://eduardoklosowski.github.io/blog/icons/twitch.svg" alt="Twitch">
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="sidebar-nav-item">
+                            <a rel="noopener" target="_blank" href="https://asciinema.org/~eduardoklosowski">
+                                
+                                    <img src="https://eduardoklosowski.github.io/blog/icons/asciinema.svg" alt="asciinema">
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="sidebar-nav-item">
+                            <a rel="noopener" target="_blank" href="https://dev.to/eduardoklosowski">
+                                
+                                    <img src="https://eduardoklosowski.github.io/blog/icons/dev.svg" alt="DEV">
+                                
+                            </a>
+                        </li>
+                    
+                </ul>
+            </div>
+        </div>
+
+        <div class="content container">
+            
+    
+    
+    <h1 class="session-title">
+        <a href="https://eduardoklosowski.github.io/blog/tags/">Tags</a>
+        ::
+        Docker
+    </h1>
+    
+    <div class="posts">
+        
+            <div class="post">
+                <h1 class="post-title"><a href="https://eduardoklosowski.github.io/blog/aplicacao-isolamento-com-docker/">Isolamento de aplicações: Docker</a></h1>
+                <div class="post-info">
+                    Publicado em 19-06-2021
+                    &middot;
+                    10 minutos de leitura
+                </div>
+                
+                    <div class="post-serie">
+                        Série
+                        
+                            <a href="https://eduardoklosowski.github.io/blog/series/isolamento-de-aplicacoes/">Isolamento de aplicações</a>
+                        
+                    </div>
+                
+                <div class="post-tags">
+                    
+                        <a href="https://eduardoklosowski.github.io/blog/tags/sistema-operacional/">#Sistema Operacional</a>,
+                    
+                        <a href="https://eduardoklosowski.github.io/blog/tags/conteineres/">#Contêineres</a>,
+                    
+                        <a href="https://eduardoklosowski.github.io/blog/tags/docker/">#Docker</a>
+                    
+                    
+                </div>
+                <p>Nos textos anteriores dessa série vimos como isolar uma aplicação nos contextos de sistema de arquivos, tabela de processos e pilha de rede. Porém isso pode se tornar um pouco complexo para ser gerenciado na mão, precisando executar algo como <code>ip netns exec app1 unshare -fp --mount-proc chroot /media/sistema bash</code> apenas para rodar um terminal dentro de determinados espaços de nomes, sem contar toda a configuração necessária para isso. Mas existem ferramentas que facilitam criar e executar aplicações dentre de espaço de nomes, o que hoje são conhecidas como contêineres.</p>
+                <div class="post-continue">
+                    <a href="https://eduardoklosowski.github.io/blog/aplicacao-isolamento-com-docker/">Continue lendo...</a>
+                </div>
+            </div>
+        
+
+        
+            <div class="paginate">
+                
+                
+                <div style="clear: both;"></div>
+            </div>
+        
+    </div>
+
+
+
+        </div>
+    </body>
+</html>

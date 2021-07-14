@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+        <title>Orientação a objetos de outra forma: Property - Blog Eduardo Klosowski</title>
+        <meta name="application-name" content="Blog Eduardo Klosowski">
+        <meta name="apple-mobile-web-app-title" content="Blog Eduardo Klosowski">
+
+        <link rel="shortcut icon" href="https://eduardoklosowski.github.io/blog/favicon.webp">
+        <link rel="icon" sizes="188x188" href="https://eduardoklosowski.github.io/blog/logo.png">
+        <link rel="apple-touch-icon" href="https://eduardoklosowski.github.io/blog/logo.png">
+
+        
+            <link rel="alternate" type="application/atom+xml" title="Blog Eduardo Klosowski" href="https://eduardoklosowski.github.io/blog/atom.xml">
+        
+
+        
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Blog Eduardo Klosowski">
+    <meta property="og:title" content="Orientação a objetos de outra forma: Property">
+    <meta property="og:description" content="Seguindo com a série, chegou a hora de discutir sobre encapsulamento, ou seja, ocultar detalhes de implementação de uma classe do resto do código. Em algumas linguagens de programação isso é feito utilizando protected ou private, e às vezes o acesso aos atributos é feito através de funções getters e setters. Nesse texto vamos ver como o Python lida com essas questões.">
+    <meta property="og:url" content="https://eduardoklosowski.github.io/blog/oo-de-outra-forma-6/">
+    <meta property="og:image" content="https://eduardoklosowski.github.io/blog/logo.png">
+    <meta property="og:locale" content="pt_BR">
+    <meta property="og:article:published_time" content="2021-05-08">
+    <meta property="og:article:author" content="Eduardo Klosowski">
+    
+        <meta property="og:article:tag" content="Orientação a objetos de outra forma">
+    
+    
+        <meta property="og:article:tag" content="Orientação a Objetos">
+    
+    
+        <meta property="og:article:tag" content="Python">
+    
+
+
+        <link rel="stylesheet" media="all" href="https://eduardoklosowski.github.io/blog/poole.css">
+        <link rel="stylesheet" media="all" href="https://eduardoklosowski.github.io/blog/tema.css">
+        <link rel="stylesheet" media="print" href="https://eduardoklosowski.github.io/blog/print.css">
+
+        
+            <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "73939fe3b7984f859c0427bc6c693927"}'></script>
+        
+        
+            <script async src="https://www.googletagmanager.com/gtag/js?id=G-15ZW1NJTDE"></script>
+            <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', 'G-15ZW1NJTDE');
+            </script>
+        
+    </head>
+
+    <body>
+        <div class="sidebar">
+            <div class="container">
+                <div class="sidebar-about">
+                    <a href="https://eduardoklosowski.github.io/blog/">
+                        <img class="sidebar-logo" src="https://eduardoklosowski.github.io/blog/logo.png">
+                        <h1>Blog Eduardo Klosowski</h1>
+                    </a>
+                </div>
+
+                <ul class="sidebar-nav">
+                    
+                        <li class="sidebar-nav-item">
+                            <a rel="noopener" target="_blank" href="https://github.com/eduardoklosowski">
+                                
+                                    <img src="https://eduardoklosowski.github.io/blog/icons/github.svg" alt="GitHub">
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="sidebar-nav-item">
+                            <a rel="noopener" target="_blank" href="https://twitter.com/eduklosowski">
+                                
+                                    <img src="https://eduardoklosowski.github.io/blog/icons/twitter.svg" alt="Twitter">
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="sidebar-nav-item">
+                            <a rel="noopener" target="_blank" href="https://twitch.tv/eduardoklosowski">
+                                
+                                    <img src="https://eduardoklosowski.github.io/blog/icons/twitch.svg" alt="Twitch">
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="sidebar-nav-item">
+                            <a rel="noopener" target="_blank" href="https://asciinema.org/~eduardoklosowski">
+                                
+                                    <img src="https://eduardoklosowski.github.io/blog/icons/asciinema.svg" alt="asciinema">
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="sidebar-nav-item">
+                            <a rel="noopener" target="_blank" href="https://dev.to/eduardoklosowski">
+                                
+                                    <img src="https://eduardoklosowski.github.io/blog/icons/dev.svg" alt="DEV">
+                                
+                            </a>
+                        </li>
+                    
+                </ul>
+            </div>
+        </div>
+
+        <div class="content container">
+            
+    <div class="post">
+        <h1 class="post-title">Orientação a objetos de outra forma: Property</h1>
+        <div class="post-info">
+            Publicado em 08-05-2021
+            &middot;
+            5 minutos de leitura
+        </div>
+        
+            <div class="post-serie">
+                Série
+                
+                    <a href="https://eduardoklosowski.github.io/blog/series/orientacao-a-objetos-de-outra-forma/">Orientação a objetos de outra forma</a>
+                
+            </div>
+        
+        <div class="post-tags">
+            
+                <a href="https://eduardoklosowski.github.io/blog/tags/orientacao-a-objetos/">#Orientação a Objetos</a>,
+            
+            
+                <a href="https://eduardoklosowski.github.io/blog/linguagens/python/">#Python</a>
+            
+        </div>
+        <p>Seguindo com a série, chegou a hora de discutir sobre encapsulamento, ou seja, ocultar detalhes de implementação de uma classe do resto do código. Em algumas linguagens de programação isso é feito utilizando <code>protected</code> ou <code>private</code>, e às vezes o acesso aos atributos é feito através de funções <em>getters</em> e <em>setters</em>. Nesse texto vamos ver como o Python lida com essas questões.</p>
+<h2 id="metodos-protegidos-e-privados">Métodos protegidos e privados</h2>
+<p>Diferente de linguagens como Java e PHP que possuem palavras-chave como <code>protected</code> e <code>private</code> para impedir que outras classes acessem determinados métodos ou atributos, Python deixa tudo como público. Porém isso não significa que todas as funções de uma classe podem ser chamadas por outras, ou todos os atributos podem ser lidos e alterados sem cuidados.</p>
+<p>Para que quem estiver escrevendo um código saiba quais as funções ou atributos que não deveriam ser acessados diretamente, segue-se o padrão de começá-los com <code>_</code>, de forma similar aos arquivos ocultos em sistemas UNIX, que começam com <code>.</code>. Esse padrão já foi seguido na classe <code>AutenticavelComRegistro</code> da postagem sobre <a href="https://eduardoklosowski.github.io/blog/oo-de-outra-forma-4/">mixins</a>, onde a função que pega a data do sistema foi nomeada <code>_get_data</code>. Entretanto isso é apenas uma sugestão, nada impede dela ser chamada, como no exemplo a baixo:</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-python" data-lang="python"><span style="color:#c594c5;">from </span><span style="color:#cccece;">datetime </span><span style="color:#c594c5;">import </span><span style="color:#cccece;">datetime
+
+
+</span><span style="color:#c594c5;">class </span><span style="color:#fac863;">Exemplo</span><span style="color:#5fb3b3;">:
+    </span><span style="color:#c594c5;">def </span><span style="color:#6699cc;">_get_data</span><span style="color:#5fb3b3;">(</span><span style="color:#f99157;">self</span><span style="color:#5fb3b3;">):
+        </span><span style="color:#c594c5;">return </span><span style="color:#6699cc;">datetime</span><span style="color:#5fb3b3;">.</span><span style="color:#6699cc;">now</span><span style="color:#5fb3b3;">().</span><span style="color:#6699cc;">strftime</span><span style="color:#5fb3b3;">(&#39;</span><span style="color:#99c794;">%d/%m/%Y %T</span><span style="color:#5fb3b3;">&#39;)
+
+
+</span><span style="color:#cccece;">obj </span><span style="color:#5fb3b3;">= </span><span style="color:#6699cc;">Exemplo</span><span style="color:#5fb3b3;">()
+</span><span style="color:#6699cc;">print</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">obj</span><span style="color:#5fb3b3;">.</span><span style="color:#6699cc;">_get_data</span><span style="color:#5fb3b3;">())
+</span></code></pre>
+<p>Porém algumas bibliotecas também utilizam o <code>_</code> para indicar outras informações como metadados do objeto, e que podem ser acessados sem muitos problemas. Assim é possível utilizar esse símbolo duas vezes (<code>__</code>) para indicar que realmente essa variável ou função não deveria ser acessada de fora da classe, apresentando erro de que o atributo não foi encontrado ao tentar executar a função, porém ela ainda pode ser acessada:</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-python" data-lang="python"><span style="color:#c594c5;">from </span><span style="color:#cccece;">datetime </span><span style="color:#c594c5;">import </span><span style="color:#cccece;">datetime
+
+
+</span><span style="color:#c594c5;">class </span><span style="color:#fac863;">Exemplo</span><span style="color:#5fb3b3;">:
+    </span><span style="color:#c594c5;">def </span><span style="color:#6699cc;">__get_data</span><span style="color:#5fb3b3;">(</span><span style="color:#f99157;">self</span><span style="color:#5fb3b3;">):
+        </span><span style="color:#c594c5;">return </span><span style="color:#6699cc;">datetime</span><span style="color:#5fb3b3;">.</span><span style="color:#6699cc;">now</span><span style="color:#5fb3b3;">().</span><span style="color:#6699cc;">strftime</span><span style="color:#5fb3b3;">(&#39;</span><span style="color:#99c794;">%d/%m/%Y %T</span><span style="color:#5fb3b3;">&#39;)
+
+
+</span><span style="color:#cccece;">obj </span><span style="color:#5fb3b3;">= </span><span style="color:#6699cc;">Exemplo</span><span style="color:#5fb3b3;">()
+</span><span style="color:#6699cc;">print</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">obj</span><span style="color:#5fb3b3;">.</span><span style="color:#6699cc;">__get_data</span><span style="color:#5fb3b3;">())  </span><span style="color:#5f6364;"># AttributeError
+</span><span style="color:#6699cc;">print</span><span style="color:#5fb3b3;">(</span><span style="color:#6699cc;">obj</span><span style="color:#5fb3b3;">.</span><span style="color:#6699cc;">_Exemplo__get_data</span><span style="color:#5fb3b3;">())  </span><span style="color:#5f6364;"># Executa a função
+</span></code></pre><h2 id="property">Property</h2>
+<p>Os <em>getters</em> e <em>setters</em> muitas vezes são usados para impedir que determinadas variáveis sejam alteradas, ou validar o valor antes de atribuir a variável, ou ainda processar um valor a partir de outras variáveis. Porém como o Python incentiva o acesso direto as variáveis, existe a <em>property</em>, que ao tentar acessar uma variável ou alterar um valor, uma função é chamada. Exemplo:</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-python" data-lang="python"><span style="color:#c594c5;">class </span><span style="color:#fac863;">Pessoa</span><span style="color:#5fb3b3;">:
+    </span><span style="color:#c594c5;">def </span><span style="color:#6699cc;">__init__</span><span style="color:#5fb3b3;">(</span><span style="color:#f99157;">self</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">nome</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">sobrenome</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">idade</span><span style="color:#5fb3b3;">):
+        </span><span style="color:#ec5f67;">self</span><span style="color:#5fb3b3;">.</span><span style="color:#cccece;">_nome </span><span style="color:#5fb3b3;">= </span><span style="color:#cccece;">nome
+        </span><span style="color:#ec5f67;">self</span><span style="color:#5fb3b3;">.</span><span style="color:#cccece;">sobrenome </span><span style="color:#5fb3b3;">= </span><span style="color:#cccece;">sobrenome
+        </span><span style="color:#ec5f67;">self</span><span style="color:#5fb3b3;">.</span><span style="color:#cccece;">_idade </span><span style="color:#5fb3b3;">= </span><span style="color:#cccece;">idade
+
+    </span><span style="color:#5fb3b3;">@</span><span style="color:#6699cc;">property
+    </span><span style="color:#c594c5;">def </span><span style="color:#6699cc;">nome</span><span style="color:#5fb3b3;">(</span><span style="color:#f99157;">self</span><span style="color:#5fb3b3;">):
+        </span><span style="color:#c594c5;">return </span><span style="color:#ec5f67;">self</span><span style="color:#5fb3b3;">.</span><span style="color:#cccece;">_nome
+
+    </span><span style="color:#5fb3b3;">@</span><span style="color:#6699cc;">property
+    </span><span style="color:#c594c5;">def </span><span style="color:#6699cc;">nome_completo</span><span style="color:#5fb3b3;">(</span><span style="color:#f99157;">self</span><span style="color:#5fb3b3;">):
+        </span><span style="color:#c594c5;">return f</span><span style="color:#5fb3b3;">&#39;{</span><span style="color:#ec5f67;">self</span><span style="color:#5fb3b3;">.</span><span style="color:#cccece;">nome</span><span style="color:#5fb3b3;">} {</span><span style="color:#ec5f67;">self</span><span style="color:#5fb3b3;">.</span><span style="color:#cccece;">sobrenome</span><span style="color:#5fb3b3;">}&#39;
+
+    @</span><span style="color:#cccece;">nome_completo</span><span style="color:#5fb3b3;">.</span><span style="color:#cccece;">setter
+    </span><span style="color:#c594c5;">def </span><span style="color:#6699cc;">nome_completo</span><span style="color:#5fb3b3;">(</span><span style="color:#f99157;">self</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">valor</span><span style="color:#5fb3b3;">):
+        </span><span style="color:#cccece;">valor </span><span style="color:#5fb3b3;">= </span><span style="color:#6699cc;">valor</span><span style="color:#5fb3b3;">.</span><span style="color:#6699cc;">split</span><span style="color:#5fb3b3;">(&#39; &#39;, </span><span style="color:#f99157;">1</span><span style="color:#5fb3b3;">)
+        </span><span style="color:#ec5f67;">self</span><span style="color:#5fb3b3;">.</span><span style="color:#cccece;">_nome </span><span style="color:#5fb3b3;">= </span><span style="color:#cccece;">valor</span><span style="color:#5fb3b3;">[</span><span style="color:#f99157;">0</span><span style="color:#5fb3b3;">]
+        </span><span style="color:#ec5f67;">self</span><span style="color:#5fb3b3;">.</span><span style="color:#cccece;">sobrenome </span><span style="color:#5fb3b3;">= </span><span style="color:#cccece;">valor</span><span style="color:#5fb3b3;">[</span><span style="color:#f99157;">1</span><span style="color:#5fb3b3;">]
+
+    @</span><span style="color:#6699cc;">property
+    </span><span style="color:#c594c5;">def </span><span style="color:#6699cc;">idade</span><span style="color:#5fb3b3;">(</span><span style="color:#f99157;">self</span><span style="color:#5fb3b3;">):
+        </span><span style="color:#c594c5;">return </span><span style="color:#ec5f67;">self</span><span style="color:#5fb3b3;">.</span><span style="color:#cccece;">_idade
+
+    </span><span style="color:#5fb3b3;">@</span><span style="color:#cccece;">idade</span><span style="color:#5fb3b3;">.</span><span style="color:#cccece;">setter
+    </span><span style="color:#c594c5;">def </span><span style="color:#6699cc;">idade</span><span style="color:#5fb3b3;">(</span><span style="color:#f99157;">self</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">valor</span><span style="color:#5fb3b3;">):
+        </span><span style="color:#c594c5;">if </span><span style="color:#cccece;">valor </span><span style="color:#5fb3b3;">&lt; </span><span style="color:#f99157;">0</span><span style="color:#5fb3b3;">:
+            </span><span style="color:#c594c5;">raise </span><span style="color:#fac863;">ValueError
+        </span><span style="color:#ec5f67;">self</span><span style="color:#5fb3b3;">.</span><span style="color:#cccece;">_idade </span><span style="color:#5fb3b3;">= </span><span style="color:#cccece;">valor
+
+    </span><span style="color:#c594c5;">def </span><span style="color:#6699cc;">fazer_aniversario</span><span style="color:#5fb3b3;">(</span><span style="color:#f99157;">self</span><span style="color:#5fb3b3;">):
+        </span><span style="color:#ec5f67;">self</span><span style="color:#5fb3b3;">.</span><span style="color:#cccece;">idade </span><span style="color:#5fb3b3;">+= </span><span style="color:#f99157;">1
+</span></code></pre>
+<p>Nesse código algumas variáveis são acessíveis através de <em>properties</em>, de forma geral, as variáveis foram definidas começando com <code>_</code> e com uma <em>property</em> de mesmo nome (sem o <code>_</code>). O primeiro caso é o <code>nome</code>, que possui apenas o <em>getter</em>, sendo possível o seu acesso como <code>obj.nome</code>, porém ao tentar atribuir um valor, será lançado um erro (<code>AttributeError: can't set attribute</code>). Em relação ao <code>sobrenome</code>, como não é necessário nenhum tratamento especial, não foi utilizado um <em>property</em>, porém futuramente pode ser facilmente substituído por um sem precisar alterar os demais códigos. Porém a função <code>nome_completo</code> foi substituída por um <em>property</em>, permitindo tanto o acesso ao nome completo da pessoa, como se fosse uma variável, quanto trocar <code>nome</code> e <code>sobrenome</code> ao atribuir um novo valor para essa <em>property</em>. Quanto a <code>idade</code> utiliza o <em>setter</em> do <em>property</em> para validar o valor recebido, retornando erro para idades inválidas (negativas).</p>
+<p>Vale observar também que todas as funções de <em>getter</em> não recebem nenhum argumento (além do <code>self</code>), enquanto as funções de <em>setter</em> recebem o valor atribuído à variável.</p>
+<p>Utilizando a <a href="https://eduardoklosowski.github.io/blog/oo-de-outra-forma-5/">ABC</a>, ainda é possível informar que alguma classe filha deverá implementar alguma <em>property</em>. Exemplo:</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-python" data-lang="python"><span style="color:#c594c5;">from </span><span style="color:#cccece;">abc </span><span style="color:#c594c5;">import </span><span style="color:#cccece;">ABC
+
+
+</span><span style="color:#c594c5;">class </span><span style="color:#fac863;">Pessoa</span><span style="color:#5fb3b3;">(</span><span style="color:#99c794;">ABC</span><span style="color:#5fb3b3;">):
+    </span><span style="color:#c594c5;">def </span><span style="color:#6699cc;">__init__</span><span style="color:#5fb3b3;">(</span><span style="color:#f99157;">self</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">nome</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">sobrenome</span><span style="color:#5fb3b3;">, </span><span style="color:#f99157;">idade</span><span style="color:#5fb3b3;">):
+        </span><span style="color:#ec5f67;">self</span><span style="color:#5fb3b3;">.</span><span style="color:#cccece;">nome </span><span style="color:#5fb3b3;">= </span><span style="color:#cccece;">nome
+        </span><span style="color:#ec5f67;">self</span><span style="color:#5fb3b3;">.</span><span style="color:#cccece;">sobrenome </span><span style="color:#5fb3b3;">= </span><span style="color:#cccece;">sobrenome
+        </span><span style="color:#ec5f67;">self</span><span style="color:#5fb3b3;">.</span><span style="color:#cccece;">idade </span><span style="color:#5fb3b3;">= </span><span style="color:#cccece;">idade
+
+    </span><span style="color:#5fb3b3;">@</span><span style="color:#6699cc;">property
+    </span><span style="color:#5fb3b3;">@</span><span style="color:#cccece;">abstractmethod
+    </span><span style="color:#c594c5;">def </span><span style="color:#6699cc;">nome_completo</span><span style="color:#5fb3b3;">(</span><span style="color:#f99157;">self</span><span style="color:#5fb3b3;">):
+        </span><span style="color:#f99157;">...
+
+
+</span><span style="color:#c594c5;">class </span><span style="color:#fac863;">Brasileiro</span><span style="color:#5fb3b3;">(</span><span style="color:#99c794;">Pessoa</span><span style="color:#5fb3b3;">):
+    @</span><span style="color:#6699cc;">property
+    </span><span style="color:#c594c5;">def </span><span style="color:#6699cc;">nome_completo</span><span style="color:#5fb3b3;">(</span><span style="color:#f99157;">self</span><span style="color:#5fb3b3;">):
+        </span><span style="color:#c594c5;">return f</span><span style="color:#5fb3b3;">&#39;{</span><span style="color:#ec5f67;">self</span><span style="color:#5fb3b3;">.</span><span style="color:#cccece;">nome</span><span style="color:#5fb3b3;">} {</span><span style="color:#ec5f67;">self</span><span style="color:#5fb3b3;">.</span><span style="color:#cccece;">sobrenome</span><span style="color:#5fb3b3;">}&#39;
+
+
+</span><span style="color:#c594c5;">class </span><span style="color:#fac863;">Japones</span><span style="color:#5fb3b3;">(</span><span style="color:#99c794;">Pessoa</span><span style="color:#5fb3b3;">):
+    @</span><span style="color:#6699cc;">property
+    </span><span style="color:#c594c5;">def </span><span style="color:#6699cc;">nome_completo</span><span style="color:#5fb3b3;">(</span><span style="color:#f99157;">self</span><span style="color:#5fb3b3;">):
+        </span><span style="color:#c594c5;">return f</span><span style="color:#5fb3b3;">&#39;{</span><span style="color:#ec5f67;">self</span><span style="color:#5fb3b3;">.</span><span style="color:#cccece;">sobrenome</span><span style="color:#5fb3b3;">} {</span><span style="color:#ec5f67;">self</span><span style="color:#5fb3b3;">.</span><span style="color:#cccece;">nome</span><span style="color:#5fb3b3;">}&#39;
+</span></code></pre><h2 id="consideracoes">Considerações</h2>
+<p>Diferente de algumas linguagens que ocultam as variáveis dos objetos, permitindo o seu acesso apenas através de funções, Python seguem no sentido contrário, acessando as funções de <em>getter</em> e <em>setter</em> como se fossem variáveis, isso permite começar com uma classe simples e ir adicionando funcionalidades conforme elas forem necessárias, sem precisar mudar o código das demais partes da aplicação, além de deixar transparente para quem desenvolve, não sendo necessário lembrar se precisa usar <em>getteres</em> e <em>setteres</em> ou não.</p>
+<p>De forma geral, programação orientada a objetos consiste em seguir determinados padrões de código, e as linguagens que implementam esse paradigma oferecem facilidades para escrever código seguindo esses padrões, e às vezes até ocultando detalhes complexos de suas implementações. Nesse contexto, eu recomendo a palestra do autor do <a rel="noopener" target="_blank" href="https://htop.dev/">htop</a> feita no FISL 16, onde ele comenta como usou <a rel="noopener" target="_blank" href="http://hemingway.softwarelivre.org/fisl16/high/41f/sala_41f-high-201507091200.ogv">orientação a objetos em C</a>. E para quem ainda quiser se aprofundar no assunto de orientação a objetos no Python, recomendo os vídeos do <a rel="noopener" target="_blank" href="https://www.youtube.com/playlist?list=PLOQgLBuj2-3L_L6ahsBVA_SzuGtKre3OK">Eduardo Mendes</a> (também conhecido como dunossauro).</p>
+
+    </div>
+
+        </div>
+    </body>
+</html>

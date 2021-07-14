@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+        <title>Isolamento de aplicações: Sistema de arquivos - Blog Eduardo Klosowski</title>
+        <meta name="application-name" content="Blog Eduardo Klosowski">
+        <meta name="apple-mobile-web-app-title" content="Blog Eduardo Klosowski">
+
+        <link rel="shortcut icon" href="https://eduardoklosowski.github.io/blog/favicon.webp">
+        <link rel="icon" sizes="188x188" href="https://eduardoklosowski.github.io/blog/logo.png">
+        <link rel="apple-touch-icon" href="https://eduardoklosowski.github.io/blog/logo.png">
+
+        
+            <link rel="alternate" type="application/atom+xml" title="Blog Eduardo Klosowski" href="https://eduardoklosowski.github.io/blog/atom.xml">
+        
+
+        
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Blog Eduardo Klosowski">
+    <meta property="og:title" content="Isolamento de aplicações: Sistema de arquivos">
+    <meta property="og:description" content="Aplicações são desenvolvidas e muitas vezes executadas como serviços em servidores, os quais podem rodar uma única aplicação, ou compartilhar seus recursos de hardware entre diversas aplicações. Entretanto podem existir conflitos entre as aplicações, como requisitarem a mesma porta de rede, exigirem versões diferentes de biblioteca e afins, além de questões de segurança. Nesse primeiro texto será abordado como isolar o sistema de arquivos entre os processos dessas aplicações, de forma que um processo não consiga visualizar os arquivos referentes a outra aplicação.">
+    <meta property="og:url" content="https://eduardoklosowski.github.io/blog/aplicacao-isolamento-de-sistema-de-arquivos/">
+    <meta property="og:image" content="https://eduardoklosowski.github.io/blog/logo.png">
+    <meta property="og:locale" content="pt_BR">
+    <meta property="og:article:published_time" content="2021-05-29">
+    <meta property="og:article:author" content="Eduardo Klosowski">
+    
+        <meta property="og:article:tag" content="Isolamento de aplicações">
+    
+    
+        <meta property="og:article:tag" content="Sistema Operacional">
+    
+        <meta property="og:article:tag" content="Sistema de Arquivos">
+    
+    
+
+
+        <link rel="stylesheet" media="all" href="https://eduardoklosowski.github.io/blog/poole.css">
+        <link rel="stylesheet" media="all" href="https://eduardoklosowski.github.io/blog/tema.css">
+        <link rel="stylesheet" media="print" href="https://eduardoklosowski.github.io/blog/print.css">
+
+        
+            <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "73939fe3b7984f859c0427bc6c693927"}'></script>
+        
+        
+            <script async src="https://www.googletagmanager.com/gtag/js?id=G-15ZW1NJTDE"></script>
+            <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', 'G-15ZW1NJTDE');
+            </script>
+        
+    </head>
+
+    <body>
+        <div class="sidebar">
+            <div class="container">
+                <div class="sidebar-about">
+                    <a href="https://eduardoklosowski.github.io/blog/">
+                        <img class="sidebar-logo" src="https://eduardoklosowski.github.io/blog/logo.png">
+                        <h1>Blog Eduardo Klosowski</h1>
+                    </a>
+                </div>
+
+                <ul class="sidebar-nav">
+                    
+                        <li class="sidebar-nav-item">
+                            <a rel="noopener" target="_blank" href="https://github.com/eduardoklosowski">
+                                
+                                    <img src="https://eduardoklosowski.github.io/blog/icons/github.svg" alt="GitHub">
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="sidebar-nav-item">
+                            <a rel="noopener" target="_blank" href="https://twitter.com/eduklosowski">
+                                
+                                    <img src="https://eduardoklosowski.github.io/blog/icons/twitter.svg" alt="Twitter">
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="sidebar-nav-item">
+                            <a rel="noopener" target="_blank" href="https://twitch.tv/eduardoklosowski">
+                                
+                                    <img src="https://eduardoklosowski.github.io/blog/icons/twitch.svg" alt="Twitch">
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="sidebar-nav-item">
+                            <a rel="noopener" target="_blank" href="https://asciinema.org/~eduardoklosowski">
+                                
+                                    <img src="https://eduardoklosowski.github.io/blog/icons/asciinema.svg" alt="asciinema">
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="sidebar-nav-item">
+                            <a rel="noopener" target="_blank" href="https://dev.to/eduardoklosowski">
+                                
+                                    <img src="https://eduardoklosowski.github.io/blog/icons/dev.svg" alt="DEV">
+                                
+                            </a>
+                        </li>
+                    
+                </ul>
+            </div>
+        </div>
+
+        <div class="content container">
+            
+    <div class="post">
+        <h1 class="post-title">Isolamento de aplicações: Sistema de arquivos</h1>
+        <div class="post-info">
+            Publicado em 29-05-2021
+            &middot;
+            6 minutos de leitura
+        </div>
+        
+            <div class="post-serie">
+                Série
+                
+                    <a href="https://eduardoklosowski.github.io/blog/series/isolamento-de-aplicacoes/">Isolamento de aplicações</a>
+                
+            </div>
+        
+        <div class="post-tags">
+            
+                <a href="https://eduardoklosowski.github.io/blog/tags/sistema-operacional/">#Sistema Operacional</a>,
+            
+                <a href="https://eduardoklosowski.github.io/blog/tags/sistema-de-arquivos/">#Sistema de Arquivos</a>
+            
+            
+        </div>
+        <p>Aplicações são desenvolvidas e muitas vezes executadas como serviços em servidores, os quais podem rodar uma única aplicação, ou compartilhar seus recursos de <em>hardware</em> entre diversas aplicações. Entretanto podem existir conflitos entre as aplicações, como requisitarem a mesma porta de rede, exigirem versões diferentes de biblioteca e afins, além de questões de segurança. Nesse primeiro texto será abordado como isolar o sistema de arquivos entre os processos dessas aplicações, de forma que um processo não consiga visualizar os arquivos referentes a outra aplicação.</p>
+<h2 id="arquitetura-do-sistema">Arquitetura do sistema</h2>
+<p>Antes de entrar em detalhes de como fazer esse isolamento, vamos entender a arquitetura do sistema onde os processos são executados. Dividindo a arquitetura em camadas, indo da mais baixa para a mais alta, temos:</p>
+<p><strong>Hardware:</strong> Que é o computador ou servidor onde o processo da aplicação será executado. Normalmente inclui processador, memória RAM, espaço de armazenamento (HD ou SSD), placa de rede e demais dispositivos.</p>
+<p><strong>Kernel:</strong> Parte do sistema operacional, responsável por gerenciar tanto o <em>hardware</em> quanto os processos das aplicações que serão executados. Essa série se focará no <em>kernel</em> Linux.</p>
+<p><strong>Bibliotecas:</strong> São diversos arquivos com rotinas comuns entre os processos, assim como também disponibilizam funções para interagir com o <em>kernel</em> do sistema. Nesse ambiente são comumente arquivos binários <code>.so</code>, semelhante aos <code>.dll</code> do Windows, e normalmente se encontram em diretórios como <code>/usr/lib</code> e <code>/usr/lib/x86_64-linux-gnu</code>. Porém podem estar em outros diretórios como <code>/usr/lib/php</code> que são bibliotecas específicas do PHP, ou <code>/usr/lib/python3/dist-packages</code> que são os módulos do Python 3, que nesse caso também não precisam ser arquivos binários.</p>
+<p><strong>Aplicações:</strong> São os diversos processos das aplicações que estão em execução no servidor, podendo utilizar as bibliotecas disponíveis no sistema.</p>
+<p>Um desenho das camadas dessa arquitetura pode ser vista a seguir:</p>
+<p><img src="https://eduardoklosowski.github.io/blog/aplicacao-isolamento-de-sistema-de-arquivos/arquitetura.png" alt="Arquitetura do sistema" /></p>
+<h2 id="problema-de-um-sistema-de-arquivos-compartilhado">Problema de um sistema de arquivos compartilhado</h2>
+<p>Porém, como já foi mencionado, podem ocorrer problemas nesse sistema, como uma aplicação precisar de uma biblioteca em uma versão, enquanto outra aplicação precisar de uma versão diferente da mesma biblioteca, e se essas versões forem incompatíveis entre si, não seria possível rodar as duas aplicações. Algumas linguagens apresentam soluções para esse problema criando outros diretórios onde as bibliotecas são procuradas, como o Python com o <a rel="noopener" target="_blank" href="https://docs.python.org/pt-br/3/library/venv.html">ambiente virtual</a>, ou informando o sistema para procurar as bibliotecas <code>.so</code> em outro diretório com a variável de ambiente <code>LD_LIBRARY_PATH</code>. Entretanto, cada caso de linguagem vai exigir uma solução diferente, e pode ocorrer o caso de alguma não possuir uma solução para isso.</p>
+<p>Outro problema é que uma aplicação poderia acessar os arquivos da outra, tanto lendo dados que não poderia, quanto alterando-os. Isso é preocupante do ponto de vista de segurança, onde uma aplicação poderia ser invadida, e através dela, acessar os dados de outra, ou causar a falha de uma aplicação, inserindo algum código malicioso para outra aplicação executar, ou simplesmente apagando seus dados.</p>
+<h2 id="enjaulando-uma-aplicacao">Enjaulando uma aplicação</h2>
+<p>Uma opção para resolver esses problemas é o enjaulamento (isolamento) de uma aplicação, restringindo o acesso dos processos a apenas uma parte do sistema de arquivos, como se um diretório específico fosse a raiz do sistema para os processos de uma aplicação. Isso exigiria criar toda a estrutura de diretório do sistema operacional, assim como ter uma cópia de bibliotecas e demais arquivos dentro desse diretório. Desta forma teria um único <em>kernel</em> em execução, porém para alguns processos a raiz do sistema de arquivos (<code>/</code>) seria a raiz de fato, e para outros processos veriam um diretório (como <code>/media/sistema</code>) como a raiz do sistema de arquivos. Isso duplicaria as camadas de bibliotecas e aplicação do sistema:</p>
+<p><img src="https://eduardoklosowski.github.io/blog/aplicacao-isolamento-de-sistema-de-arquivos/arquitetura-chroot.png" alt="Arquitetura com chroot" /></p>
+<p>Isso também permite acessar e rodar programas instalados em outras distribuições GNU/Linux que possam existir no computador, visto que as bibliotecas e aplicações conseguem executar em diferentes versões do <em>kernel</em>, porém se tentasse executar diretamente, poderia falhar devido a falta de alguma dependência. Inclusive algumas distros, como o <a rel="noopener" target="_blank" href="https://www.funtoo.org/">Funtoo</a>, disponibilizam formas de usar o <em>kernel</em> compilado de outras distribuições, como no caso <a rel="noopener" target="_blank" href="https://www.funtoo.org/Funtoo_Linux_Kernels/pt-br">o <em>kernel</em> compilado pelo Debian</a>. Além de também ser possível utilizar o <a rel="noopener" target="_blank" href="https://pt.wikipedia.org/wiki/GNU_Linux-libre">Linux-libre</a> no lugar do <em>kernel</em> Linux da distro.</p>
+<p>Essa solução também está presente dentro de algumas aplicações, como o <a rel="noopener" target="_blank" href="https://www.isc.org/bind/">Bind9</a> que é um servidor <a rel="noopener" target="_blank" href="https://pt.wikipedia.org/wiki/Sistema_de_Nomes_de_Dom%C3%ADnio">DNS</a>, e utiliza essa técnica para mitigar problemas de segurança. Uma forma de utilizá-la pode ser vista na <a rel="noopener" target="_blank" href="https://wiki.debian.org/Bind9#Bind_Chroot">Wiki do Debian</a>. E por estar dentro da aplicação, também exige menos coisas dentro dessa &quot;jaula&quot;, ocupando menos espaço.</p>
+<h3 id="criacao-de-uma-jaula">Criação de uma jaula</h3>
+<p>Para criar uma jaula contendo toda a estrutura de uma distribuição, é possível utilizar seu próprio processo de instalação. Nesse caso será utilizado o processo de <a rel="noopener" target="_blank" href="https://www.debian.org/releases/stable/amd64/apds03.pt.html">instalação do Debian a partir de outra distribuição</a>, que consiste em instalar o utilitário <code>debootstrap</code> (pacote <code>debootstrap</code> no Debian e derivados, ou seguindo os passos presentes no guia de instalação para extrair o script do pacote <code>.deb</code>), e utilizá-lo para criar toda a estrutura do Debian dentro de um diretório. Com o <code>debootstrap</code> instalado, basta executá-lo informando a versão desejada, diretório onde o a estrutura deve ser criada, e opcionalmente o endereço do repositório que deve ser utilizado. Exemplo:</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-sh" data-lang="sh"><span style="color:#6699cc;">debootstrap buster /media/sistema http://ftp.br.debian.org/debian
+</span></code></pre>
+<p>Assim que o comando finalizar, já será possível acessar a estrutura presente em <code>/media/sistema</code>, porém esse caminho precisaria ser sempre utilizado como prefixo para acessar qualquer arquivo. Para fazer com que isso ocorra de forma transparante, &quot;enjaulando&quot; uma aplicação nesse diretório, o comando <code>chroot</code> pode ser utilizado. Exemplo:</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-sh" data-lang="sh"><span style="color:#6699cc;">chroot /media/sistema
+</span></code></pre>
+<p>A partir desse ponto, tudo que executar através desse terminal, ao tentar criar um arquivo como <code>/arquivo.txt</code>, para o que estiver dentro da jaula parecerá que está acessando um arquivo na raiz do sistema de arquivos, porém para outros processos (fora da jaula) esse arquivo estará na verdade em <code>/media/sistema/arquivo.txt</code>. E qualquer aplicação poderá ser instalada com o <code>apt</code> dentro dessa jaula, mesmo se a distribuição utilizada não for um Debian ou derivados, visto que para os processos dentro dessa jaula enxergariam o sistema Debian.</p>
+<h2 id="consideracoes">Considerações</h2>
+<p>O isolamento do sistema de arquivos (jaula) é bastante interessante para limitar os arquivos que um processo pode acessar, assim como para executar programas que estão instalados em outras distribuições presentes no computador. Porém ela exige a instalação quase que completa de uma distribuição, só não precisando coisas relacionadas ao <em>kernel</em>, uma vez que é utilizado o <em>kernel</em> que já está em execução no computador, utilizando apenas um espaço de nomes (<em>namespace</em>) diferente para o sistema de arquivos.</p>
+<p>Entretanto esse isolamento ainda não é completo, uma vez que existem outras coisas compartilhas entre os processos de dentro da jaula com os de fora da jaula, como tabela de processos e pilha de rede.</p>
+
+    </div>
+
+        </div>
+    </body>
+</html>

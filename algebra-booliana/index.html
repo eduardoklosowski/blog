@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+
+        <title>Álgebra booliana - Blog Eduardo Klosowski</title>
+        <meta name="application-name" content="Blog Eduardo Klosowski">
+        <meta name="apple-mobile-web-app-title" content="Blog Eduardo Klosowski">
+
+        <link rel="shortcut icon" href="https://eduardoklosowski.github.io/blog/favicon.webp">
+        <link rel="icon" sizes="188x188" href="https://eduardoklosowski.github.io/blog/logo.png">
+        <link rel="apple-touch-icon" href="https://eduardoklosowski.github.io/blog/logo.png">
+
+        
+            <link rel="alternate" type="application/atom+xml" title="Blog Eduardo Klosowski" href="https://eduardoklosowski.github.io/blog/atom.xml">
+        
+
+        
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Blog Eduardo Klosowski">
+    <meta property="og:title" content="Álgebra booliana">
+    <meta property="og:description" content="Há algum tempo, quando a bug_elseif ainda estava fazendo listas de exercícios em Python, apareceu um problema que envolvia verificar se um ano era bissexto ou não. Embora a construção de uma expressão para verificar se um ano é bissexto seja até intuitiva, como estávamos utilizando a condição invertida (verificar se o ano não era bissexto), sua construção não estava sendo fácil, porém é possível usar um pouco de matemática para chegar nela.">
+    <meta property="og:url" content="https://eduardoklosowski.github.io/blog/algebra-booliana/">
+    <meta property="og:image" content="https://eduardoklosowski.github.io/blog/logo.png">
+    <meta property="og:locale" content="pt_BR">
+    <meta property="og:article:published_time" content="2021-05-15">
+    <meta property="og:article:author" content="Eduardo Klosowski">
+    
+    
+        <meta property="og:article:tag" content="Matemática">
+    
+    
+
+
+        <link rel="stylesheet" media="all" href="https://eduardoklosowski.github.io/blog/poole.css">
+        <link rel="stylesheet" media="all" href="https://eduardoklosowski.github.io/blog/tema.css">
+        <link rel="stylesheet" media="print" href="https://eduardoklosowski.github.io/blog/print.css">
+
+        
+            <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "73939fe3b7984f859c0427bc6c693927"}'></script>
+        
+        
+            <script async src="https://www.googletagmanager.com/gtag/js?id=G-15ZW1NJTDE"></script>
+            <script>
+                window.dataLayer = window.dataLayer || [];
+                function gtag(){dataLayer.push(arguments);}
+                gtag('js', new Date());
+                gtag('config', 'G-15ZW1NJTDE');
+            </script>
+        
+    </head>
+
+    <body>
+        <div class="sidebar">
+            <div class="container">
+                <div class="sidebar-about">
+                    <a href="https://eduardoklosowski.github.io/blog/">
+                        <img class="sidebar-logo" src="https://eduardoklosowski.github.io/blog/logo.png">
+                        <h1>Blog Eduardo Klosowski</h1>
+                    </a>
+                </div>
+
+                <ul class="sidebar-nav">
+                    
+                        <li class="sidebar-nav-item">
+                            <a rel="noopener" target="_blank" href="https://github.com/eduardoklosowski">
+                                
+                                    <img src="https://eduardoklosowski.github.io/blog/icons/github.svg" alt="GitHub">
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="sidebar-nav-item">
+                            <a rel="noopener" target="_blank" href="https://twitter.com/eduklosowski">
+                                
+                                    <img src="https://eduardoklosowski.github.io/blog/icons/twitter.svg" alt="Twitter">
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="sidebar-nav-item">
+                            <a rel="noopener" target="_blank" href="https://twitch.tv/eduardoklosowski">
+                                
+                                    <img src="https://eduardoklosowski.github.io/blog/icons/twitch.svg" alt="Twitch">
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="sidebar-nav-item">
+                            <a rel="noopener" target="_blank" href="https://asciinema.org/~eduardoklosowski">
+                                
+                                    <img src="https://eduardoklosowski.github.io/blog/icons/asciinema.svg" alt="asciinema">
+                                
+                            </a>
+                        </li>
+                    
+                        <li class="sidebar-nav-item">
+                            <a rel="noopener" target="_blank" href="https://dev.to/eduardoklosowski">
+                                
+                                    <img src="https://eduardoklosowski.github.io/blog/icons/dev.svg" alt="DEV">
+                                
+                            </a>
+                        </li>
+                    
+                </ul>
+            </div>
+        </div>
+
+        <div class="content container">
+            
+    <div class="post">
+        <h1 class="post-title">Álgebra booliana</h1>
+        <div class="post-info">
+            Publicado em 15-05-2021
+            &middot;
+            4 minutos de leitura
+        </div>
+        
+        <div class="post-tags">
+            
+                <a href="https://eduardoklosowski.github.io/blog/tags/matematica/">#Matemática</a>
+            
+            
+        </div>
+        <p>Há algum tempo, quando a <a rel="noopener" target="_blank" href="https://www.twitch.tv/bug_elseif">bug_elseif</a> ainda estava fazendo <a rel="noopener" target="_blank" href="https://wiki.python.org.br/ListaDeExercicios">listas de exercícios em Python</a>, apareceu um problema que envolvia verificar se um ano era bissexto ou não. Embora a construção de uma expressão para verificar se um ano é bissexto seja até intuitiva, como estávamos utilizando a condição invertida (verificar se o ano não era bissexto), sua construção não estava sendo fácil, porém é possível usar um pouco de matemática para chegar nela.</p>
+<h2 id="construcao-da-expressao">Construção da expressão</h2>
+<p>Primeiramente vamos construir uma expressão para verificar se um ano é bissexto. Para isso, ele deve ser múltiplo de 4, porém se o ano terminar com 00, ele também deve ser múltiplo de 400. Para verificar se um número termina com 00, basta verificar se ele é múltiplo de 100, e para verificar se um número é múltiplo de outro, podemos verificar o resto da divisão ou módulo (quem sabe falo sobre matemática modular em outro artigo), caso o resultado dessa operação seja 0, o primeiro número é divisível pelo segundo, e caso seja qualquer outro valor, o primeiro número não é divisível pelo segundo (ou não possui uma divisão inteira).</p>
+<p>Assim, a expressão para verificar se o ano é bissexto pode ser construída como:</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-txt" data-lang="txt"><span style="color:#cccece;">(ano % 4 == 0 &amp;&amp; ano % 100 != 0) || ano % 400 == 0
+</span></code></pre>
+<p>A primeira coisa a ser observada é que existem duas subexpressões com o conectivo disjuntivo (&quot;ou&quot; <code>||</code>), ou seja, para um ano ser bissexto basta ele cumprir uma das duas condições (subexpressões). A primeira condição também é dividida em outras duas subexpressões, porém dessa vez com o conectivo conjuntivo (&quot;e&quot; <code>&amp;&amp;</code>), assim é necessário que as duas condições sejam verdadeiras para que o seu valor seja considerado verdadeiro, onde a primeira verifica se o ano é divisível por 4 (resto da divisão é igual a 0), e a segunda verifica se ele não é divisível por 100 (resto da divisão é diferente de 0). Essa é a primeira possibilidade para um ano ser bissexto. A outra possibilidade é se ele for divisível por 400 (resto da divisão é igual a zero).</p>
+<p>Assim, essa expressão retorna verdadeiro se o ano for bissexto, e falso caso ele não for.</p>
+<h2 id="invertendo-a-expressao">Invertendo a expressão</h2>
+<p>Porém na ocasião, a expressão que estávamos usando deveria retornar verdadeiro caso o ano não fosse bissexto, e falso caso ele fosse bissexto (o contrário da expressão apresentada). Isso poderia ser feito negando a expressão anterior, ou escrevendo uma expressão de tal forma que retorne o oposto, e era justamente essa segunda opção que estávamos tentando fazer.</p>
+<p>Entretanto, existe uma forma matemática de trabalhar com a negação da expressão, alteando-a até que ela chegue próximo ou a exata expressão que estávamos construindo. Isso é possível através de propriedades das operações boolianas, substituindo parte da expressão a cada vez que uma propriedade por aplicada. Sendo as mais comuns para esse tipo de operação as propriedades de negação da negação (<code>!!a = a</code>), distributiva (<code>a || (b &amp;&amp; c) = (a || b) &amp;&amp; (a || c)</code> e <code>a &amp;&amp; (b || c) = (a &amp;&amp; b) || (a &amp;&amp; c)</code>, que lembra a distributiva da matemática <code>2 * (3 + 4) = (2 * 3) + (2 * 4)</code>), e as leis de De Morgan (<code>!(a || b) = !a &amp;&amp; !b</code> e <code>!(a &amp;&amp; b) = !a || !b</code>). Para mais propriedades veja a página sobre o assunto na <a rel="noopener" target="_blank" href="https://pt.wikipedia.org/wiki/%C3%81lgebra_booliana">Wikipédia</a>.</p>
+<p>Para esse caso é necessário aplicar apenas as leis de De Morgan. Partindo da negação da expressão, aplicando-a passo a passo, temos:</p>
+<pre style="background-color:#2b2c2f;">
+<code class="language-txt" data-lang="txt"><span style="color:#cccece;">!((ano % 4 == 0 &amp;&amp; ano % 100 != 0) || ano % 400 == 0)
+!(ano % 4 == 0 &amp;&amp; ano % 100 != 0) &amp;&amp; !(ano % 400 == 0)
+(!(ano % 4 == 0) || !(ano % 100 != 0)) &amp;&amp; !(ano % 400 == 0)
+(ano % 4 != 0 || ano % 100 == 0) &amp;&amp; ano % 400 != 0
+</span></code></pre>
+<p>Onde essa última expressão é a que precisávamos para o código.</p>
+<h2 id="consideracoes">Considerações</h2>
+<p>Álgebra booliana é interessante para trabalhar condições como de <code>if</code> e laços de repetições dos códigos, seja para otimizá-la ou inverter os blocos de código do <code>if</code> e <code>else</code>, por exemplo, o que pode ser utilizado para deixar o código mais fácil de entender, colocando os blocos de código em uma ordem que faça mais sentido para a leitura. Ela também pode ser utilizada para facilitar a construção de expressões, como no caso apresentando, onde é muito mais fácil e intuitivo escrever uma expressão que verifica se o ano é bissexto do que um ano que não é, onde essa última pode até ser contraintuitiva, onde a álgebra booliana permite partir da expressão mais fácil para a mais difícil.</p>
+<p>E para quem quiser se aprofundar nesse assunto, recomendo as <a rel="noopener" target="_blank" href="https://www.youtube.com/playlist?list=PL8iUCCJD339ezAJWqFaKriz_9tyBw6hE-">aulas do RiverFount</a>, que é professor de filosofia.</p>
+
+    </div>
+
+        </div>
+    </body>
+</html>
