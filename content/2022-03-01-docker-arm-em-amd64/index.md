@@ -66,6 +66,8 @@ alpine       latest    c059bfaa849c   3 months ago   5.59MB
 
 Seguindo o que foi visto até aqui, para se criar uma imagem para ARM pode-se utilizar o comando `docker build --platform linux/arm64 --pull -t <nome_imagem> .`, e trocando `linux/arm64` por `linux/amd64` criar a mesma imagem para AMD64, desde que no repositório de imagens ([Docker Hub](https://hub.docker.com/) por exemplo) existam as imagens usadas como base para ambas arquiteturas com o mesmo nome e tag. Também é válido observar que se as imagens geradas tiverem o mesmo nome, a última imagem gerada vai sobrescrever a tag da anterior, que se torna acessível apenas pelo ID.
 
+Uma alternativa ao parâmetro `--platform` é a variável de ambiente `DOCKER_DEFAULT_PLATFORM`. A vantagem dessa opção é que ela pode ser definida em algum arquivo de configuração, como no `~/.bashrc`, adicionado `export DOCKER_DEFAULT_PLATFORM=linux/arm64`, e deixa de ser necessário informar o parâmetro `--platform` toda vez que o Docker for executado.
+
 ## Considerações
 
 Embora as arquiteturas AMD64 e ARM não sejam compatíveis é possível utilizar o QEMU para fazer a execução de programas ARM em CPUs da arquitetura AMD64. Porém, como isso é feito por software, e não pelo hardware, pode ocorrer problemas de desempenho, o qual ainda deve ser verificado.
