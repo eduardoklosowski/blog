@@ -28,7 +28,7 @@ jobs:
         uses: actions/configure-pages@v2
 
       - name: Build do Zola
-        uses: shalzz/zola-deploy-action@v0.15.3
+        uses: shalzz/zola-deploy-action@v0.16.1
         env:
           OUT_DIR: public
           BUILD_FLAGS: --base-url ${{ steps.pages.outputs.base_url }}
