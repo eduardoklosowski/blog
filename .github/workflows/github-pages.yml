@@ -1,0 +1,52 @@
+name: GitHub Pages
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: pages
+  cancel-in-progress: true
+
+jobs:
+  build:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout do Repositório
+        uses: actions/checkout@v3
+
+      - name: Setup do GitHub Pages
+        id: pages
+        uses: actions/configure-pages@v1
+
+      - name: Build do Zola
+        uses: shalzz/zola-deploy-action@v0.15.3
+        env:
+          OUT_DIR: public
+          BUILD_FLAGS: --base-url ${{ steps.pages.outputs.base_url }}
+          BUILD_ONLY: true
+
+      - name: Upload do Site
+        uses: actions/upload-pages-artifact@v1
+        with:
+          path: public/
+
+  deploy:
+    name: Deploy
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy no GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v1
