@@ -31,7 +31,7 @@ jobs:
         uses: shalzz/zola-deploy-action@v0.16.1
         env:
           OUT_DIR: public
-          BUILD_FLAGS: --base-url ${{ steps.pages.outputs.base_url }}
+          BUILD_FLAGS: --base-url ${{ steps.pages.outputs.base_url }}/
           BUILD_ONLY: true
 
       - name: Upload do Site
