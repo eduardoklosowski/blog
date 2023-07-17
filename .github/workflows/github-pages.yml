@@ -32,7 +32,7 @@ jobs:
         run: ./zola build --output-dir public --base-url ${{ steps.pages.outputs.base_url }}/
 
       - name: Upload do Site
-        uses: actions/upload-pages-artifact@v1
+        uses: actions/upload-pages-artifact@v2
         with:
           path: public/
 
