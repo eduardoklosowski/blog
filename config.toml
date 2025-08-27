@@ -11,8 +11,8 @@ taxonomies = [
     {name = "linguagens", paginate_by = 10},
 ]
 
-generate_feed = true
-feed_filename = "atom.xml"
+generate_feeds = true
+feed_filenames = ["atom.xml"]
 
 compile_sass = true
 minify_html = false

@@ -1,4 +1,4 @@
-ZOLA_VERSION := 0.17.2
+ZOLA_VERSION := 0.21.0
 BINARIES := zola
 OUTPUT_DIR := public
 
