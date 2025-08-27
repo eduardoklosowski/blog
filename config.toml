@@ -31,9 +31,10 @@ external_links_target_blank = true
 author = "Eduardo Klosowski"
 
 sidebar_links = [
+    {name = "Feed", icon = "icons/rss.svg", url = "https://eduardoklosowski.github.io/blog/atom.xml", external = true},
+    {name = "Notas", icon = "icons/notes.svg", url = "https://eduardoklosowski.github.io/notes/", external = true},
     {name = "GitHub", icon = "icons/github.svg", url = "https://github.com/eduardoklosowski", external = true},
     {name = "Twitter", icon = "icons/twitter.svg", url = "https://twitter.com/eduklosowski", external = true},
-    {name = "Twitch", icon = "icons/twitch.svg", url = "https://twitch.tv/eduardoklosowski", external = true},
     {name = "asciinema", icon = "icons/asciinema.svg", url = "https://asciinema.org/~eduardoklosowski", external = true},
     {name = "DEV", icon = "icons/dev.svg", url = "https://dev.to/eduardoklosowski", external = true},
 ]
