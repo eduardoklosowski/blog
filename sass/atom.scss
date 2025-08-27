@@ -1,0 +1,95 @@
+@font-face {
+    font-family: "PT Sans";
+    font-style: normal;
+    font-weight: 400;
+    src: url(PTSans-Regular.ttf);
+}
+
+@font-face {
+    font-family: "PT Sans";
+    font-style: italic;
+    font-weight: 400;
+    src: url(PTSans-Italic.ttf);
+}
+
+@font-face {
+    font-family: "PT Sans";
+    font-style: normal;
+    font-weight: 700;
+    src: url(PTSans-Bold.ttf);
+}
+
+@font-face {
+    font-family: "PT Sans";
+    font-style: italic;
+    font-weight: 700;
+    src: url(PTSans-BoldItalic.ttf);
+}
+
+html {
+    margin: 0;
+    padding: 0;
+}
+
+body {
+    margin: 4%;
+    padding: 0;
+    background-color: #ffffff;
+    font-family: "PT Sans", Helvetica, Arial, sans-serif;
+    font-size: 20px;
+    color: #515151;
+    line-height: 1.5;
+}
+
+p {
+    margin-top: 0;
+    margin-bottom: 1rem;
+    text-align: justify;
+}
+
+a {
+    color: #6a9fb5;
+    text-decoration: none;
+
+    &:hover {
+        text-decoration: underline;
+    }
+}
+
+h1 {
+    margin-bottom: .5rem;
+    font-size: 2rem;
+    color: #303030;
+    font-weight: bold;
+    line-height: 1.25;
+    text-rendering: optimizeLegibility;
+}
+
+h2 {
+    margin-bottom: .5rem;
+    font-size: 1.6rem;
+    color: #303030;
+    font-weight: bold;
+    line-height: 1.25;
+    text-rendering: optimizeLegibility;
+}
+
+label {
+    display: block;
+}
+
+input {
+    display: block;
+    min-width: 25rem;
+    border: 1px solid #898ea4;
+    padding: .25rem;
+    color: #515151;
+    font-size: .9rem;
+    padding-left: .2rem;
+    padding-right: .2rem;
+}
+
+ul {
+    margin: 0;
+    padding-left: 1.5rem;
+}
