@@ -1,6 +1,6 @@
-ZOLA_VERSION=0.17.2
-BINARIES=zola
-OUTPUT_DIR=public
+ZOLA_VERSION := 0.17.2
+BINARIES := zola
+OUTPUT_DIR := public
 
 
 # Commands
