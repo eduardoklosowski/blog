@@ -1,6 +1,7 @@
 base_url = "https://eduardoklosowski.github.io/blog/"
 
 title = "Blog Eduardo Klosowski"
+author = "Eduardo Klosowski"
 
 default_language = "pt-BR"
 
