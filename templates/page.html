@@ -8,7 +8,7 @@
     <meta property="og:title" content="{{ page.title }}">
     <meta property="og:description" content="{{ page.content | split(pat="\n") | first | striptags | safe }}">
     <meta property="og:url" content="{{ page.permalink | safe }}">
-    <meta property="og:image" content="{{ get_url(path="logo.png") | safe }}">
+    <meta property="og:image" content="{{ get_url(path="logo.webp") | safe }}">
     <meta property="og:locale" content="{{ page.lang | replace(from="-", to="_") }}">
     <meta property="og:article:published_time" content="{{ page.date | date(format="%Y-%m-%d") }}">
     <meta property="og:article:author" content="{{ config.extra.author }}">

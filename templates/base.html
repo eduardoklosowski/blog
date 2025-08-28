@@ -5,12 +5,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 
         <title>{% block title %}{{ config.title }}{% endblock %}</title>
-        <meta name="application-name" content="{{ config.title }}">
-        <meta name="apple-mobile-web-app-title" content="{{ config.title }}">
 
-        <link rel="shortcut icon" href="{{ get_url(path="favicon.webp") | safe }}">
-        <link rel="icon" sizes="188x188" href="{{ get_url(path="logo.png") | safe }}">
-        <link rel="apple-touch-icon" href="{{ get_url(path="logo.png") | safe }}">
+        <link rel="shortcut icon" href="{{ get_url(path="favicon.ico") | safe }}">
+        <link rel="icon" type="image/png" href="{{ get_url(path="favicon.png") | safe }}" sizes="64x64">
+        <link rel="icon" type="image/webp" href="{{ get_url(path="logo.webp") | safe }}" sizes="256x256">
 
         {% if config.generate_feed %}
             {% for feed_filename in config.feed_filenames %}
@@ -43,7 +41,7 @@
             <div class="container">
                 <div class="sidebar-about">
                     <a href="{{ config.base_url | safe }}">
-                        <img class="sidebar-logo" src="{{ get_url(path="logo.png") | safe }}">
+                        <img class="sidebar-logo" src="{{ get_url(path="logo.webp") | safe }}">
                         <h1>{{ config.title }}</h1>
                     </a>
                 </div>
