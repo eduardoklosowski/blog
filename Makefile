@@ -8,10 +8,10 @@ OUTPUT_DIR := public
 .PHONY: build serve
 
 build: zola
-	./zola build --output-dir $(OUTPUT_DIR)
+	./zola build --output-dir $(OUTPUT_DIR) --force
 
 serve: zola
-	./zola serve --output-dir $(OUTPUT_DIR)
+	./zola serve --output-dir $(OUTPUT_DIR) --force
 
 
 # Binaries
