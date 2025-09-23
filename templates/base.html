@@ -22,6 +22,16 @@
         <link rel="stylesheet" media="all" href="{{ get_url(path="tema.css", trailing_slash=false) | safe }}">
         <link rel="stylesheet" media="print" href="{{ get_url(path="print.css", trailing_slash=false) | safe }}">
 
+        <script async src="{{ get_url(path="mermaid.min.js") | safe }}"></script>
+        <script>
+            document.addEventListener('DOMContentLoaded', async () => {
+                mermaid.initialize({
+                    securityLevel: 'loose',
+                    theme: 'default',
+                });
+            });
+        </script>
+
         {% if config.extra.analytics_cloudflare %}
             <script defer src="https://static.cloudflareinsights.com/beacon.min.js" data-cf-beacon='{"token": "{{ config.extra.analytics_cloudflare }}"}'></script>
         {% endif %}
