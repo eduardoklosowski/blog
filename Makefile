@@ -1,5 +1,10 @@
+# Zola - https://github.com/getzola/zola/releases
 ZOLA_VERSION := 0.21.0
-BINARIES := zola
+
+# Mermaid - https://www.jsdelivr.com/package/npm/mermaid
+MERMAID_VERSION := 11.12.1
+
+BINARIES := zola static/mermaid.min.js
 OUTPUT_DIR := public
 
 
@@ -7,21 +12,24 @@ OUTPUT_DIR := public
 
 .PHONY: build serve
 
-build: zola
+build: download-binaries
 	./zola build --output-dir $(OUTPUT_DIR) --force
 
-serve: zola
+serve: download-binaries
 	./zola serve --output-dir $(OUTPUT_DIR) --force
 
 
 # Binaries
 
-.PHONY: download-all-binaries
+.PHONY: download-binaries
 
-download-all-binaries: $(BINARIES)
+download-binaries: $(BINARIES)
 
 zola:
 	wget -O - https://github.com/getzola/zola/releases/download/v$(ZOLA_VERSION)/zola-v$(ZOLA_VERSION)-x86_64-unknown-linux-gnu.tar.gz | tar xzf -
+
+static/mermaid.min.js:
+	wget -O $@ https://cdn.jsdelivr.net/npm/mermaid@$(MERMAID_VERSION)/dist/mermaid.min.js
 
 
 # Clear
