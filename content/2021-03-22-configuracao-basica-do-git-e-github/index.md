@@ -142,7 +142,7 @@ Para adicionar uma chave ao `ssh-agent` basta executar o comando `ssh-add <camin
 
 Outra forma de adicionar a chave ao `ssh-agent` é configurando o cliente SSH para fazer isso automaticamente, o que pode ser feito adicionando o parâmetro `AddKeysToAgent yes` na sua configuração que fica em `~/.ssh/config`. A baixo seguem um exemplo utilizando esse parâmetro, assim como outros parâmetros específicos para o GitHub (usuário `git` por padrão e autenticação apenas pela chave Ed25519).
 
-```config
+```ssh-config
 Host github.com
   User git
   IdentitiesOnly yes
@@ -160,7 +160,7 @@ Eventualmente pode existir a necessidade de utilizar duas ou mais contas do GitH
 
 Porém para o cliente SSH utilizar uma chave diferente é necessário informar essa nova chave, como `ssh -i ~/.ssh/id_ed25519_empresa -T git@github.com`. Para facilitar o acesso, é possível criar um apelido para o GitHub, e dizer que todo o acesso feito através desse apelido usará outra chave, como com a configuração a baixo do arquivo `~/.ssh/config`:
 
-```config
+```ssh-config
 Host github.com
   User git
   IdentitiesOnly yes
@@ -309,7 +309,7 @@ Seguindo a nomenclatura do [Bitkeeper](https://www.bitkeeper.org/), a *branch* p
 
 Uma configuração bastante útil do Git é mostrar a *branch* atual o estado do repositório na linha de comando. No Git Bash isso já vem ativo por padrão, porém em outros ambientes é necessário ativar. O *script* responsável por isso é o [`git-prompt`](https://github.com/git/git/blob/master/contrib/completion/git-prompt.sh), e no Debian e derivados já é instalado junto com o Git, porém dependendo do pacote `bash-completion` para ser carregado e que seja habilitado na variável de ambiente `PS1`. A baixo segue um exemplo de configuração que pode ser adicionado ao arquivo `~/.bashrc` para habilitá-lo, junto com alguns de seus parâmetros de configuração:
 
-```.bashrc
+```bash
 PS1="${PS1//\\\$/\$(__git_ps1)\\\$}"
 GIT_PS1_SHOWDIRTYSTATE=true
 GIT_PS1_SHOWSTASHSTATE=true

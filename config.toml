@@ -20,10 +20,13 @@ minify_html = false
 
 [markdown]
 
-highlight_code = true
-highlight_theme = "charcoal"
-
 external_links_target_blank = true
+
+
+[markdown.highlighting]
+
+theme = "one-dark-pro"
+error_on_missing_language = true
 
 
 [extra]

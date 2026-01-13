@@ -1,5 +1,5 @@
 # Zola - https://github.com/getzola/zola/releases
-ZOLA_VERSION := 0.21.0
+ZOLA_VERSION := 0.22.0
 
 # Mermaid - https://www.jsdelivr.com/package/npm/mermaid
 MERMAID_VERSION := 11.12.2
@@ -26,7 +26,7 @@ serve: download-binaries
 download-binaries: $(BINARIES)
 
 zola:
-	wget -O - https://github.com/getzola/zola/releases/download/v$(ZOLA_VERSION)/zola-v$(ZOLA_VERSION)-x86_64-unknown-linux-gnu.tar.gz | tar xzf -
+	wget -O - https://github.com/getzola/zola/releases/download/v$(ZOLA_VERSION)/zola-v$(ZOLA_VERSION)-x86_64-unknown-linux-gnu.tar.gz | tar xzf - zola
 
 static/mermaid.min.js:
 	wget -O $@ https://cdn.jsdelivr.net/npm/mermaid@$(MERMAID_VERSION)/dist/mermaid.min.js
