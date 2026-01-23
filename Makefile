@@ -1,5 +1,5 @@
 # Zola - https://github.com/getzola/zola/releases
-ZOLA_VERSION := 0.22.0
+ZOLA_VERSION := 0.22.1
 
 # Mermaid - https://www.jsdelivr.com/package/npm/mermaid
 MERMAID_VERSION := 11.12.2
