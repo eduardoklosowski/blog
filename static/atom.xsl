@@ -38,7 +38,7 @@
                             [<xsl:value-of select="concat(substring(./atom:updated, 9, 2), '/', substring(./atom:updated, 6, 2), '/', substring(./atom:updated, 1, 4))" />]
                             <a>
                                 <xsl:attribute name="href">
-                                    <xsl:value-of select="link" />
+                                    <xsl:value-of select="./atom:link/@href" />
                                 </xsl:attribute>
                                 <xsl:value-of select="./atom:title" />
                             </a>
