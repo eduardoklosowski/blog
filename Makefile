@@ -2,7 +2,7 @@
 ZOLA_VERSION := 0.22.1
 
 # Mermaid - https://www.jsdelivr.com/package/npm/mermaid
-MERMAID_VERSION := 11.12.3
+MERMAID_VERSION := 11.13.0
 
 BINARIES := zola static/mermaid.min.js
 OUTPUT_DIR := public
