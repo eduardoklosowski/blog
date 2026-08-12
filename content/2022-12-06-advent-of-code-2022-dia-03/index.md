@@ -13,9 +13,9 @@ Terceiro dia do [Advent of Code deste ano](https://adventofcode.com/2022), o pro
 
 O problema do dia 3 ["reorganização da mochila"](https://adventofcode.com/2022/day/3) consiste em encontrar elementos repetidos em diferentes coleções de valores. Novamente, recomendo que tentem resolvê-lo primeiro, e o vídeo do [Bruno Rocha](https://twitter.com/rochacbruno):
 
-{{ youtube(id="QROejIb9Zqc") }}
+{{ <youtube id="QROejIb9Zqc" /> }}
 
-{{ youtube(id="qd_MOTS2gOo") }}
+{{ <youtube id="qd_MOTS2gOo" /> }}
 
 ## Questão - Estrutura de dados e complexidade de operações
 

@@ -13,7 +13,7 @@ Segundo dia do [Advent of Code deste ano](https://adventofcode.com/2022), na que
 
 O problema do dia 2 ["pedra papel tesoura"](https://adventofcode.com/2022/day/2) consiste basicamente em transcrever as [regras do jogo de mesmo nome](https://pt.wikipedia.org/wiki/Pedra,_papel_e_tesoura) para um algoritmo que processe seus resultados. Novamente recomendo que tentem resolver o desafio primeiro, e o vídeo do [Bruno Rocha](https://twitter.com/rochacbruno):
 
-{{ youtube(id="jANYXhnDsZM") }}
+{{ <youtube id="jANYXhnDsZM" /> }}
 
 ## Questão - Sequência de condições
 

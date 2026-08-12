@@ -15,7 +15,7 @@ Para quem não viu, ou se quiser relembrar, o problema do dia 1 é o ["contando 
 
 Recomendo primeiramente tentar resolver esse problema. Se tiver dificuldades, ou se quiser ter uma ideia melhor da linha de pensamento que vou usar como base da discussão, recomendo o vídeo do [Bruno Rocha](https://twitter.com/rochacbruno):
 
-{{ youtube(id="lzD2geCWjB4") }}
+{{ <youtube id="lzD2geCWjB4" /> }}
 
 ## 1ª Questão - Uso de memória
 

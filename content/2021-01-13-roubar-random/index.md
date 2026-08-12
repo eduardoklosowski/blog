@@ -13,7 +13,7 @@ Existe um problema sobre a distribuição dos valores randômicos, principalment
 
 Para demonstrar que era possível manipular a mensagem enviada pelo bot, sem que isso apareça no código, eu fiz a demonstração a baixo:
 
-{{ asciinema(id="383797") }}
+{{ <asciinema id="383797" /> }}
 
 Ou seja, é possível fazer essa manipulação. A questão que o [vitthin](https://www.twitch.tv/vitthin) não conseguiu responder foi: como isso foi feito?
 
@@ -38,7 +38,7 @@ print(cumprimentar())  # Resultado: Tchau
 
 Ou como demonstrado pelo Fernando Masanori:
 
-{{ youtube(id="Wnc6McPpmUg") }}
+{{ <youtube id="Wnc6McPpmUg" /> }}
 
 Com esse método, é realmente possível alterar o comportamento do código, porém fica explícito no código a existência desse decorador, o que pode facilmente levantar suspeitas. Porém não foi o caso da minha demonstração, uma vez que eu também mostro o código desse decorador, e não tem nada lá fazendo essa manipulação.
 
@@ -46,7 +46,7 @@ Com esse método, é realmente possível alterar o comportamento do código, por
 
 Em outra demonstração também feita pelo Fernando Masanori, ele altera a biblioteca padrão do Python, no caso alterando o código da função `randint`:
 
-{{ youtube(id="0KU2ntx0MZc") }}
+{{ <youtube id="0KU2ntx0MZc" /> }}
 
 Com esse método também é possível alterar o comportamento do código, mas diferente do anterior, não deixa explícito a manipulação que foi feita. Porém na minha demonstração, o comportamento da função muda conforme o nome de usuário informado, o qual não é acessível dentro da função `randint`, apenas se mudasse a assinatura da função para receber o nome do usuário também, mas isso seria visível no código, então não seria possível fazer a mesma coisa que na demonstração.
 
@@ -54,7 +54,7 @@ Com esse método também é possível alterar o comportamento do código, mas di
 
 Durante uma apresentação no FISL 14, o Cascardo comentou sobre o desafio de fazer um programa Java aceitar outro certificado (começando a discussão aos 23:05), onde de 26:43 até 28:50 ele comentou como trocou a classe utilizada pelo Java, retomando ao assunto aos 37:29 até 37:55:
 
-{{ video(url="http://hemingway.softwarelivre.org/fisl14/high/41b/sala41b-high-201307031502.ogg") }}
+{{ <video url="http://hemingway.softwarelivre.org/fisl14/high/41b/sala41b-high-201307031502.ogg" /> }}
 
 Essa opção funciona para o Java (pergunto se funcionaria para o Kotlin também [morgiovanelli](https://www.twitch.tv/morgiovanelli)?). No Python, esse comportamento pode ser replicado utilizando a variável de ambiente [`PYTHONPATH`](https://docs.python.org/3/using/cmdline.html?highlight=pythonpath#envvar-PYTHONPATH), bastando criar uma cópia alterada da biblioteca em outro lugar, e informando isso nessa variável de ambiente quando fosse executado o código.
 
@@ -81,7 +81,7 @@ Em relação ao código da minha demonstração, ele só permitiria alterar a fu
 
 Outra técnica seria comprometendo o sistema, alterando diretamente o kernel onde o código é executado, como feito pelo Seth Schoen numa apresentação no FISL 15 dos 25:17 até 33:03:
 
-{{ video(url="http://hemingway.softwarelivre.org/fisl15/high/40t/sala40t-high-201405071559.ogv") }}
+{{ <video url="http://hemingway.softwarelivre.org/fisl15/high/40t/sala40t-high-201405071559.ogv" /> }}
 
 Definitivamente esse método permite alterar o comportamento do código e é o mais difícil de se detectar. Porém no final da minha demonstração eu usei o próprio Python para ler e exibir o arquivo, então seria possível reproduzir o comportamento do código, porém a alteração seria visível ao imprimir o código na tela pelo Python.
 

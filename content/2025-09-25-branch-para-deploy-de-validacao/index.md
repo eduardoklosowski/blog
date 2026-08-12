@@ -15,7 +15,7 @@ Um fluxo bastante comum usado no git é criar uma branch para desenvolver uma fu
 
 Um exemplo de diferentes branches do git pode ser visto a baixo:
 
-{% mermaid() %}
+{% <mermaid> %}
 gitGraph
     commit id: "0"
     branch feature-1
@@ -25,7 +25,7 @@ gitGraph
     branch feature-2
     commit id: "3"
     commit id: "4"
-{% end %}
+{% </mermaid> %}
 
 Se considerar que o projeto é o código de uma API Rest que é executado em um servidor, e que existem alguns ambientes diferentes como:
 
@@ -47,7 +47,7 @@ git merge --no-ff feature-2
 
 O que geraria o seguinte histórico no git:
 
-{% mermaid() %}
+{% <mermaid> %}
 gitGraph
     commit id: "0"
     branch feature-1 order: 2
@@ -61,13 +61,13 @@ gitGraph
     branch desenvolvimento order: 1
     merge feature-1 id: "5"
     merge feature-2 id: "6"
-{% end %}
+{% </mermaid> %}
 
 Assim ao realizar o deploy no ambiente `Desenvolvimento` sempre a partir da branch `desenvolvimento`, isso permite testar todas as funcionalidades desejadas ao mesmo tempo, nesse caso as funcionalidades presentes nas branches `feature-1` e `feature-2`. Porém essas funcionalidades ainda terão suas respectivas branches separadas para continuar seu fluxo de trabalho, como abertura de pull request (PR) ou merge request (MR), revisão de código e demais etapas que podem existir sem se misturar com as outras, não se importando com a branch `desenvolvimento`.
 
 A branch `desenvolvimento` ainda poderá receber novas funcionalidades de outras branches, alterações das branches que já havia feito o merge anteriormente. Ou seja, novas versões podem ser feitas nessa branch conforme a necessidade. Um exemplo é um teste de alteração na `feature-1` (commit `7`), que foi feito o merge e deploy (versão no commit `8`), e se não teve o resultado esperado, poderá ser revertido:
 
-{% mermaid() %}
+{% <mermaid> %}
 gitGraph
     commit id: "0"
     branch feature-1 order: 2
@@ -86,13 +86,13 @@ gitGraph
     checkout desenvolvimento
     merge feature-1 id: "8"
     commit id: "REVERTE-8" type: REVERSE
-{% end %}
+{% </mermaid> %}
 
 ### Entrega das funcionalidades
 
 Quando uma funcionalidade for validada e estiver dada como pronta, poderá seguir seu fluxo de trabalho normal, sendo feito o merge de sua branch com a `main`, como se a branch `desenvolvimento` não existisse. Desta forma apenas essa funcionalidade integrará a branch `main`, podendo ser validada no ambiente `Homologação` e chegar a `Produção`, sem as demais funcionalidades que ainda estão sendo testadas no ambiente `Desenvolvimento`. E ela pode se juntar a outras funcionalidades, como uma pequena correção que foi aplicada diretamente na branch `main`(ambientes `Homologação` e `Produção`), sem ter passado pela branch `desenvolvimento`.
 
-{% mermaid() %}
+{% <mermaid> %}
 gitGraph
     commit id: "0"
     branch feature-1 order: 2
@@ -119,7 +119,7 @@ gitGraph
     checkout main
     merge fix-3 id: "10"
     merge feature-2 id: "11"
-{% end %}
+{% </mermaid> %}
 
 ### Limpeza da branch
 
@@ -135,7 +135,7 @@ git checkout -B desenvolvimento main
 
 E ao unir a `feature-1` para testes na `desenvolvimento`, o histórico seria o seguinte:
 
-{% mermaid() %}
+{% <mermaid> %}
 gitGraph
     commit id: "0"
     branch feature-1 order: 2
@@ -156,7 +156,7 @@ gitGraph
     merge fix-3 id: "11"
     branch desenvolvimento order: 1
     merge feature-1 id: "13"
-{% end %}
+{% </mermaid> %}
 
 Embora essa limpeza seja boa para manter as branches `desenvolvimento` e `main` semelhantes, evitando assim alguns problemas, uma frequência muito grande também pode dificultar os testes, uma vez que desativará as funcionalidades que estão em teste. Desta forma é necessário encontrar um equilíbrio, seja uma vez por dia ou semana, e isso pode mudar conforme o projeto. Outra opção é a criação de um "botão de manual", que poderia ser usado sempre que se achar necessário, e que pode até trabalhar em conjunto com algum agendamento.
 
