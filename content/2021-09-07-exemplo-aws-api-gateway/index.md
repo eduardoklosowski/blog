@@ -25,6 +25,6 @@ Finalmente ao executar o Terraform obtive uma URL como `http://localhost:4566/re
 
 Caso deseje visualizar o processo de deploy com Terraform, segue um vídeo do procedimento sendo executado:
 
-{{ asciinema(id="433410") }}
+{{ <asciinema id="433410" /> }}
 
 O repositório com o código utilizado está no meu [GitHub](https://github.com/eduardoklosowski/exemplo-aws-api-gateway).

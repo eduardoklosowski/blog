@@ -65,4 +65,4 @@ Um algoritmo pode ter sua complexidade alterada apenas por ter que lidar com int
 
 Nesse texto foi considerado a multiplicação dos valores da base das divisões como fator para reduzir os valores da preocupação. Porém nem sempre ele será o valor mais otimizado, para ter a garantia de optimização desse fator pode ser utilizado o [mínimo múltiplo comum](https://pt.wikipedia.org/wiki/M%C3%ADnimo_m%C3%BAltiplo_comum) desses valores. Porém como no caso da minha entrada todos os valores eram primos, o mínimo múltiplo comum e a multiplicação dos valores da o mesmo resultado, não alterando o desempenho do código. E ainda sobre esse assunto, é interessante como uma representação gráfica desse ciclo do resto das divisões pode ser:
 
-{{ twitter_tweet(url="https://twitter.com/abakcus/status/1613206756217290756") }}
+{{ <twitter_tweet url="https://twitter.com/abakcus/status/1613206756217290756" /> }}

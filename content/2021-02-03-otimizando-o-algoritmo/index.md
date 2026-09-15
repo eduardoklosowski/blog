@@ -266,4 +266,4 @@ Algumas otimizações melhoraram a legibilidade do código, deixando-o muito mai
 
 Ainda sobre esse assunto, eu recomendo a palestra do Jon "MadDog" Hall no FISL 15, "Performance: More Than Just Speed":
 
-{{ video(url="http://hemingway.softwarelivre.org/fisl15/high/40t/sala40t-high-201405081059.ogv") }}
+{{ <video url="http://hemingway.softwarelivre.org/fisl15/high/40t/sala40t-high-201405081059.ogv" /> }}
